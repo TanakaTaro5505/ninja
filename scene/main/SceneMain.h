@@ -1,0 +1,74 @@
+#pragma once
+#include "DxLib.h"
+#include "SceneManager.h"
+#include "PadUtil.h"
+
+#include "Command.h"
+#include "Player.h"
+#include "Shot.h"
+#include "Enemy.h"
+
+#include "Effect/EffectManager.h"
+
+class SceneMain :public SceneBase
+{
+	//define ----------------------------------
+private:
+	static const int cShotMax = 128;
+	static const int cEnemyMax = 32;
+
+	//function ----------------------------------
+public:
+	SceneMain() : SceneBase()
+	{
+		m_padNum = 0;
+		m_endWait = -1;
+		m_fadeBright = 0;
+
+		m_shotInterval = 0;
+		m_enemyInterval = 0;
+		m_playerGraphic = 0;
+		m_shotGraphic = 0;
+		m_enemyShotGraphic = 0;
+		m_enemyGraphic = 0;
+	}
+	virtual ~SceneMain()
+	{
+	}
+
+	void init();
+	void deleteGraph();
+	SceneBase* update();
+	void draw();
+
+private:
+	// 左右中央位置に文字列表示
+	void DrawStringCenter( int y, const char* str );
+
+	// variable ----------------------------------
+private:
+	int m_padNum;
+
+	int m_endWait;
+	int m_fadeBright;
+
+	// game
+	Player m_player;
+	Shot m_shot[cShotMax];
+
+	Enemy m_enemy[cEnemyMax];
+
+	// 弾の生成管理
+	int m_shotInterval;
+	// 敵の生成管理
+	int m_enemyInterval;
+
+	// グラフィック
+	int m_playerGraphic;
+	int m_shotGraphic;
+	int m_enemyShotGraphic;
+	int m_enemyGraphic;
+
+	// 敵を倒した時のエフェクト生成
+	EffectManager m_effect;
+};
