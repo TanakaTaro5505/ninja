@@ -13,7 +13,7 @@ static const int kDamageFrame = 60;
 static const int kMaxHp			= 100;
 static const int kShotDamage	= 10;
 static const int kShotSpeed		= 6;
-static const int kShotInterval	= 8;
+static const int kShotInterval	= 16;
 static const int kMoveSpeed		= 4;
 static const int kDamagePrevent = 0;
 
@@ -76,7 +76,7 @@ void Player::update()
 		VectorNormalize(&m_vec, &m_vec);
 	}
 
-	VectorScale(&m_vec, &m_vec, m_moveSpeed);
+	VectorScale(&m_vec, &m_vec, static_cast<float>(m_moveSpeed));
 
 	m_pos.x += m_vec.x;
 	m_pos.y += m_vec.y;
@@ -99,24 +99,24 @@ void Player::draw()
 	// HPゲージの表示
 	if (m_maxHp <= 0)	return;
 
-	int x1 = m_pos.x - kHpBarLen / 2;
-	int x2 = m_pos.x + kHpBarLen / 2;
-	int y1 = m_pos.y + 32;
+	int x1 = static_cast<int>(m_pos.x - kHpBarLen / 2);
+	int x2 = static_cast<int>(m_pos.x + kHpBarLen / 2);
+	int y1 = static_cast<int>(m_pos.y + 32);
 	int y2 = y1 + kHpBarHeight;
 	DrawBox(x1, y1, x2, y2, GetColor(0, 255, 0), false);
 	x2 = x1 + kHpBarLen * m_hp / m_maxHp;
 	DrawBox(x1, y1, x2, y2, GetColor(0, 255, 0), true);
 
 	// レベル、経験値表示
-	x1 = m_pos.x - kExpBarLen / 2;
-	x2 = m_pos.x + kExpBarLen / 2;
-	y1 = m_pos.y - 32;
+	x1 = static_cast<int>(m_pos.x - kExpBarLen / 2);
+	x2 = static_cast<int>(m_pos.x + kExpBarLen / 2);
+	y1 = static_cast<int>(m_pos.y - 32);
 	y2 = y1 + kExpBarHeight;
 	DrawBox(x1, y1, x2, y2, GetColor(255, 255, 0), false);
 	x2 = x1 + kExpBarLen * m_exp / getNextLevelExp();
 	DrawBox(x1, y1, x2, y2, GetColor(255, 255, 0), true);
 
-	DrawFormatString(m_pos.x - kHpBarLen / 2-8, m_pos.y - 32, GetColor(255, 255, 255), "%d", getLevel());
+	DrawFormatString(x1 - 8, y1, GetColor(255, 255, 255), "%d", getLevel());
 }
 
 void Player::damage(int getDamage)

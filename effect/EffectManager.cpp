@@ -18,7 +18,7 @@ bool EffectManager::Particle::create(float x, float y)
 	m_pos.x = x;
 	m_pos.y = y;
 	
-	float speed = GetRand(30) + 15;
+	float speed = static_cast<float>(GetRand(30) + 15);
 	int angle = GetRand(360);
 	float deg = (3.141592f * 2.0f / 360.0f) * angle;
 

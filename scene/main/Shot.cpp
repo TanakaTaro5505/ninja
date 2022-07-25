@@ -2,8 +2,8 @@
 #include "Game.h"
 #include <math.h>
 
-static const float cShotSpeed = 8.0f;
-static const float cRotSpeed = 0.2f;
+static constexpr float cShotSpeed = 8.0f;
+static constexpr float cRotSpeed = 0.2f;
 
 // ===================================================================================
 void Shot::update()

@@ -35,9 +35,9 @@ void Enemy::draw()
 
 	// HPÉQÅ[ÉWÇÃï\é¶
 	if (m_maxHp <= 0)	return;
-	int x1= m_pos.x - kHpBarLen / 2;
-	int x2 = m_pos.x + kHpBarLen / 2;
-	int y1 = m_pos.y + 32;
+	int x1 = static_cast<int>(m_pos.x - kHpBarLen / 2);
+	int x2 = static_cast<int>(m_pos.x + kHpBarLen / 2);
+	int y1 = static_cast<int>(m_pos.y + 32);
 	int y2 = y1 + kHpBarHeight;
 	DrawBox(x1, y1, x2, y2, GetColor(255,0,0), false);
 	x2 = x1 + kHpBarLen * m_hp / m_maxHp;

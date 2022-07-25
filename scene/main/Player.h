@@ -9,7 +9,10 @@ public:
 		m_hp = 0;
 		m_maxHp = 0;
 		m_shotPower = 0;
+		m_shotSpeed = 0;
 		m_shotInterval = 0;
+		m_moveSpeed = 0;
+		m_damagePrevent = 0;
 
 		m_damageFrame = -1;
 

@@ -11,6 +11,7 @@ public:
 		m_moveSpeed = 0.0f;
 		m_moveAngle = 0.0f;
 		m_power = 0;
+		m_isPlayerShot = false;
 	}
 	virtual ~Shot() {}
 
@@ -20,12 +21,12 @@ public:
 	// プレイヤーのショット作成
 	void createPlayerShot( VECTOR pos, int graph );
 	// 敵のショット作成
-	void createEnemyShot(VECTOR pos, int graph);
+	void createEnemyShot( VECTOR pos, int graph );
 
 	// ショットをあてた
 	void Hit();
 	// 移動情報設定
-	void setMoveSpeed(int speed) { m_moveSpeed = speed; }
+	void setMoveSpeed(float speed) { m_moveSpeed = speed; }
 	void setMoveAngle(float angle) { m_moveAngle = angle; }
 
 	// 攻撃力
@@ -40,7 +41,7 @@ private:
 	float m_angle;	// 玉の回転(演出)
 	float m_rotVec;
 
-	int m_moveSpeed;
+	float m_moveSpeed;
 	float m_moveAngle;	// deg
 
 	int m_power;	// 攻撃力

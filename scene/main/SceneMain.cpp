@@ -88,7 +88,7 @@ SceneBase* SceneMain::update()
 			if (m_shot[i].isExist())	continue;
 		//	m_shot[i].createGraphic(m_player.getPos().x, m_player.getPos().y, m_shotGraphic);
 			m_shot[i].createPlayerShot(m_player.getPos(), m_shotGraphic);
-			m_shot[i].setMoveSpeed(m_player.getShotSpeed());
+			m_shot[i].setMoveSpeed(static_cast<float>(m_player.getShotSpeed()));
 			m_shot[i].setMoveAngle(0);
 			m_shot[i].setPower(m_player.getShotPower());
 			m_shotInterval = m_player.getShotInterval();
@@ -102,7 +102,9 @@ SceneBase* SceneMain::update()
 		for (int i = 0; i < cEnemyMax; i++)
 		{
 			if (m_enemy[i].isExist())	continue;
-			m_enemy[i].createGraphic(Game::cScreenWidth + 64, GetRand(Game::cScreenHeight-120) + 60, m_enemyGraphic);
+			float posX = static_cast<float>(Game::cScreenWidth + 64);
+			float posY = static_cast<float>(GetRand(Game::cScreenHeight - 120) + 60);
+			m_enemy[i].createGraphic(posX, posY, m_enemyGraphic);
 			m_enemy[i].init(cEnemyHp);
 			m_enemy[i].setHitDamage(cEnemyHitDamage);
 			m_enemy[i].setShotDamage(cEnemyShotDamage);
@@ -144,7 +146,7 @@ SceneBase* SceneMain::update()
 					if (!m_enemy[i].isExist())
 					{
 						m_player.addExp(5);
-						m_effect.create(static_cast<int>(m_enemy[i].getPos().x), static_cast<int>(m_enemy[i].getPos().y));
+						m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
 					}
 					break;
 				}
@@ -193,3 +195,19 @@ void SceneMain::draw()
 		m_shot[i].draw();
 	}
 }
+
+void SceneMain::initBg()
+{
+
+}
+
+void SceneMain::updateBg()
+{
+
+}
+
+void SceneMain::drawBg()
+{
+
+}
+

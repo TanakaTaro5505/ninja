@@ -10,12 +10,12 @@
 
 #include "Effect/EffectManager.h"
 
-class SceneMain :public SceneBase
+class SceneMain : public SceneBase
 {
 	//define ----------------------------------
 private:
-	static const int cShotMax = 128;
-	static const int cEnemyMax = 32;
+	static constexpr int cShotMax = 128;
+	static constexpr int cEnemyMax = 32;
 
 	//function ----------------------------------
 public:
@@ -42,6 +42,11 @@ public:
 	void draw();
 
 private:
+	// ”wŒiˆ—
+	void initBg();
+	void updateBg();
+	void drawBg();
+
 	// ¶‰E’†‰›ˆÊ’u‚É•¶š—ñ•\¦
 	void DrawStringCenter( int y, const char* str );
 
