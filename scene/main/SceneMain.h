@@ -17,6 +17,8 @@ private:
 	static constexpr int cShotMax = 128;
 	static constexpr int cEnemyMax = 32;
 
+	static constexpr int cStarNum = 64;
+
 	//function ----------------------------------
 public:
 	SceneMain() : SceneBase()
@@ -74,6 +76,8 @@ private:
 	int m_enemyShotGraphic;
 	int m_enemyGraphic;
 
+	// ”wŒi
+	GameObject	m_bgStar[cStarNum];
 	// “G‚ğ“|‚µ‚½‚ÌƒGƒtƒFƒNƒg¶¬
 	EffectManager m_effect;
 };

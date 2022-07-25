@@ -21,6 +21,22 @@ void SceneMain::init()
 
 	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_playerGraphic);
 	m_player.init();
+
+	for (int i = 0; i < cStarNum; i++)
+	{
+		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
+		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
+		
+		int colorElem = GetRand(128);
+
+		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem) );
+
+		float speed = static_cast<float>(GetRand(64)) / 10.0f;
+		VECTOR vec;
+		vec.x = -speed;
+		vec.y = 0.0f;
+		m_bgStar[i].setVec(vec);
+	}
 }
 
 void SceneMain::deleteGraph()
@@ -52,6 +68,20 @@ SceneBase* SceneMain::update()
 
 	// ゲームオーバーで終了待ち
 	if (m_player.getHp() <= 0)	return this;
+
+	for (int i = 0; i < cStarNum; i++)
+	{
+		m_bgStar[i].update();
+		if (m_bgStar[i].getPos().x < 0.0f - 2.0f)
+		{
+			float posX = static_cast<float>(Game::cScreenWidth+2);
+			float posY = static_cast<float>(GetRand(Game::cScreenHeight));
+			VECTOR pos;
+			pos.x = posX;
+			pos.y = posY;
+			m_bgStar[i].setPos(pos);
+		}
+	}
 
 	m_player.update();
 	for (int i = 0; i < cShotMax; i++)
@@ -183,6 +213,10 @@ void SceneMain::draw()
 {
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
+	for (int i = 0; i < cStarNum; i++)
+	{
+		m_bgStar[i].draw();
+	}
 	m_player.draw();
 	for (int i = 0; i < cEnemyMax; i++)
 	{

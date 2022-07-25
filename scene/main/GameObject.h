@@ -26,9 +26,12 @@ public:
 
 	void setRadius(float radius) { m_radius = radius; }
 	float getRadius() { return m_radius; }
-
+	// à íuê›íË
 	void setPos(VECTOR pos) { m_pos = pos; }
 	VECTOR getPos() { return m_pos; }
+	// ë¨ìxê›íË
+	void setVec(VECTOR vec) { m_vec = vec; }
+	VECTOR getVec() { return m_vec; }
 protected:
 	bool m_isExist;
 	int m_graphicHandle;

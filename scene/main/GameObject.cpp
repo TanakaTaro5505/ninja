@@ -60,10 +60,10 @@ void GameObject::update()
 	m_pos.x += m_vec.x;
 	m_pos.y += m_vec.y;
 
-	if (m_pos.x < 0.0f + m_radius)		m_pos.x = (0.0f + m_radius);
-	if (m_pos.x > 800.0f - m_radius)	m_pos.x = (800.0f - m_radius);
-	if (m_pos.y < 0.0f + m_radius)		m_pos.y = (0.0f + m_radius);
-	if (m_pos.y > 600.0f - m_radius)	m_pos.y = (600.0f - m_radius);
+//	if (m_pos.x < 0.0f + m_radius)		m_pos.x = (0.0f + m_radius);
+//	if (m_pos.x > 800.0f - m_radius)	m_pos.x = (800.0f - m_radius);
+//	if (m_pos.y < 0.0f + m_radius)		m_pos.y = (0.0f + m_radius);
+//	if (m_pos.y > 600.0f - m_radius)	m_pos.y = (600.0f - m_radius);
 
 }
 
