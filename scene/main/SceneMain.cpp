@@ -65,19 +65,6 @@ SceneBase* SceneMain::update()
 	for (int i = 0; i < cEnemyMax; i++)
 	{
 		m_enemy[i].update();
-		// “G‚ª’e‚ð”­ŽË
-		if(m_enemy[i].isExist() && (m_enemy[i].getShotWait() == 0))
-		{
-			for (int j = 0; j < cShotMax; j++)
-			{
-				if (m_shot[j].isExist())	continue;
-				m_shot[j].createEnemyShot(m_enemy[i].getPos(), m_enemyShotGraphic);
-				m_shot[j].setMoveSpeed(8);
-				m_shot[j].setMoveAngle(180);
-				m_shot[j].setPower(m_enemy[i].getShotDamage());
-				break;
-			}
-		}
 	}
 	m_effect.update();
 
@@ -90,6 +77,7 @@ SceneBase* SceneMain::update()
 			float posX = static_cast<float>(Game::cScreenWidth + 64);
 			float posY = static_cast<float>(GetRand(Game::cScreenHeight - 120) + 60);
 			m_enemy[i].createGraphic(posX, posY, m_enemyGraphic);
+			m_enemy[i].setMain(this);
 			m_enemy[i].init(cEnemyHp);
 			m_enemy[i].setHitDamage(cEnemyHitDamage);
 			m_enemy[i].setShotDamage(cEnemyShotDamage);
@@ -229,6 +217,20 @@ void SceneMain::createPlayerShot(VECTOR pos, float speed, float dir, int power)
 		m_shot[i].setMoveSpeed(speed);
 		m_shot[i].setMoveAngle(dir);
 		m_shot[i].setPower(power);
+
+		return;
+	}
+}
+
+void SceneMain::createEnemyShot(VECTOR pos, float speed, float dir, int power)
+{
+	for (int j = 0; j < cShotMax; j++)
+	{
+		if (m_shot[j].isExist())	continue;
+		m_shot[j].createEnemyShot(pos, m_enemyShotGraphic);
+		m_shot[j].setMoveSpeed(speed);
+		m_shot[j].setMoveAngle(dir);
+		m_shot[j].setPower(power);
 
 		return;
 	}

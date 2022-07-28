@@ -1,11 +1,14 @@
 #pragma once
 #include "GameObject.h"
 
+class SceneMain;
+
 class Enemy : public GameObject
 {
 public:
 	Enemy() : GameObject() 
 	{
+		m_pMain = nullptr;
 		m_hp = 0;
 		m_maxHp = 0;
 
@@ -19,6 +22,7 @@ public:
 	void init(int maxHp);
 	void update();
 	void draw();
+	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
 	// 敵にショットをあてた	与えるダメージを指定する
 	void Hit(int damage);
@@ -31,6 +35,9 @@ public:
 	int getShotWait() { return m_shotWait; }
 	void setShotWait(int wait) { m_shotWait = wait; }
 private:
+
+	SceneMain* m_pMain;
+
 	int m_hp;
 	int m_maxHp;
 

@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "Game.h"
 
+#include "SceneMain.h"
+
 static const int kHpBarLen		= 80;
 static const int kHpBarHeight	= 8;
 
@@ -26,6 +28,10 @@ void Enemy::update()
 	}
 
 	m_shotWait--;
+	if (m_shotWait == 0)
+	{
+		m_pMain->createEnemyShot(getPos(), 8, 180, getShotDamage());
+	}
 }
 
 void Enemy::draw()

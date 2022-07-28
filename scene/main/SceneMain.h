@@ -44,6 +44,7 @@ public:
 
 	// ƒVƒ‡ƒbƒg¶¬
 	void createPlayerShot(VECTOR pos,float speed, float dir, int power);
+	void createEnemyShot(VECTOR pos, float speed, float dir, int power);
 
 private:
 	// ”wŒiˆ—
