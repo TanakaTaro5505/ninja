@@ -2,11 +2,33 @@
 #include "SceneMain.h"
 
 // 敵情報
-static const int cEnemyCreateInterrval = 90;	// 敵生成間隔(フレーム)
 static const int cEnemyHp			= 50;		// HP
 static const int cEnemyHitDamage	= 10;		// 当たった時のダメージ
 static const int cEnemyShotDamage	= 10;		// ショットに当たった時のダメージ
 static const int cEnemyShotWait		= 120;		// 生成後ショットを撃つまでの時間(フレーム)
+
+// 敵生成情報
+typedef struct EnemyCreateData
+{
+	int frame;
+	VECTOR pos;
+};
+
+static const EnemyCreateData EnemyCreateDataTbl[] =
+{
+	{  100, { Game::cScreenWidth + 64.0f, 100.0f } },
+	{  200, { Game::cScreenWidth + 64.0f, 180.0f } },
+	{  300, { Game::cScreenWidth + 64.0f, 260.0f } },
+	{  400, { Game::cScreenWidth + 64.0f, 340.0f } },
+	{  500, { Game::cScreenWidth + 64.0f, 420.0f } },
+
+	{  700, { Game::cScreenWidth + 64.0f, 420.0f } },
+	{  800, { Game::cScreenWidth + 64.0f, 340.0f } },
+	{  900, { Game::cScreenWidth + 64.0f, 260.0f } },
+	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f } },
+	{ 1200, { Game::cScreenWidth + 64.0f, 100.0f } },
+};
+static const int EnemyCreateDataTblSize = sizeof(EnemyCreateDataTbl) / sizeof(EnemyCreateDataTbl[0]);
 
 void SceneMain::init()
 {
@@ -68,10 +90,18 @@ SceneBase* SceneMain::update()
 	}
 	m_effect.update();
 
-	m_enemyInterval++;
-	if(m_enemyInterval >= cEnemyCreateInterrval)
+
+	// 敵の生成
+	int lastCount = m_enemyFrameCount;
+	m_enemyFrameCount++;
+	
+	for (int i = 0; i < EnemyCreateDataTblSize; i++)
 	{
-		createEnemy();
+		if ((lastCount < EnemyCreateDataTbl[i].frame) &&
+			(m_enemyFrameCount >= EnemyCreateDataTbl[i].frame))
+		{
+			createEnemy(EnemyCreateDataTbl[i].pos);
+		}
 	}
 
 	// 衝突判定
@@ -193,20 +223,18 @@ void SceneMain::drawBg()
 	}
 }
 
-void SceneMain::createEnemy()
+void SceneMain::createEnemy(VECTOR pos)
 {
 	for (int i = 0; i < cEnemyMax; i++)
 	{
 		if (m_enemy[i].isExist())	continue;
-		float posX = static_cast<float>(Game::cScreenWidth + 64);
-		float posY = static_cast<float>(GetRand(Game::cScreenHeight - 120) + 60);
-		m_enemy[i].createGraphic(posX, posY, m_enemyGraphic);
+		
+		m_enemy[i].createGraphic(pos.x, pos.y, m_enemyGraphic);
 		m_enemy[i].setMain(this);
 		m_enemy[i].init(cEnemyHp);
 		m_enemy[i].setHitDamage(cEnemyHitDamage);
 		m_enemy[i].setShotDamage(cEnemyShotDamage);
 		m_enemy[i].setShotWait(cEnemyShotWait);
-		m_enemyInterval = 0;
 		break;
 	}
 }

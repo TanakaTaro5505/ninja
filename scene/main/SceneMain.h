@@ -27,7 +27,7 @@ public:
 		m_endWait = -1;
 		m_fadeBright = 0;
 
-		m_enemyInterval = 0;
+		m_enemyFrameCount = 0;
 		m_playerGraphic = 0;
 		m_shotGraphic = 0;
 		m_enemyShotGraphic = 0;
@@ -43,7 +43,7 @@ public:
 	void draw();
 
 	// 敵生成
-	void createEnemy();
+	void createEnemy(VECTOR pos);
 
 	// ショット生成
 	void createPlayerShot(VECTOR pos,float speed, float dir, int power);
@@ -69,7 +69,7 @@ private:
 	Enemy m_enemy[cEnemyMax];
 
 	// 敵の生成管理
-	int m_enemyInterval;
+	int m_enemyFrameCount;
 
 	// グラフィック
 	int m_playerGraphic;
