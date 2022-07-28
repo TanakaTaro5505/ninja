@@ -27,7 +27,6 @@ public:
 		m_endWait = -1;
 		m_fadeBright = 0;
 
-		m_shotInterval = 0;
 		m_enemyInterval = 0;
 		m_playerGraphic = 0;
 		m_shotGraphic = 0;
@@ -43,17 +42,17 @@ public:
 	SceneBase* update();
 	void draw();
 
+	// ƒVƒ‡ƒbƒg¶¬
+	void createPlayerShot(VECTOR pos,float speed, float dir, int power);
+
 private:
 	// ”wŒiˆ—
 	void initBg();
 	void updateBg();
 	void drawBg();
-
-	// ¶‰E’†‰›ˆÊ’u‚É•¶š—ñ•\¦
-	void DrawStringCenter( int y, const char* str );
-
-	// variable ----------------------------------
+	
 private:
+	// variable ----------------------------------
 	int m_padNum;
 
 	int m_endWait;
@@ -65,8 +64,6 @@ private:
 
 	Enemy m_enemy[cEnemyMax];
 
-	// ’e‚Ì¶¬ŠÇ—
-	int m_shotInterval;
 	// “G‚Ì¶¬ŠÇ—
 	int m_enemyInterval;
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class SceneMain;
+
 class Player : public GameObject
 {
 public:
@@ -14,6 +16,7 @@ public:
 		m_moveSpeed = 0;
 		m_damagePrevent = 0;
 
+		m_lastShot = 0;
 		m_damageFrame = -1;
 
 		m_level = 0;
@@ -24,6 +27,8 @@ public:
 	void init();
 	void update();
 	void draw();
+
+	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
 	void damage( int getDamage );
 
@@ -37,6 +42,9 @@ public:
 	int getLevel();			// 現在のレベル取得
 	int getNextLevelExp();	// 次のレベルになるのに必要な経験値
 private:
+
+	SceneMain* m_pMain;
+
 	// キャラクター性能
 	int m_hp;
 	int m_maxHp;
@@ -46,6 +54,9 @@ private:
 	int m_moveSpeed;	// 移動速度
 	int m_damagePrevent;// 防御力
 
+	// プレイ情報
+	// ショットを撃ってからの経過フレーム数
+	int m_lastShot;
 	// ダメージ受けた後の無敵時間
 	int m_damageFrame;
 

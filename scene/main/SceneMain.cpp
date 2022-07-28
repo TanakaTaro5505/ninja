@@ -14,29 +14,15 @@ void SceneMain::init()
 
 	m_playerGraphic = LoadGraph("data/main/player.bmp");
 
-	m_shotInterval = 0;
 	m_shotGraphic = LoadGraph("data/main/shot.bmp");
 	m_enemyShotGraphic = LoadGraph("data/main/enemyShot.bmp");
 	m_enemyGraphic = LoadGraph("data/main/enemy.bmp");
 
 	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_playerGraphic);
 	m_player.init();
+	m_player.setMain( this );
 
-	for (int i = 0; i < cStarNum; i++)
-	{
-		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
-		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
-		
-		int colorElem = GetRand(128);
-
-		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem) );
-
-		float speed = static_cast<float>(GetRand(64)) / 10.0f;
-		VECTOR vec;
-		vec.x = -speed;
-		vec.y = 0.0f;
-		m_bgStar[i].setVec(vec);
-	}
+	initBg();
 }
 
 void SceneMain::deleteGraph()
@@ -69,19 +55,7 @@ SceneBase* SceneMain::update()
 	// ゲームオーバーで終了待ち
 	if (m_player.getHp() <= 0)	return this;
 
-	for (int i = 0; i < cStarNum; i++)
-	{
-		m_bgStar[i].update();
-		if (m_bgStar[i].getPos().x < 0.0f - 2.0f)
-		{
-			float posX = static_cast<float>(Game::cScreenWidth+2);
-			float posY = static_cast<float>(GetRand(Game::cScreenHeight));
-			VECTOR pos;
-			pos.x = posX;
-			pos.y = posY;
-			m_bgStar[i].setPos(pos);
-		}
-	}
+	updateBg();
 
 	m_player.update();
 	for (int i = 0; i < cShotMax; i++)
@@ -106,25 +80,6 @@ SceneBase* SceneMain::update()
 		}
 	}
 	m_effect.update();
-
-	m_shotInterval--;
-	if (m_shotInterval < 0)	m_shotInterval = 0;
-
-	if ((Pad::isTrigger(PAD_INPUT_1)) ||
-		((Pad::isPress(PAD_INPUT_1)) && m_shotInterval <= 0))
-	{
-		for (int i = 0; i < cShotMax; i++)
-		{
-			if (m_shot[i].isExist())	continue;
-		//	m_shot[i].createGraphic(m_player.getPos().x, m_player.getPos().y, m_shotGraphic);
-			m_shot[i].createPlayerShot(m_player.getPos(), m_shotGraphic);
-			m_shot[i].setMoveSpeed(static_cast<float>(m_player.getShotSpeed()));
-			m_shot[i].setMoveAngle(0);
-			m_shot[i].setPower(m_player.getShotPower());
-			m_shotInterval = m_player.getShotInterval();
-			break;
-		}
-	}
 
 	m_enemyInterval++;
 	if(m_enemyInterval >= cEnemyCreateInterrval)
@@ -198,14 +153,6 @@ SceneBase* SceneMain::update()
 	{
 		m_endWait = 256;
 	}
-#if false
-	// シーン切り替えテスト
-	if (Pad::isTrigger(PAD_INPUT_1))
-	{
-	//	return (new SceneTitle);
-		m_endWait = 256;
-	}
-#endif
 	return this;
 }
 
@@ -213,10 +160,7 @@ void SceneMain::draw()
 {
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
-	for (int i = 0; i < cStarNum; i++)
-	{
-		m_bgStar[i].draw();
-	}
+	drawBg();
 	m_player.draw();
 	for (int i = 0; i < cEnemyMax; i++)
 	{
@@ -232,16 +176,60 @@ void SceneMain::draw()
 
 void SceneMain::initBg()
 {
+	for (int i = 0; i < cStarNum; i++)
+	{
+		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
+		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
 
+		int colorElem = GetRand(128);
+
+		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem));
+
+		float speed = static_cast<float>(GetRand(64)) / 10.0f;
+		VECTOR vec;
+		vec.x = -speed;
+		vec.y = 0.0f;
+		m_bgStar[i].setVec(vec);
+	}
 }
 
 void SceneMain::updateBg()
 {
-
+	for (int i = 0; i < cStarNum; i++)
+	{
+		m_bgStar[i].update();
+		if (m_bgStar[i].getPos().x < 0.0f - 2.0f)
+		{
+			float posX = static_cast<float>(Game::cScreenWidth + 2);
+			float posY = static_cast<float>(GetRand(Game::cScreenHeight));
+			VECTOR pos;
+			pos.x = posX;
+			pos.y = posY;
+			m_bgStar[i].setPos(pos);
+		}
+	}
 }
 
 void SceneMain::drawBg()
 {
-
+	for (int i = 0; i < cStarNum; i++)
+	{
+		m_bgStar[i].draw();
+	}
 }
 
+void SceneMain::createPlayerShot(VECTOR pos, float speed, float dir, int power)
+{
+	for (int i = 0; i < cShotMax; i++)
+	{
+		if (m_shot[i].isExist())	continue;
+
+		//	m_shot[i].createGraphic(m_player.getPos().x, m_player.getPos().y, m_shotGraphic);
+		m_shot[i].createPlayerShot(pos, m_shotGraphic);
+		m_shot[i].setMoveSpeed(speed);
+		m_shot[i].setMoveAngle(dir);
+		m_shot[i].setPower(power);
+
+		return;
+	}
+}

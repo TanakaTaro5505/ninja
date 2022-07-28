@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "Game.h"
 
+#include "SceneMain.h"
+
 static const int kHpBarLen = 80;
 static const int kHpBarHeight = 8;
 
@@ -28,6 +30,9 @@ void Player::init()
 	m_moveSpeed = kMoveSpeed;
 	m_damagePrevent = kDamagePrevent;
 
+	m_lastShot = 0;
+	m_damageFrame = -1;
+
 	m_level = 0;
 	m_exp = 0;
 }
@@ -36,9 +41,11 @@ void Player::update()
 {
 	if (!m_isExist)	return;
 
+	// –³“GŽžŠÔ
 	m_damageFrame--;
 	if (m_damageFrame < -1)	m_damageFrame = -1;
 
+	// ˆÚ“®
 	bool isInput = false;
 	if (Pad::isPress(PAD_INPUT_LEFT))
 	{
@@ -85,6 +92,15 @@ void Player::update()
 	if (m_pos.x > Game::cScreenWidth - m_radius)	m_pos.x = (Game::cScreenWidth - m_radius);
 	if (m_pos.y < 0.0f + m_radius)		m_pos.y = (0.0f + m_radius);
 	if (m_pos.y > Game::cScreenHeight - m_radius)	m_pos.y = (Game::cScreenHeight - m_radius);
+
+	// ƒVƒ‡ƒbƒg
+	m_lastShot++;
+	if ((Pad::isTrigger(PAD_INPUT_1)) ||
+		((Pad::isPress(PAD_INPUT_1)) && (m_lastShot >= m_shotInterval)))
+	{
+		m_pMain->createPlayerShot(getPos(), static_cast<float>(getShotSpeed()), 0.0f, getShotPower());
+		m_lastShot = 0;
+	}
 }
 
 void Player::draw()
