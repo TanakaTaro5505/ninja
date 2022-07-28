@@ -71,20 +71,7 @@ SceneBase* SceneMain::update()
 	m_enemyInterval++;
 	if(m_enemyInterval >= cEnemyCreateInterrval)
 	{
-		for (int i = 0; i < cEnemyMax; i++)
-		{
-			if (m_enemy[i].isExist())	continue;
-			float posX = static_cast<float>(Game::cScreenWidth + 64);
-			float posY = static_cast<float>(GetRand(Game::cScreenHeight - 120) + 60);
-			m_enemy[i].createGraphic(posX, posY, m_enemyGraphic);
-			m_enemy[i].setMain(this);
-			m_enemy[i].init(cEnemyHp);
-			m_enemy[i].setHitDamage(cEnemyHitDamage);
-			m_enemy[i].setShotDamage(cEnemyShotDamage);
-			m_enemy[i].setShotWait(cEnemyShotWait);
-			m_enemyInterval = 0;
-			break;
-		}
+		createEnemy();
 	}
 
 	// è’ìÀîªíË
@@ -203,6 +190,24 @@ void SceneMain::drawBg()
 	for (int i = 0; i < cStarNum; i++)
 	{
 		m_bgStar[i].draw();
+	}
+}
+
+void SceneMain::createEnemy()
+{
+	for (int i = 0; i < cEnemyMax; i++)
+	{
+		if (m_enemy[i].isExist())	continue;
+		float posX = static_cast<float>(Game::cScreenWidth + 64);
+		float posY = static_cast<float>(GetRand(Game::cScreenHeight - 120) + 60);
+		m_enemy[i].createGraphic(posX, posY, m_enemyGraphic);
+		m_enemy[i].setMain(this);
+		m_enemy[i].init(cEnemyHp);
+		m_enemy[i].setHitDamage(cEnemyHitDamage);
+		m_enemy[i].setShotDamage(cEnemyShotDamage);
+		m_enemy[i].setShotWait(cEnemyShotWait);
+		m_enemyInterval = 0;
+		break;
 	}
 }
 

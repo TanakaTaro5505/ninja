@@ -42,6 +42,9 @@ public:
 	SceneBase* update();
 	void draw();
 
+	// “G¶¬
+	void createEnemy();
+
 	// ƒVƒ‡ƒbƒg¶¬
 	void createPlayerShot(VECTOR pos,float speed, float dir, int power);
 	void createEnemyShot(VECTOR pos, float speed, float dir, int power);
