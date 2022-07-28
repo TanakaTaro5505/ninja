@@ -8,6 +8,8 @@ class Player : public GameObject
 public:
 	Player() : GameObject() 
 	{
+		m_pMain = nullptr;
+
 		m_hp = 0;
 		m_maxHp = 0;
 		m_shotPower = 0;

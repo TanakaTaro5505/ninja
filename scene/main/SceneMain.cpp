@@ -2,7 +2,6 @@
 #include "SceneMain.h"
 
 // “Gî•ñ
-static const int cEnemyHp			= 50;		// HP
 static const int cEnemyHitDamage	= 10;		// “–‚½‚Á‚½‚Ìƒ_ƒ[ƒW
 static const int cEnemyShotDamage	= 10;		// ƒVƒ‡ƒbƒg‚É“–‚½‚Á‚½‚Ìƒ_ƒ[ƒW
 static const int cEnemyShotWait		= 120;		// ¶¬ŒãƒVƒ‡ƒbƒg‚ğŒ‚‚Â‚Ü‚Å‚ÌŠÔ(ƒtƒŒ[ƒ€)
@@ -10,23 +9,24 @@ static const int cEnemyShotWait		= 120;		// ¶¬ŒãƒVƒ‡ƒbƒg‚ğŒ‚‚Â‚Ü‚Å‚ÌŠÔ(ƒtƒŒ
 // “G¶¬î•ñ
 typedef struct EnemyCreateData
 {
-	int frame;
-	VECTOR pos;
-};
+	int		frame;
+	VECTOR	pos;
+	int		hp;
+}EnemyCreateData;
 
 static const EnemyCreateData EnemyCreateDataTbl[] =
 {
-	{  100, { Game::cScreenWidth + 64.0f, 100.0f } },
-	{  200, { Game::cScreenWidth + 64.0f, 180.0f } },
-	{  300, { Game::cScreenWidth + 64.0f, 260.0f } },
-	{  400, { Game::cScreenWidth + 64.0f, 340.0f } },
-	{  500, { Game::cScreenWidth + 64.0f, 420.0f } },
+	{  100, { Game::cScreenWidth + 64.0f, 100.0f }, 20 },
+	{  200, { Game::cScreenWidth + 64.0f, 180.0f }, 20 },
+	{  300, { Game::cScreenWidth + 64.0f, 260.0f }, 20 },
+	{  400, { Game::cScreenWidth + 64.0f, 340.0f }, 20 },
+	{  500, { Game::cScreenWidth + 64.0f, 420.0f }, 20 },
 
-	{  700, { Game::cScreenWidth + 64.0f, 420.0f } },
-	{  800, { Game::cScreenWidth + 64.0f, 340.0f } },
-	{  900, { Game::cScreenWidth + 64.0f, 260.0f } },
-	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f } },
-	{ 1200, { Game::cScreenWidth + 64.0f, 100.0f } },
+	{  700, { Game::cScreenWidth + 64.0f, 420.0f }, 20 },
+	{  800, { Game::cScreenWidth + 64.0f, 340.0f }, 20 },
+	{  900, { Game::cScreenWidth + 64.0f, 260.0f }, 20 },
+	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f }, 20 },
+	{ 1200, { Game::cScreenWidth + 64.0f, 100.0f }, 20 },
 };
 static const int EnemyCreateDataTblSize = sizeof(EnemyCreateDataTbl) / sizeof(EnemyCreateDataTbl[0]);
 
@@ -100,7 +100,7 @@ SceneBase* SceneMain::update()
 		if ((lastCount < EnemyCreateDataTbl[i].frame) &&
 			(m_enemyFrameCount >= EnemyCreateDataTbl[i].frame))
 		{
-			createEnemy(EnemyCreateDataTbl[i].pos);
+			createEnemy(EnemyCreateDataTbl[i].pos, EnemyCreateDataTbl[i].hp);
 		}
 	}
 
@@ -223,7 +223,7 @@ void SceneMain::drawBg()
 	}
 }
 
-void SceneMain::createEnemy(VECTOR pos)
+void SceneMain::createEnemy(VECTOR pos, int hp)
 {
 	for (int i = 0; i < cEnemyMax; i++)
 	{
@@ -231,7 +231,7 @@ void SceneMain::createEnemy(VECTOR pos)
 		
 		m_enemy[i].createGraphic(pos.x, pos.y, m_enemyGraphic);
 		m_enemy[i].setMain(this);
-		m_enemy[i].init(cEnemyHp);
+		m_enemy[i].init(hp);
 		m_enemy[i].setHitDamage(cEnemyHitDamage);
 		m_enemy[i].setShotDamage(cEnemyShotDamage);
 		m_enemy[i].setShotWait(cEnemyShotWait);

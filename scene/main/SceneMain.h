@@ -43,7 +43,7 @@ public:
 	void draw();
 
 	// “G¶¬
-	void createEnemy(VECTOR pos);
+	void createEnemy(VECTOR pos, int hp);
 
 	// ƒVƒ‡ƒbƒg¶¬
 	void createPlayerShot(VECTOR pos,float speed, float dir, int power);
