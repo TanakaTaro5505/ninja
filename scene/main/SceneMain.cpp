@@ -6,30 +6,6 @@ static const int cEnemyHitDamage	= 10;		// 当たった時のダメージ
 static const int cEnemyShotDamage	= 10;		// ショットに当たった時のダメージ
 static const int cEnemyShotWait		= 120;		// 生成後ショットを撃つまでの時間(フレーム)
 
-// 敵生成情報
-typedef struct EnemyCreateData
-{
-	int		frame;
-	VECTOR	pos;
-	int		hp;
-}EnemyCreateData;
-
-static const EnemyCreateData EnemyCreateDataTbl[] =
-{
-	{  100, { Game::cScreenWidth + 64.0f, 100.0f }, 20 },
-	{  200, { Game::cScreenWidth + 64.0f, 180.0f }, 20 },
-	{  300, { Game::cScreenWidth + 64.0f, 260.0f }, 20 },
-	{  400, { Game::cScreenWidth + 64.0f, 340.0f }, 20 },
-	{  500, { Game::cScreenWidth + 64.0f, 420.0f }, 20 },
-
-	{  700, { Game::cScreenWidth + 64.0f, 420.0f }, 20 },
-	{  800, { Game::cScreenWidth + 64.0f, 340.0f }, 20 },
-	{  900, { Game::cScreenWidth + 64.0f, 260.0f }, 20 },
-	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f }, 20 },
-	{ 1200, { Game::cScreenWidth + 64.0f, 100.0f }, 20 },
-};
-static const int EnemyCreateDataTblSize = sizeof(EnemyCreateDataTbl) / sizeof(EnemyCreateDataTbl[0]);
-
 void SceneMain::init()
 {
 	m_endWait = -1;
@@ -43,6 +19,8 @@ void SceneMain::init()
 	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_playerGraphic);
 	m_player.init();
 	m_player.setMain( this );
+
+	m_stage.init(this, 0);
 
 	initBg();
 }
@@ -77,6 +55,10 @@ SceneBase* SceneMain::update()
 	// ゲームオーバーで終了待ち
 	if (m_player.getHp() <= 0)	return this;
 
+	// 敵の生成など
+	m_stage.update();
+
+	// 背景演出
 	updateBg();
 
 	m_player.update();
@@ -89,20 +71,6 @@ SceneBase* SceneMain::update()
 		m_enemy[i].update();
 	}
 	m_effect.update();
-
-
-	// 敵の生成
-	int lastCount = m_enemyFrameCount;
-	m_enemyFrameCount++;
-	
-	for (int i = 0; i < EnemyCreateDataTblSize; i++)
-	{
-		if ((lastCount < EnemyCreateDataTbl[i].frame) &&
-			(m_enemyFrameCount >= EnemyCreateDataTbl[i].frame))
-		{
-			createEnemy(EnemyCreateDataTbl[i].pos, EnemyCreateDataTbl[i].hp);
-		}
-	}
 
 	// 衝突判定
 	bool isCol = false;

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Shot.h"
 #include "Enemy.h"
+#include "StageManager.h"
 
 #include "Effect/EffectManager.h"
 
@@ -15,7 +16,7 @@ class SceneMain : public SceneBase
 	//define ----------------------------------
 private:
 	static constexpr int cShotMax = 128;
-	static constexpr int cEnemyMax = 32;
+	static constexpr int cEnemyMax = 64;
 
 	static constexpr int cStarNum = 64;
 
@@ -27,7 +28,6 @@ public:
 		m_endWait = -1;
 		m_fadeBright = 0;
 
-		m_enemyFrameCount = 0;
 		m_playerGraphic = 0;
 		m_shotGraphic = 0;
 		m_enemyShotGraphic = 0;
@@ -66,10 +66,8 @@ private:
 	Player m_player;
 	Shot m_shot[cShotMax];
 
+	StageManager	m_stage;
 	Enemy m_enemy[cEnemyMax];
-
-	// 敵の生成管理
-	int m_enemyFrameCount;
 
 	// グラフィック
 	int m_playerGraphic;

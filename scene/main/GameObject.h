@@ -8,7 +8,6 @@ public:
 	GameObject();
 	virtual ~GameObject() {}
 
-
 	// オブジェクトの生成
 	void create(float x, float y, float radius, unsigned int color);
 	// 画像を指定してオブジェクト生成

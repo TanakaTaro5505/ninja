@@ -158,6 +158,7 @@
     <ClCompile Include="scene\main\Player.cpp" />
     <ClCompile Include="scene\main\SceneMain.cpp" />
     <ClCompile Include="scene\main\Shot.cpp" />
+    <ClCompile Include="scene\main\StageManager.cpp" />
     <ClCompile Include="scene\SceneBase.cpp" />
     <ClCompile Include="scene\SceneManager.cpp" />
     <ClCompile Include="scene\title\SceneTitle.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="scene\main\Player.h" />
     <ClInclude Include="scene\main\SceneMain.h" />
     <ClInclude Include="scene\main\Shot.h" />
+    <ClInclude Include="scene\main\StageManager.h" />
     <ClInclude Include="scene\SceneBase.h" />
     <ClInclude Include="scene\SceneManager.h" />
     <ClInclude Include="scene\title\SceneTitle.h" />

@@ -78,6 +78,9 @@
     <ClCompile Include="effect\EffectManager.cpp">
       <Filter>ソース ファイル\effect</Filter>
     </ClCompile>
+    <ClCompile Include="scene\main\StageManager.cpp">
+      <Filter>ソース ファイル\Scene\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\SceneBase.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="effect\EffectManager.h">
       <Filter>ソース ファイル\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\main\StageManager.h">
+      <Filter>ソース ファイル\Scene\Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
