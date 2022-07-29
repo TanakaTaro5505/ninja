@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Game.h"
+#include <math.h>
 
 #include "SceneMain.h"
 
@@ -11,26 +12,28 @@ void Enemy::init(int maxHp)
 {
 	m_maxHp = maxHp;
 	m_hp = m_maxHp;
+
+	// É^ÉCÉvï ÇÃèâä˙âª
+	m_basePos = m_pos;
+	m_sinRate = 0.0f;
 }
 
 void Enemy::update()
 {
 	if (!m_isExist)	return;
 
-	m_vec.x = -4.0f;
-
-	m_pos.x += m_vec.x;
-	m_pos.y += m_vec.y;
-
-	if (m_pos.x < 0.0f - m_radius)
+	switch (m_type)
 	{
-		m_isExist = false;
-	}
-
-	m_shotWait--;
-	if (m_shotWait == 0)
-	{
-		m_pMain->createEnemyShot(getPos(), 8, 180, getShotDamage());
+	case Enemy::Type::kTypeCharge:
+		updateCharge();
+		break;
+	case Enemy::Type::kTypeChargeSin:
+		updateChargeSin();
+		break;
+	case Enemy::Type::kTypeNum:
+	default:
+		// assert
+		break;
 	}
 }
 
@@ -54,6 +57,40 @@ void Enemy::Hit(int damage)
 {
 	m_hp -= damage;
 	if(m_hp <= 0)
+	{
+		m_isExist = false;
+	}
+}
+
+void Enemy::updateCharge()
+{
+	m_vec.x = -4.0f;
+
+	m_pos.x += m_vec.x;
+	m_pos.y += m_vec.y;
+
+	if (m_pos.x < 0.0f - m_radius)
+	{
+		m_isExist = false;
+	}
+
+	m_shotWait--;
+	if (m_shotWait == 0)
+	{
+		m_pMain->createEnemyShot(getPos(), 8, 180, getShotDamage());
+	}
+}
+
+void Enemy::updateChargeSin()
+{
+	m_sinRate += 0.1f;
+
+	m_basePos.x -= 4.0f;
+
+	m_pos.x = m_basePos.x;
+	m_pos.y = m_basePos.y + sinf(m_sinRate) * 80.0f;
+
+	if (m_pos.x < 0.0f - m_radius)
 	{
 		m_isExist = false;
 	}
