@@ -191,7 +191,7 @@ void SceneMain::drawBg()
 	}
 }
 
-void SceneMain::createEnemy(VECTOR pos, int hp)
+void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 {
 	for (int i = 0; i < cEnemyMax; i++)
 	{
@@ -199,7 +199,8 @@ void SceneMain::createEnemy(VECTOR pos, int hp)
 		
 		m_enemy[i].createGraphic(pos.x, pos.y, m_enemyGraphic);
 		m_enemy[i].setMain(this);
-		m_enemy[i].init(hp);
+
+		m_enemy[i].init(hp, type);
 		m_enemy[i].setHitDamage(cEnemyHitDamage);
 		m_enemy[i].setShotDamage(cEnemyShotDamage);
 		m_enemy[i].setShotWait(cEnemyShotWait);

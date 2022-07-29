@@ -20,7 +20,6 @@ public:
 		m_pMain = nullptr;
 
 		m_type = Type::kTypeCharge;
-	//	m_type = Type::kTypeChargeSin;
 
 		m_hp = 0;
 		m_maxHp = 0;
@@ -35,7 +34,7 @@ public:
 	virtual ~Enemy() {}
 
 	// ¶¬‚É‰Šú‰»	createGraphic‚Ì‚ ‚Æ
-	void init(int maxHp);
+	void init(int maxHp, Type type);
 	void update();
 	void draw();
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }

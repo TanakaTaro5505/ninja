@@ -8,12 +8,13 @@ static const int kHpBarLen		= 80;
 static const int kHpBarHeight	= 8;
 
 // ===================================================================================
-void Enemy::init(int maxHp)
+void Enemy::init(int maxHp, Type type)
 {
 	m_maxHp = maxHp;
 	m_hp = m_maxHp;
 
 	// É^ÉCÉvï ÇÃèâä˙âª
+	m_type = type;
 	m_basePos = m_pos;
 	m_sinRate = 0.0f;
 }

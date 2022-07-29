@@ -6,25 +6,42 @@
 // 敵生成情報
 typedef struct EnemyCreateData
 {
-	int		frame;
-	VECTOR	pos;
-	int		hp;
+	int			frame;
+	VECTOR		pos;
+	int			hp;
+	Enemy::Type type;
 }EnemyCreateData;
 
 // ステージ情報
 static const EnemyCreateData StageDataTbl_0[] =
 {
-	{  100, { Game::cScreenWidth + 64.0f, 100.0f }, 20 },
-	{  200, { Game::cScreenWidth + 64.0f, 180.0f }, 20 },
-	{  300, { Game::cScreenWidth + 64.0f, 260.0f }, 20 },
-	{  400, { Game::cScreenWidth + 64.0f, 340.0f }, 20 },
-	{  500, { Game::cScreenWidth + 64.0f, 420.0f }, 20 },
+	{   60, { Game::cScreenWidth + 64.0f, 100.0f }, 20, Enemy::Type::kTypeCharge },
+	{  120, { Game::cScreenWidth + 64.0f, 180.0f }, 20, Enemy::Type::kTypeCharge },
+	{  180, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeCharge },
+	{  240, { Game::cScreenWidth + 64.0f, 340.0f }, 20, Enemy::Type::kTypeCharge },
+	{  300, { Game::cScreenWidth + 64.0f, 420.0f }, 20, Enemy::Type::kTypeCharge },
 
-	{  700, { Game::cScreenWidth + 64.0f, 420.0f }, 20 },
-	{  800, { Game::cScreenWidth + 64.0f, 340.0f }, 20 },
-	{  900, { Game::cScreenWidth + 64.0f, 260.0f }, 20 },
-	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f }, 20 },
-	{ 1200, { Game::cScreenWidth + 64.0f, 100.0f }, 20 },
+	{  360, { Game::cScreenWidth + 64.0f, 420.0f }, 20, Enemy::Type::kTypeCharge },
+	{  420, { Game::cScreenWidth + 64.0f, 340.0f }, 20, Enemy::Type::kTypeCharge },
+	{  480, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeCharge },
+	{  540, { Game::cScreenWidth + 64.0f, 180.0f }, 20, Enemy::Type::kTypeCharge },
+	{  600, { Game::cScreenWidth + 64.0f, 100.0f }, 20, Enemy::Type::kTypeCharge },
+
+	{  700, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  700, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  700, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
+
+	{  800, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  800, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  800, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
+
+	{  900, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  900, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  900, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
+
+	{ 1000, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{ 1000, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{ 1000, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
 };
 static const int StageDataTblSize_0 = sizeof(StageDataTbl_0) / sizeof(StageDataTbl_0[0]);
 
@@ -46,7 +63,7 @@ void StageManager::update()
 		if ((lastFrame < StageDataTbl_0[i].frame) &&
 			(m_frameCount >= StageDataTbl_0[i].frame))
 		{
-			m_pMain->createEnemy(StageDataTbl_0[i].pos, StageDataTbl_0[i].hp);
+			m_pMain->createEnemy(StageDataTbl_0[i].pos, StageDataTbl_0[i].hp, StageDataTbl_0[i].type);
 		}
 	}
 }
