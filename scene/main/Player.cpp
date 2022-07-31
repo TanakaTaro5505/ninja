@@ -14,18 +14,43 @@ static const int kDamageFrame = 60;
 
 // 基本性能
 static const int kMaxHp			= 100;
-static const int kShotDamage	= 10;
+//static const int kShotDamage	= 10;
 static const int kShotSpeed		= 6;
 static const int kShotInterval	= 16;
 static const int kMoveSpeed		= 4;
 static const int kDamagePrevent = 0;
+
+// レベルに応じたショットデータ
+typedef struct LevelShotData
+{
+	int level;
+	Player::ShotData	data;
+}LevelShotData;
+
+static constexpr LevelShotData	kLevelShotDataTbl[] =
+{
+	// lv0
+	{ 0, {  0.0f,  0.0f, kShotSpeed,  0.0f, 5 } },
+	// lv1
+	{ 1, {  0.0f,  0.0f, kShotSpeed,  0.0f, 10 } },
+	// lv2
+	{ 2, { -6.0f, -6.0f, kShotSpeed,  0.0f, 8 } },
+	{ 2, {  6.0f,  6.0f, kShotSpeed,  0.0f, 8 } },
+	// lv3
+	{ 3, {  0.0f,  0.0f, kShotSpeed,  0.0f, 6 } },
+	{ 3, {  0.0f,  0.0f, kShotSpeed, 10.0f, 6 } },
+	{ 3, {  0.0f,  0.0f, kShotSpeed,-10.0f, 6 } },
+};
+
+static constexpr int kLevelShotDataTblSize = sizeof(kLevelShotDataTbl) / sizeof(kLevelShotDataTbl[0]);
+// ショットの最大レベル
+static constexpr int kShotLevelMax = kLevelShotDataTbl[kLevelShotDataTblSize-1].level;
 
 // ===================================================================================
 void Player::init()
 {
 	m_maxHp = kMaxHp;
 	m_hp = m_maxHp;
-	m_shotPower = kShotDamage;
 	m_shotSpeed = kShotSpeed;
 	m_shotInterval = kShotInterval;
 	m_moveSpeed = kMoveSpeed;
@@ -36,6 +61,8 @@ void Player::init()
 
 	m_level = 0;
 	m_exp = 0;
+
+	setShot(m_level);
 }
 
 void Player::update()
@@ -100,7 +127,16 @@ void Player::update()
 		((Pad::isPress(PAD_INPUT_1)) && (m_lastShot >= m_shotInterval)))
 	{
 		Sound::PlaySound(Sound::kSoundID_Shot);
-		m_pMain->createPlayerShot(getPos(), static_cast<float>(getShotSpeed()), 0.0f, getShotPower());
+
+
+		for( int i= 0; i < m_shotNum; i++)
+		{
+			VECTOR pos = getPos();
+			pos.x += m_shotData[i].startOffsetX;
+			pos.y += m_shotData[i].startOffsetY;
+			m_pMain->createPlayerShot(pos, m_shotData[i].speed, m_shotData[i].angle, m_shotData[i].power);
+		}
+		
 		m_lastShot = 0;
 	}
 }
@@ -167,6 +203,8 @@ void Player::addExp(int add)
 	{
 		m_exp -= getNextLevelExp();
 		m_level++;
+
+		setShot(m_level);
 	}
 }
 
@@ -178,4 +216,21 @@ int Player::getLevel()
 int Player::getNextLevelExp()
 {
 	return 15 + getLevel() * 5;
+}
+
+void Player::setShot(int level)
+{
+	int now = level;
+	if (level > kShotLevelMax) now = kShotLevelMax;
+
+	m_shotNum = 0;
+
+	for (int i = 0; i < kLevelShotDataTblSize; i++)
+	{
+		if (kLevelShotDataTbl[i].level != now)	continue;
+		
+		m_shotData[m_shotNum] = kLevelShotDataTbl[i].data;
+
+		m_shotNum++;
+	}
 }
