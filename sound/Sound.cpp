@@ -4,8 +4,11 @@ namespace Sound
 {
 	static const char* const kSoundFileName[kSoundID_Num] =
 	{
+		"data/sound/start.mp3",	// kSoundID_Start,
+
 		"data/sound/shot.mp3",	// kSoundID_Shot,
 		"data/sound/hit.mp3",	// kSoundID_Hit,
+		"data/sound/dead.mp3",	// kSoundID_Dead,
 	};
 
 	static int soundHandle[kSoundID_Num];

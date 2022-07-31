@@ -6,8 +6,12 @@ namespace Sound
 {
 	typedef enum SoundID
 	{
+		// タイトル画面
+		kSoundID_Start,
+		// メイン
 		kSoundID_Shot,
 		kSoundID_Hit,
+		kSoundID_Dead,
 
 		kSoundID_Num
 	}SoundID;

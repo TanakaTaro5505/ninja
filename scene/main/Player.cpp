@@ -146,8 +146,15 @@ void Player::damage(int getDamage)
 	dealt -= m_damagePrevent;
 	if (dealt < 1)	dealt = 1;
 
+	int last = m_hp;
 	m_hp -= dealt;
 	m_damageFrame = kDamageFrame;
+
+	// 死亡時処理
+	if(last > 0 && m_hp <= 0)
+	{
+		Sound::PlaySound(Sound::kSoundID_Dead);
+	}
 }
 
 // パワーアップ関連処理

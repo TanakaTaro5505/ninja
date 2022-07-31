@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Sound.h"
 #include "SceneTitle.h"
 
 void SceneTitle::init()
@@ -29,6 +30,7 @@ SceneBase* SceneTitle::update()
 	// シーン切り替えテスト
 	if (Pad::isTrigger(PAD_INPUT_1))
 	{
+		Sound::PlaySound(Sound::kSoundID_Start);
 	//	return (new SceneMain);
 		m_endWait = 256;
 	}
