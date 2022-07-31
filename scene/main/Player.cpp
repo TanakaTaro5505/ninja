@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Game.h"
+#include "Sound.h"
 
 #include "SceneMain.h"
 
@@ -98,6 +99,7 @@ void Player::update()
 	if ((Pad::isTrigger(PAD_INPUT_1)) ||
 		((Pad::isPress(PAD_INPUT_1)) && (m_lastShot >= m_shotInterval)))
 	{
+		Sound::PlaySound(Sound::kSoundID_Shot);
 		m_pMain->createPlayerShot(getPos(), static_cast<float>(getShotSpeed()), 0.0f, getShotPower());
 		m_lastShot = 0;
 	}

@@ -65,4 +65,7 @@ private:
 	// レベルアップ
 	int m_level;
 	int m_exp;
+
+	// ショット情報
+	
 };

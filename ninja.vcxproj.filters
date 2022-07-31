@@ -34,6 +34,9 @@
     <Filter Include="ソース ファイル\effect">
       <UniqueIdentifier>{d4dc2817-4e42-4785-80d4-6e33448f15a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\sound">
+      <UniqueIdentifier>{d7b060c1-b1d3-4ae2-bd8b-c9cff4763a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -81,6 +84,9 @@
     <ClCompile Include="scene\main\StageManager.cpp">
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClCompile>
+    <ClCompile Include="sound\Sound.cpp">
+      <Filter>ソース ファイル\sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\SceneBase.h">
@@ -127,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="scene\main\StageManager.h">
       <Filter>ソース ファイル\Scene\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\Sound.h">
+      <Filter>ソース ファイル\sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

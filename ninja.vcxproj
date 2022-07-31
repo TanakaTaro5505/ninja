@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)\;$(ProjectDir)\scene;$(ProjectDir)\util;$(ProjectDir)\game;$(ProjectDir)\ui;$(ProjectDir)\effect</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)\;$(ProjectDir)\scene;$(ProjectDir)\util;$(ProjectDir)\game;$(ProjectDir)\effect;$(ProjectDir)\ui;$(ProjectDir)\sound</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)\;$(ProjectDir)\scene;$(ProjectDir)\util;$(ProjectDir)\game;$(ProjectDir)\ui;$(ProjectDir)\effect</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)\;$(ProjectDir)\scene;$(ProjectDir)\util;$(ProjectDir)\game;$(ProjectDir)\effect;$(ProjectDir)\ui;$(ProjectDir)\sound</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)\;$(ProjectDir)\scene;$(ProjectDir)\util;$(ProjectDir)\game;$(ProjectDir)\effect;$(ProjectDir)\ui;$(ProjectDir)\sound</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -139,7 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DxLib_VC3_23\DxLib_VC\プロジェクトに追加すべきファイル_VC用;$(ProjectDir)\;$(ProjectDir)\scene;$(ProjectDir)\util;$(ProjectDir)\game;$(ProjectDir)\effect;$(ProjectDir)\ui;$(ProjectDir)\sound</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -162,6 +162,7 @@
     <ClCompile Include="scene\SceneBase.cpp" />
     <ClCompile Include="scene\SceneManager.cpp" />
     <ClCompile Include="scene\title\SceneTitle.cpp" />
+    <ClCompile Include="sound\Sound.cpp" />
     <ClCompile Include="ui\Command.cpp" />
     <ClCompile Include="ui\Ui.cpp" />
     <ClCompile Include="util\assert.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="scene\SceneBase.h" />
     <ClInclude Include="scene\SceneManager.h" />
     <ClInclude Include="scene\title\SceneTitle.h" />
+    <ClInclude Include="sound\Sound.h" />
     <ClInclude Include="ui\Command.h" />
     <ClInclude Include="ui\Ui.h" />
     <ClInclude Include="util\assert.h" />

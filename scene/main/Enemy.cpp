@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Game.h"
+#include "Sound.h"
 #include <math.h>
 
 #include "SceneMain.h"
@@ -56,6 +57,8 @@ void Enemy::draw()
 
 void Enemy::Hit(int damage)
 {
+	Sound::PlaySound(Sound::kSoundID_Hit);
+
 	m_hp -= damage;
 	if(m_hp <= 0)
 	{

@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "SceneManager.h"
 #include "Ui.h"
+#include "Sound.h"
 
 #include "title/SceneTitle.h"
 
@@ -23,6 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// グラフィック読み込み
 	UI::LoadGraphic();
+	// サウンド読み込み
+	Sound::Load();
 
 	// ダブルバッファモード
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -58,6 +61,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// グラフィック終了
 	UI::UnloadGraphic();
+	// サウンド終了
+	Sound::Unload();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 
