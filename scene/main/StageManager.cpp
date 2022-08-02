@@ -15,6 +15,7 @@ typedef struct EnemyCreateData
 // ステージ情報
 static const EnemyCreateData StageDataTbl_0[] =
 {
+
 	{   60, { Game::cScreenWidth + 64.0f, 100.0f }, 20, Enemy::Type::kTypeCharge },
 	{  120, { Game::cScreenWidth + 64.0f, 180.0f }, 20, Enemy::Type::kTypeCharge },
 	{  180, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeCharge },
@@ -42,6 +43,8 @@ static const EnemyCreateData StageDataTbl_0[] =
 	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f }, 20, Enemy::Type::kTypeChargeSin },
 	{ 1000, { Game::cScreenWidth + 64.0f, 280.0f }, 20, Enemy::Type::kTypeChargeSin },
 	{ 1000, { Game::cScreenWidth + 64.0f, 380.0f }, 20, Enemy::Type::kTypeChargeSin },
+
+	{ 1500, { Game::cScreenWidth + 64.0f, 270.0f }, 200, Enemy::Type::kTypeBoss00 },
 };
 static const int StageDataTblSize_0 = sizeof(StageDataTbl_0) / sizeof(StageDataTbl_0[0]);
 

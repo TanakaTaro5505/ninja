@@ -11,6 +11,8 @@ public:
 		kTypeCharge,	// 前進するのみ
 		kTypeChargeSin,	// サインカーブ描く前進
 
+		kTypeBoss00,	// ステージ1ボス
+
 		kTypeNum
 	};
 
@@ -54,6 +56,7 @@ private:
 	// 敵のタイプ別更新処理
 	void updateCharge();
 	void updateChargeSin();
+	void updateBoss00();
 
 	SceneMain* m_pMain;
 

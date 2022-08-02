@@ -24,7 +24,6 @@ private:
 public:
 	SceneMain() : SceneBase()
 	{
-		m_padNum = 0;
 		m_endWait = -1;
 		m_fadeBright = 0;
 
@@ -45,6 +44,9 @@ public:
 	// 敵生成
 	void createEnemy(VECTOR pos, int hp, Enemy::Type type);
 
+	// プレイヤー取得
+	Player* getPlayer() { return &m_player; }
+
 	// ショット生成
 	Shot* createPlayerShot(VECTOR pos);
 	Shot* createEnemyShot(VECTOR pos);
@@ -57,7 +59,6 @@ private:
 	
 private:
 	// variable ----------------------------------
-	int m_padNum;
 
 	int m_endWait;
 	int m_fadeBright;

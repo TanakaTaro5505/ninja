@@ -73,7 +73,12 @@ void GameObject::draw()
 
 	if (m_graphicHandle >= 0)
 	{
-		DrawGraph(static_cast<int>(m_pos.x)- m_graphicSizeX/2, static_cast<int>(m_pos.y) - m_graphicSizeY/2, m_graphicHandle, true);
+		//DrawGraph(static_cast<int>(m_pos.x)- m_graphicSizeX/2, static_cast<int>(m_pos.y) - m_graphicSizeY/2, m_graphicHandle, true);
+
+		DrawRotaGraph2(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y),
+			m_graphicSizeX / 2, m_graphicSizeY / 2,
+			1.0, 0.0,
+			m_graphicHandle, true, false);
 	}
 	else
 	{

@@ -5,6 +5,7 @@
 
 #include "SceneMain.h"
 
+// HPバー表示
 static const int kHpBarLen		= 80;
 static const int kHpBarHeight	= 8;
 
@@ -31,6 +32,9 @@ void Enemy::update()
 		break;
 	case Enemy::Type::kTypeChargeSin:
 		updateChargeSin();
+		break;
+	case Enemy::Type::kTypeBoss00:
+		updateBoss00();
 		break;
 	case Enemy::Type::kTypeNum:
 	default:
@@ -105,5 +109,49 @@ void Enemy::updateChargeSin()
 	if (m_pos.x < 0.0f - m_radius)
 	{
 		m_isExist = false;
+	}
+}
+
+void Enemy::updateBoss00()
+{
+	bool isStartLoop = true;
+	if (m_basePos.x > 900.0f)
+	{
+		m_basePos.x -= 4.0f;
+		if (m_basePos.x <= 900.0f)
+		{
+			m_basePos.x = 900.0f;
+		}
+		else
+		{
+			isStartLoop = false;
+		}
+	}
+	// 定位置についた後
+	if (isStartLoop)
+	{
+		m_sinRate += 0.02f;
+	}
+
+	m_pos.x = m_basePos.x;
+	m_pos.y = m_basePos.y + sinf(m_sinRate) * 240.0f;
+
+	m_shotWait--;
+	if (m_shotWait == 0)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			Shot* pShot = nullptr;
+			pShot = m_pMain->createEnemyShot(getPos());
+			// 弾の初期設定を行う
+			if (pShot)
+			{
+				pShot->setMoveSpeed(8);
+				pShot->setMoveAngle(180 - 30 + i * 30);
+				pShot->setPower(getShotDamage());
+			}
+		}
+
+		m_shotWait = 30;
 	}
 }
