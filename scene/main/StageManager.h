@@ -20,6 +20,9 @@ public:
 
 	int getFrame() const { return m_frameCount; }
 
+	// ‚·‚×‚Ä‚Ì“G‚ğ¶¬Ï‚İ
+	bool isEnd();
+
 private:
 
 	SceneMain* m_pMain;

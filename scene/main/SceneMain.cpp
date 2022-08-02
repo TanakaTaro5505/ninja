@@ -65,8 +65,10 @@ SceneBase* SceneMain::update()
 	{
 		m_shot[i].update();
 	}
+	int enemyNum = 0;
 	for (int i = 0; i < cEnemyMax; i++)
 	{
+		if (m_shot[i].isExist())	enemyNum++;
 		m_enemy[i].update();
 	}
 	m_effect.update();
@@ -122,6 +124,11 @@ SceneBase* SceneMain::update()
 	
 	// ƒvƒŒƒCƒ„[Ž€–S
 	if (m_player.getHp() <= 0)
+	{
+		m_endWait = 256;
+	}
+	// “G‚ð‚·‚×‚Ä“|‚µ‚½
+	if (m_stage.isEnd() && enemyNum <= 0)
 	{
 		m_endWait = 256;
 	}

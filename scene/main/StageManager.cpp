@@ -70,3 +70,12 @@ void StageManager::update()
 		}
 	}
 }
+
+bool StageManager::isEnd()
+{
+	if (m_frameCount > StageDataTbl_0[StageDataTblSize_0 - 1].frame)
+	{
+		return true;
+	}
+	return false;
+}
