@@ -31,6 +31,9 @@ public:
 	// 速度設定
 	void setVec(VECTOR vec) { m_vec = vec; }
 	VECTOR getVec() { return m_vec; }
+
+	// 回転設定
+	void addAngle(float add) { m_angle += add; }	// 一定速度で回転する物体に使用する
 protected:
 	bool m_isExist;
 	int m_graphicHandle;
@@ -39,6 +42,9 @@ protected:
 
 	VECTOR m_pos;
 	VECTOR m_vec;
+
+	float m_scale;
+	float m_angle;
 
 	int m_graphicSizeX;
 	int m_graphicSizeY;

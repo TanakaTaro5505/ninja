@@ -6,7 +6,6 @@ class Shot : public GameObject
 public:
 	Shot() : GameObject() 
 	{
-		m_angle = 0.0f;
 		m_rotVec = 0.0f;
 		m_moveSpeed = 0.0f;
 		m_moveAngle = 0.0f;
@@ -16,7 +15,6 @@ public:
 	virtual ~Shot() {}
 
 	void update();
-	void draw();
 
 	// プレイヤーのショット作成
 	void createPlayerShot( VECTOR pos, int graph );
@@ -38,7 +36,6 @@ public:
 	// 敵に当たる弾
 	bool isHitEnemy(void) { return m_isPlayerShot; }
 private:
-	float m_angle;	// 玉の回転(演出)
 	float m_rotVec;
 
 	float m_moveSpeed;

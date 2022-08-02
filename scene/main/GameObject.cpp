@@ -30,6 +30,9 @@ void GameObject::create(float x, float y, float radius, unsigned int color)
 	m_vec.x = 0.0f;
 	m_vec.y = 0.0f;
 
+	m_scale = 1.0f;
+	m_angle = 0.0f;
+
 	m_graphicSizeX = 0;
 	m_graphicSizeY = 0;
 
@@ -47,6 +50,9 @@ void GameObject::createGraphic(float x, float y, int handle)
 
 	m_vec.x = 0.0f;
 	m_vec.y = 0.0f;
+
+	m_scale = 1.0f;
+	m_angle = 0.0f;
 
 	GetGraphSize(handle, &m_graphicSizeX, &m_graphicSizeY);
 
@@ -77,7 +83,7 @@ void GameObject::draw()
 
 		DrawRotaGraph2(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y),
 			m_graphicSizeX / 2, m_graphicSizeY / 2,
-			1.0, 0.0,
+			m_scale, m_angle,
 			m_graphicHandle, true, false);
 	}
 	else
