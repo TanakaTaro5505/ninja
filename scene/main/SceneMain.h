@@ -46,8 +46,8 @@ public:
 	void createEnemy(VECTOR pos, int hp, Enemy::Type type);
 
 	// ƒVƒ‡ƒbƒg¶¬
-	void createPlayerShot(VECTOR pos,float speed, float dir, int power);
-	void createEnemyShot(VECTOR pos, float speed, float dir, int power);
+	Shot* createPlayerShot(VECTOR pos);
+	Shot* createEnemyShot(VECTOR pos);
 
 private:
 	// ”wŒiˆ—

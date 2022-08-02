@@ -14,7 +14,6 @@ static const int kDamageFrame = 60;
 
 // äÓñ{ê´î\
 static const int kMaxHp			= 100;
-//static const int kShotDamage	= 10;
 static const int kShotSpeed		= 6;
 static const int kShotInterval	= 16;
 static const int kMoveSpeed		= 4;
@@ -128,13 +127,20 @@ void Player::update()
 	{
 		Sound::PlaySound(Sound::kSoundID_Shot);
 
-
 		for( int i= 0; i < m_shotNum; i++)
 		{
 			VECTOR pos = getPos();
 			pos.x += m_shotData[i].startOffsetX;
 			pos.y += m_shotData[i].startOffsetY;
-			m_pMain->createPlayerShot(pos, m_shotData[i].speed, m_shotData[i].angle, m_shotData[i].power);
+			Shot* pShot = nullptr;
+			pShot = m_pMain->createPlayerShot(pos);
+			// íeÇÃèâä˙ê›íËÇçsÇ§
+			if (pShot)
+			{
+				pShot->setMoveSpeed(m_shotData[i].speed);
+				pShot->setMoveAngle(m_shotData[i].angle);
+				pShot->setPower(m_shotData[i].power);
+			}
 		}
 		
 		m_lastShot = 0;

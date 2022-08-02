@@ -207,32 +207,25 @@ void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 	}
 }
 
-void SceneMain::createPlayerShot(VECTOR pos, float speed, float dir, int power)
+Shot* SceneMain::createPlayerShot(VECTOR pos)
 {
 	for (int i = 0; i < cShotMax; i++)
 	{
 		if (m_shot[i].isExist())	continue;
 
-		//	m_shot[i].createGraphic(m_player.getPos().x, m_player.getPos().y, m_shotGraphic);
 		m_shot[i].createPlayerShot(pos, m_shotGraphic);
-		m_shot[i].setMoveSpeed(speed);
-		m_shot[i].setMoveAngle(dir);
-		m_shot[i].setPower(power);
-
-		return;
+		return &(m_shot[i]);
 	}
+	return nullptr;
 }
 
-void SceneMain::createEnemyShot(VECTOR pos, float speed, float dir, int power)
+Shot* SceneMain::createEnemyShot(VECTOR pos)
 {
 	for (int j = 0; j < cShotMax; j++)
 	{
 		if (m_shot[j].isExist())	continue;
 		m_shot[j].createEnemyShot(pos, m_enemyShotGraphic);
-		m_shot[j].setMoveSpeed(speed);
-		m_shot[j].setMoveAngle(dir);
-		m_shot[j].setPower(power);
-
-		return;
+		return  &(m_shot[j]);
 	}
+	return nullptr;
 }

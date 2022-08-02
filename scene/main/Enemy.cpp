@@ -81,7 +81,15 @@ void Enemy::updateCharge()
 	m_shotWait--;
 	if (m_shotWait == 0)
 	{
-		m_pMain->createEnemyShot(getPos(), 8, 180, getShotDamage());
+		Shot* pShot = nullptr;
+		pShot = m_pMain->createEnemyShot(getPos());
+		// ’e‚Ì‰ŠúÝ’è‚ðs‚¤
+		if (pShot)
+		{
+			pShot->setMoveSpeed(8);
+			pShot->setMoveAngle(180);
+			pShot->setPower(getShotDamage());
+		}
 	}
 }
 
