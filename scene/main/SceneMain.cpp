@@ -65,10 +65,10 @@ SceneBase* SceneMain::update()
 	{
 		m_shot[i].update();
 	}
-	int enemyNum = 0;
+	int enemyExistNum = 0;
 	for (int i = 0; i < cEnemyMax; i++)
 	{
-		if (m_shot[i].isExist())	enemyNum++;
+		if (m_enemy[i].isExist())	enemyExistNum++;
 		m_enemy[i].update();
 	}
 	m_effect.update();
@@ -113,6 +113,9 @@ SceneBase* SceneMain::update()
 		}
 		else
 		{
+			// ƒQ[ƒ€I—¹‚Í“G‚Ì’e‚àÁ‚¦‚Ä‚©‚ç
+			if (m_shot[j].isExist())	enemyExistNum++;
+
 			// ƒvƒŒƒCƒ„[‚É“–‚½‚é’e
 			if (m_player.isCol(&m_shot[j]))
 			{
@@ -127,8 +130,8 @@ SceneBase* SceneMain::update()
 	{
 		m_endWait = 256;
 	}
-	// “G‚ð‚·‚×‚Ä“|‚µ‚½
-	if (m_stage.isEnd() && enemyNum <= 0)
+	// “G‚ð‚·‚×‚Ä“|‚µ‚½(“G‚Ì’e‚àÁ‚¦‚Ä‚¢‚é)
+	if (m_stage.isEnd() && enemyExistNum <= 0)
 	{
 		m_endWait = 256;
 	}

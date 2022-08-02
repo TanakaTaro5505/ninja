@@ -155,6 +155,8 @@ void Enemy::updateBoss00()
 				pShot->setMoveSpeed(8);
 				pShot->setMoveAngle(180 - 30 + i * 30);
 				pShot->setPower(getShotDamage());
+				// ƒ{ƒX‚Í‚Å‚©‚¢’e‚ðŒ‚‚Â
+				pShot->setScale(4.0f);
 			}
 		}
 
