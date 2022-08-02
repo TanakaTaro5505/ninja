@@ -11,7 +11,6 @@ void SceneMain::init()
 	m_endWait = -1;
 
 	m_playerGraphic = LoadGraph("data/main/player.bmp");
-
 	m_shotGraphic = LoadGraph("data/main/shot.bmp");
 	m_enemyShotGraphic = LoadGraph("data/main/enemyShot.bmp");
 	m_enemyGraphic = LoadGraph("data/main/enemy.bmp");
@@ -134,17 +133,17 @@ void SceneMain::draw()
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
 	drawBg();
+	for (int i = 0; i < cShotMax; i++)
+	{
+		m_shot[i].draw();
+	}
+
 	m_player.draw();
 	for (int i = 0; i < cEnemyMax; i++)
 	{
 		m_enemy[i].draw();
 	}
 	m_effect.draw();
-
-	for (int i = 0; i < cShotMax; i++)
-	{
-		m_shot[i].draw();
-	}
 }
 
 void SceneMain::initBg()

@@ -31,17 +31,17 @@ static const EnemyCreateData StageDataTbl_0[] =
 	{  700, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
 	{  700, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
 
-	{  800, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
-	{  800, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
-	{  800, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  800, { Game::cScreenWidth + 64.0f, 180.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  800, { Game::cScreenWidth + 64.0f, 280.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{  800, { Game::cScreenWidth + 64.0f, 380.0f }, 20, Enemy::Type::kTypeChargeSin },
 
 	{  900, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
 	{  900, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
 	{  900, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
 
-	{ 1000, { Game::cScreenWidth + 64.0f, 160.0f }, 20, Enemy::Type::kTypeChargeSin },
-	{ 1000, { Game::cScreenWidth + 64.0f, 260.0f }, 20, Enemy::Type::kTypeChargeSin },
-	{ 1000, { Game::cScreenWidth + 64.0f, 360.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{ 1000, { Game::cScreenWidth + 64.0f, 180.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{ 1000, { Game::cScreenWidth + 64.0f, 280.0f }, 20, Enemy::Type::kTypeChargeSin },
+	{ 1000, { Game::cScreenWidth + 64.0f, 380.0f }, 20, Enemy::Type::kTypeChargeSin },
 };
 static const int StageDataTblSize_0 = sizeof(StageDataTbl_0) / sizeof(StageDataTbl_0[0]);
 
