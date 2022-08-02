@@ -31,6 +31,9 @@ public:
 	// 速度設定
 	void setVec(VECTOR vec) { m_vec = vec; }
 	VECTOR getVec() { return m_vec; }
+	// スケール
+	void setScale(float scale) { m_scale = scale; }
+	float getScale() { return m_scale; }
 
 	// 回転設定
 	void addAngle(float add) { m_angle += add; }	// 一定速度で回転する物体に使用する

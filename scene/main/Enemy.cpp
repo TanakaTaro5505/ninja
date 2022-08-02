@@ -19,6 +19,12 @@ void Enemy::init(int maxHp, Type type)
 	m_type = type;
 	m_basePos = m_pos;
 	m_sinRate = 0.0f;
+	switch (m_type)
+	{
+	case Enemy::Type::kTypeBoss00:
+		m_scale = 2.0f;
+		break;
+	}
 }
 
 void Enemy::update()

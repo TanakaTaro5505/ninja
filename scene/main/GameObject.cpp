@@ -1,5 +1,8 @@
 #include "GameObject.h"
 
+// あたり判定表示
+//#define DISP_COLLISION
+
 // ===================================================================================
 GameObject::GameObject()
 {
@@ -14,6 +17,9 @@ GameObject::GameObject()
 
 	m_vec.x = 0.0f;
 	m_vec.y = 0.0f;
+
+	m_scale = 1.0f;
+	m_angle = 0.0f;
 
 	m_graphicSizeX = 0;
 	m_graphicSizeY = 0;
@@ -90,6 +96,11 @@ void GameObject::draw()
 	{
 		DrawCircleAA(m_pos.x, m_pos.y, m_radius, 16, m_color);
 	}
+
+#ifdef DISP_COLLISION
+	// あたり判定表示テスト
+	DrawCircleAA(m_pos.x, m_pos.y, m_radius * m_scale, 16, m_color);
+#endif
 }
 
 bool GameObject::isCol(GameObject* target)
@@ -98,7 +109,7 @@ bool GameObject::isCol(GameObject* target)
 	if (!m_isExist)	return false;
 	if (!target->isExist())	return false;
 
-	float colDist = m_radius + target->getRadius();
+	float colDist = m_radius * m_scale + target->getRadius() * target->getScale();
 
 	VECTOR targetVec;
 	targetVec.x = target->getPos().x - m_pos.x;
