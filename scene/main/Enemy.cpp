@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "SceneMain.h"
+#include "Player.h"
 
 // HPバー表示
 static const int kHpBarLen		= 80;
@@ -116,6 +117,25 @@ void Enemy::updateChargeSin()
 	{
 		m_isExist = false;
 	}
+
+
+	m_shotWait--;
+	if (m_shotWait == 0)
+	{
+		Shot* pShot = nullptr;
+		pShot = m_pMain->createEnemyShot(getPos());
+		// 弾の初期設定を行う
+		if (pShot)
+		{
+			pShot->setMoveSpeed(8);
+			pShot->setPower(getShotDamage());
+			// プレイヤーの方に弾を撃つ
+			Player* pPlayer = m_pMain->getPlayer();
+			float dir = atan2f(pPlayer->getPos().y - getPos().y, pPlayer->getPos().x - getPos().x);
+			float dirRad = dir / 3.1459f * 180.0f;
+			pShot->setMoveAngle(dirRad);
+		}
+	}
 }
 
 void Enemy::updateBoss00()
@@ -145,7 +165,7 @@ void Enemy::updateBoss00()
 	m_shotWait--;
 	if (m_shotWait == 0)
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			Shot* pShot = nullptr;
 			pShot = m_pMain->createEnemyShot(getPos());
@@ -153,7 +173,7 @@ void Enemy::updateBoss00()
 			if (pShot)
 			{
 				pShot->setMoveSpeed(8);
-				pShot->setMoveAngle(180 - 30 + i * 30);
+				pShot->setMoveAngle(180 - 40 + i * 20);
 				pShot->setPower(getShotDamage());
 				// ボスはでかい弾を撃つ
 				pShot->setScale(4.0f);

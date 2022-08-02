@@ -44,7 +44,7 @@ static const EnemyCreateData StageDataTbl_0[] =
 	{ 1000, { Game::cScreenWidth + 64.0f, 280.0f }, 20, Enemy::Type::kTypeChargeSin },
 	{ 1000, { Game::cScreenWidth + 64.0f, 380.0f }, 20, Enemy::Type::kTypeChargeSin },
 
-	{ 1500, { Game::cScreenWidth + 64.0f, 270.0f }, 200, Enemy::Type::kTypeBoss00 },
+	{ 1500, { Game::cScreenWidth + 64.0f, 270.0f }, 300, Enemy::Type::kTypeBoss00 },
 };
 static const int StageDataTblSize_0 = sizeof(StageDataTbl_0) / sizeof(StageDataTbl_0[0]);
 
