@@ -139,7 +139,6 @@ void SceneMain::createItem(VECTOR pos)
 	for (int i = 0; i < kItemMax; i++)
 	{
 		if (m_item[i].isExist())	continue;
-	//	m_item[i].create(pos.x, pos.y, 8, GetColor(0,0,255));
 		m_item[i].createGraphic(pos.x, pos.y, m_itemGraphic);
 		return;
 	}
