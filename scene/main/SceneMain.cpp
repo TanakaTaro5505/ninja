@@ -153,7 +153,7 @@ SceneBase* SceneMain::updateMain()
 	// 敵の生成など
 	m_stage.update();
 
-	// 背景演出
+	// 背景演出	
 	updateBg();
 
 	m_player.update();
@@ -219,7 +219,9 @@ SceneBase* SceneMain::updateMain()
 	// プレイヤー死亡
 	if (m_player.getHp() <= 0)
 	{
-		m_endWait = 256;
+		m_endWait = 0;
+		m_effect.create(m_player.getPos().x, m_player.getPos().y);
+		m_seq = Seq::kSeqGameover;
 	}
 	// ステージ終了処理
 	if (m_stage.isEnd())
@@ -254,7 +256,8 @@ SceneBase* SceneMain::updateMain()
 					m_shot[i].erase();
 				}
 			}
-			m_endWait = 256;
+			m_endWait = 0;
+			m_seq = Seq::kSeqStageClear;
 		}
 	}
 	return this;
@@ -262,12 +265,75 @@ SceneBase* SceneMain::updateMain()
 
 SceneBase* SceneMain::updateStageClear()
 {
+	if (m_endWait > 0)
+	{
+		// フェードアウトして終了
+		m_fadeBright -= Game::cFadeSpeedNormal;
+		if (m_fadeBright <= 0)
+		{
+			m_fadeBright = 0;
+			return (new SceneTitle);
+		}
+		return this;
+	}
+
+	// 背景演出
+	updateBg();
+	m_player.update();
+	for (int i = 0; i < cShotMax; i++)
+	{
+		m_shot[i].update();
+	}
+	m_effect.update();
+
+
+	// ボタン待ち
+	if (Pad::isTrigger(PAD_INPUT_1))
+	{
+		if (m_endWait == 0)
+		{
+			m_endWait = 1;
+		}
+	}
 
 	return this;
 }
 
 SceneBase* SceneMain::updateGameover()
 {
+	if (m_endWait > 0)
+	{
+		// フェードアウトして終了
+		m_fadeBright -= Game::cFadeSpeedNormal;
+		if (m_fadeBright <= 0)
+		{
+			m_fadeBright = 0;
+			return (new SceneTitle);
+		}
+		return this;
+	}
+
+	// 背景演出
+	updateBg();
+	for (int i = 0; i < cShotMax; i++)
+	{
+		m_shot[i].update();
+	}
+	for (int i = 0; i < cEnemyMax; i++)
+	{
+		m_enemy[i].update();
+	}
+	m_effect.update();
+
+
+	// ボタン待ち
+	if (Pad::isTrigger(PAD_INPUT_1))
+	{
+		if (m_endWait == 0)
+		{
+			m_endWait = 1;
+		}
+	}
 
 	return this;
 }

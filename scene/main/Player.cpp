@@ -150,6 +150,8 @@ void Player::update()
 void Player::draw()
 {
 	if (!m_isExist)	return;
+	if (getHp() <= 0)	return;
+
 	if( (m_damageFrame < 0) || (m_damageFrame % 2) )
 	{
 		GameObject::draw();
