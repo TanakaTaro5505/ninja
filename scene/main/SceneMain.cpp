@@ -70,6 +70,8 @@ void SceneMain::draw()
 	}
 	m_effect.draw();
 
+//	DrawFormatString(0,0,GetColor(255,255,255), "テスト:%6d", 100);
+
 	int graphSizeX = 0;
 	int graphSizeY = 0;
 	switch (m_seq)
@@ -148,23 +150,6 @@ void SceneMain::initBg()
 
 SceneBase* SceneMain::updateMain()
 {
-	if (m_endWait >= 0)
-	{
-		m_endWait--;
-
-		// フェード待ち
-		if (m_endWait >= 256)	return this;
-
-		// フェードアウトして終了
-		m_fadeBright -= Game::cFadeSpeedNormal;
-		if (m_endWait <= 0)
-		{
-			m_fadeBright = 0;
-			return (new SceneTitle);
-		}
-		return this;
-	}
-
 	m_fadeBright += Game::cFadeSpeedNormal;
 	if (m_fadeBright >= 255)	m_fadeBright = 255;
 
