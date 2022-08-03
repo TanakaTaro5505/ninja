@@ -41,6 +41,9 @@ public:
 		m_shotGraphic = 0;
 		m_enemyShotGraphic = 0;
 		m_enemyGraphic = 0;
+
+		m_clearGraphic = 0;
+		m_gameoverGraphic = 0;
 	}
 	virtual ~SceneMain()
 	{
@@ -92,6 +95,9 @@ private:
 	int m_shotGraphic;
 	int m_enemyShotGraphic;
 	int m_enemyGraphic;
+
+	int m_clearGraphic;
+	int m_gameoverGraphic;
 
 	// îwåi
 	GameObject	m_bgStar[cStarNum];

@@ -16,6 +16,9 @@ void SceneMain::init()
 	m_enemyShotGraphic = LoadGraph("data/main/enemyShot.bmp");
 	m_enemyGraphic = LoadGraph("data/main/enemy.bmp");
 
+	m_clearGraphic = LoadGraph("data/font/end.png");
+	m_gameoverGraphic = LoadGraph("data/font/gameover.png");
+
 	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_playerGraphic);
 	m_player.init();
 	m_player.setMain( this );
@@ -31,6 +34,9 @@ void SceneMain::deleteGraph()
 	DeleteGraph(m_shotGraphic);
 	DeleteGraph(m_enemyShotGraphic);
 	DeleteGraph(m_enemyGraphic);
+
+	DeleteGraph(m_clearGraphic);
+	DeleteGraph(m_gameoverGraphic);
 }
 
 SceneBase* SceneMain::update()
@@ -63,6 +69,21 @@ void SceneMain::draw()
 		m_enemy[i].draw();
 	}
 	m_effect.draw();
+
+	int graphSizeX = 0;
+	int graphSizeY = 0;
+	switch (m_seq)
+	{
+	case Seq::kSeqStageClear:
+		GetGraphSize(m_clearGraphic, &graphSizeX, &graphSizeY);
+		DrawGraph((Game::cScreenWidth- graphSizeX)/2, (Game::cScreenHeight - graphSizeY) / 2, m_clearGraphic, 1);
+		break;
+	case Seq::kSeqGameover:
+		GetGraphSize(m_gameoverGraphic, &graphSizeX, &graphSizeY);
+		DrawGraph((Game::cScreenWidth - graphSizeX) / 2, (Game::cScreenHeight - graphSizeY) / 2, m_gameoverGraphic, 1);
+		break;
+	}
+	
 }
 
 void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
