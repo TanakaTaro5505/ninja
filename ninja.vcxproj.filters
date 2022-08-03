@@ -87,6 +87,9 @@
     <ClCompile Include="sound\Sound.cpp">
       <Filter>ソース ファイル\sound</Filter>
     </ClCompile>
+    <ClCompile Include="scene\main\Item.cpp">
+      <Filter>ソース ファイル\Scene\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\SceneBase.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="sound\Sound.h">
       <Filter>ソース ファイル\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\main\Item.h">
+      <Filter>ソース ファイル\Scene\Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

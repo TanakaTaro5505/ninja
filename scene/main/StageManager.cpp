@@ -46,7 +46,7 @@ static const EnemyCreateData StageDataTbl_0[] =
 
 	{ 1500, { Game::cScreenWidth + 64.0f, 270.0f }, 300, Enemy::Type::kTypeBoss00 },
 };
-static const int StageDataTblSize_0 = sizeof(StageDataTbl_0) / sizeof(StageDataTbl_0[0]);
+static constexpr int StageDataTblSize_0 = sizeof(StageDataTbl_0) / sizeof(StageDataTbl_0[0]);
 
 void StageManager::init(SceneMain* pMain, int stageNo)
 {
