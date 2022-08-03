@@ -15,6 +15,7 @@ void SceneMain::init()
 	m_shotGraphic = LoadGraph("data/main/shot.bmp");
 	m_enemyShotGraphic = LoadGraph("data/main/enemyShot.bmp");
 	m_enemyGraphic = LoadGraph("data/main/enemy.bmp");
+	m_itemGraphic = LoadGraph("data/main/item.bmp");
 
 	m_clearGraphic = LoadGraph("data/font/end.png");
 	m_gameoverGraphic = LoadGraph("data/font/gameover.png");
@@ -34,6 +35,7 @@ void SceneMain::deleteGraph()
 	DeleteGraph(m_shotGraphic);
 	DeleteGraph(m_enemyShotGraphic);
 	DeleteGraph(m_enemyGraphic);
+	DeleteGraph(m_itemGraphic);
 
 	DeleteGraph(m_clearGraphic);
 	DeleteGraph(m_gameoverGraphic);
@@ -137,7 +139,8 @@ void SceneMain::createItem(VECTOR pos)
 	for (int i = 0; i < kItemMax; i++)
 	{
 		if (m_item[i].isExist())	continue;
-		m_item[i].create(pos.x, pos.y, 8, GetColor(0,0,255));
+	//	m_item[i].create(pos.x, pos.y, 8, GetColor(0,0,255));
+		m_item[i].createGraphic(pos.x, pos.y, m_itemGraphic);
 		return;
 	}
 }
@@ -315,7 +318,11 @@ SceneBase* SceneMain::updateStageClear()
 
 	// 背景演出
 	updateBg();
-	m_player.update();
+	// プレイヤーは操作不可　前方に駆け抜ける
+//	m_player.update();
+	VECTOR pos = m_player.getPos();
+	pos.x += 8.0f;
+	m_player.setPos(pos);
 	for (int i = 0; i < kShotMax; i++)
 	{
 		m_shot[i].update();

@@ -43,6 +43,7 @@ public:
 		m_shotGraphic = 0;
 		m_enemyShotGraphic = 0;
 		m_enemyGraphic = 0;
+		m_itemGraphic = 0;
 
 		m_clearGraphic = 0;
 		m_gameoverGraphic = 0;
@@ -102,6 +103,7 @@ private:
 	int m_shotGraphic;
 	int m_enemyShotGraphic;
 	int m_enemyGraphic;
+	int m_itemGraphic;
 
 	int m_clearGraphic;
 	int m_gameoverGraphic;
