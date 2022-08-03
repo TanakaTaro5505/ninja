@@ -20,10 +20,20 @@ private:
 
 	static constexpr int cStarNum = 64;
 
+	enum class Seq
+	{
+		kSeqMain,
+		kSeqStageClear,
+		kSeqGameover,
+
+		kSeNum
+	};
+
 	//function ----------------------------------
 public:
 	SceneMain() : SceneBase()
 	{
+		m_seq = Seq::kSeqMain;
 		m_endWait = -1;
 		m_fadeBright = 0;
 
@@ -52,13 +62,20 @@ public:
 	Shot* createEnemyShot(VECTOR pos);
 
 private:
+	// シーケンスに応じた処理
+	SceneBase* updateMain();			// kSeqMain,
+	SceneBase* updateStageClear();	// kSeqStageClear,
+	SceneBase* updateGameover();		// kSeqGameover,
+
 	// 背景処理
 	void initBg();
 	void updateBg();
 	void drawBg();
-	
+
 private:
 	// variable ----------------------------------
+
+	Seq	m_seq;
 
 	int m_endWait;
 	int m_fadeBright;

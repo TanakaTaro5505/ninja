@@ -8,6 +8,7 @@ static const int cEnemyShotWait		= 120;		// ¶¬ŒãƒVƒ‡ƒbƒg‚ğŒ‚‚Â‚Ü‚Å‚ÌŠÔ(ƒtƒŒ
 
 void SceneMain::init()
 {
+	m_seq = Seq::kSeqMain;
 	m_endWait = -1;
 
 	m_playerGraphic = LoadGraph("data/main/player.bmp");
@@ -34,12 +35,104 @@ void SceneMain::deleteGraph()
 
 SceneBase* SceneMain::update()
 {
+	switch (m_seq)
+	{
+	case Seq::kSeqMain:
+		return updateMain();
+	case Seq::kSeqStageClear:
+		return updateStageClear();
+	case Seq::kSeqGameover:
+		return updateGameover();
+	}
+	return this;
+}
+
+void SceneMain::draw()
+{
+	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
+
+	drawBg();
+	for (int i = 0; i < cShotMax; i++)
+	{
+		m_shot[i].draw();
+	}
+
+	m_player.draw();
+	for (int i = 0; i < cEnemyMax; i++)
+	{
+		m_enemy[i].draw();
+	}
+	m_effect.draw();
+}
+
+void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
+{
+	for (int i = 0; i < cEnemyMax; i++)
+	{
+		if (m_enemy[i].isExist())	continue;
+		
+		m_enemy[i].createGraphic(pos.x, pos.y, m_enemyGraphic);
+		m_enemy[i].setMain(this);
+
+		m_enemy[i].init(hp, type);
+		m_enemy[i].setHitDamage(cEnemyHitDamage);
+		m_enemy[i].setShotDamage(cEnemyShotDamage);
+		m_enemy[i].setShotWait(cEnemyShotWait);
+		break;
+	}
+}
+
+Shot* SceneMain::createPlayerShot(VECTOR pos)
+{
+	for (int i = 0; i < cShotMax; i++)
+	{
+		if (m_shot[i].isExist())	continue;
+
+		m_shot[i].createPlayerShot(pos, m_shotGraphic);
+		return &(m_shot[i]);
+	}
+	return nullptr;
+}
+
+Shot* SceneMain::createEnemyShot(VECTOR pos)
+{
+	for (int j = 0; j < cShotMax; j++)
+	{
+		if (m_shot[j].isExist())	continue;
+		m_shot[j].createEnemyShot(pos, m_enemyShotGraphic);
+		return  &(m_shot[j]);
+	}
+	return nullptr;
+}
+
+
+void SceneMain::initBg()
+{
+	for (int i = 0; i < cStarNum; i++)
+	{
+		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
+		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
+
+		int colorElem = GetRand(128);
+
+		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem));
+
+		float speed = static_cast<float>(GetRand(64)) / 10.0f;
+		VECTOR vec;
+		vec.x = -speed;
+		vec.y = 0.0f;
+		m_bgStar[i].setVec(vec);
+	}
+}
+
+SceneBase* SceneMain::updateMain()
+{
 	if (m_endWait >= 0)
 	{
 		m_endWait--;
 
 		// ƒtƒF[ƒh‘Ò‚¿
-		if(m_endWait >= 256)	return this;
+		if (m_endWait >= 256)	return this;
 
 		// ƒtƒF[ƒhƒAƒEƒg‚µ‚ÄI—¹
 		m_fadeBright -= Game::cFadeSpeedNormal;
@@ -122,7 +215,7 @@ SceneBase* SceneMain::update()
 			}
 		}
 	}
-	
+
 	// ƒvƒŒƒCƒ„[€–S
 	if (m_player.getHp() <= 0)
 	{
@@ -148,7 +241,7 @@ SceneBase* SceneMain::update()
 			for (int i = 0; i < cEnemyMax; i++)
 			{
 				if (!m_enemy[i].isExist())	continue;
-				
+
 				m_enemy[i].erase();
 				m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
 			}
@@ -167,41 +260,16 @@ SceneBase* SceneMain::update()
 	return this;
 }
 
-void SceneMain::draw()
+SceneBase* SceneMain::updateStageClear()
 {
-	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
-	drawBg();
-	for (int i = 0; i < cShotMax; i++)
-	{
-		m_shot[i].draw();
-	}
-
-	m_player.draw();
-	for (int i = 0; i < cEnemyMax; i++)
-	{
-		m_enemy[i].draw();
-	}
-	m_effect.draw();
+	return this;
 }
 
-void SceneMain::initBg()
+SceneBase* SceneMain::updateGameover()
 {
-	for (int i = 0; i < cStarNum; i++)
-	{
-		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
-		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
 
-		int colorElem = GetRand(128);
-
-		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem));
-
-		float speed = static_cast<float>(GetRand(64)) / 10.0f;
-		VECTOR vec;
-		vec.x = -speed;
-		vec.y = 0.0f;
-		m_bgStar[i].setVec(vec);
-	}
+	return this;
 }
 
 void SceneMain::updateBg()
@@ -227,44 +295,4 @@ void SceneMain::drawBg()
 	{
 		m_bgStar[i].draw();
 	}
-}
-
-void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
-{
-	for (int i = 0; i < cEnemyMax; i++)
-	{
-		if (m_enemy[i].isExist())	continue;
-		
-		m_enemy[i].createGraphic(pos.x, pos.y, m_enemyGraphic);
-		m_enemy[i].setMain(this);
-
-		m_enemy[i].init(hp, type);
-		m_enemy[i].setHitDamage(cEnemyHitDamage);
-		m_enemy[i].setShotDamage(cEnemyShotDamage);
-		m_enemy[i].setShotWait(cEnemyShotWait);
-		break;
-	}
-}
-
-Shot* SceneMain::createPlayerShot(VECTOR pos)
-{
-	for (int i = 0; i < cShotMax; i++)
-	{
-		if (m_shot[i].isExist())	continue;
-
-		m_shot[i].createPlayerShot(pos, m_shotGraphic);
-		return &(m_shot[i]);
-	}
-	return nullptr;
-}
-
-Shot* SceneMain::createEnemyShot(VECTOR pos)
-{
-	for (int j = 0; j < cShotMax; j++)
-	{
-		if (m_shot[j].isExist())	continue;
-		m_shot[j].createEnemyShot(pos, m_enemyShotGraphic);
-		return  &(m_shot[j]);
-	}
-	return nullptr;
 }
