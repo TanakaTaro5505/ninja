@@ -3,6 +3,9 @@
 // あたり判定表示
 //#define DISP_COLLISION
 
+// グラフィックサイズに対するあたり判定のサイズ
+static constexpr float kColRadiusRate = 0.8f;
+
 // ===================================================================================
 GameObject::GameObject()
 {
@@ -62,7 +65,7 @@ void GameObject::createGraphic(float x, float y, int handle)
 
 	GetGraphSize(handle, &m_graphicSizeX, &m_graphicSizeY);
 
-	m_radius = static_cast<float>(m_graphicSizeX/2);
+	m_radius = static_cast<float>(m_graphicSizeX/2) * kColRadiusRate;
 }
 
 void GameObject::update()
@@ -99,7 +102,7 @@ void GameObject::draw()
 
 #ifdef DISP_COLLISION
 	// あたり判定表示テスト
-	DrawCircleAA(m_pos.x, m_pos.y, m_radius * m_scale, 16, m_color);
+	DrawCircleAA(m_pos.x, m_pos.y, m_radius * m_scale, 16, m_color, 0);
 #endif
 }
 

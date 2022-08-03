@@ -48,7 +48,12 @@ void Shot::createEnemyShot(VECTOR pos, int graph)
 	m_isPlayerShot = false;
 }
 
-void Shot::Hit()
+void Shot::hit()
+{
+	m_isExist = false;
+}
+
+void Shot::erase()
 {
 	m_isExist = false;
 }

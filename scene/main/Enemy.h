@@ -42,7 +42,11 @@ public:
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
 	// 敵にショットをあてた	与えるダメージを指定する
-	void Hit(int damage);
+	void hit(int damage);
+	// 強制終了
+	void erase();
+
+	bool isBoss();
 
 	int getHitDamage() { return m_hitDamage; }
 	void setHitDamage(int damage) { m_hitDamage = damage; }

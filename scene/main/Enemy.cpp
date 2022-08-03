@@ -66,7 +66,7 @@ void Enemy::draw()
 	DrawBox(x1, y1, x2, y2, GetColor(255, 0, 0), true);
 }
 
-void Enemy::Hit(int damage)
+void Enemy::hit(int damage)
 {
 	Sound::PlaySound(Sound::kSoundID_Hit);
 
@@ -75,6 +75,21 @@ void Enemy::Hit(int damage)
 	{
 		m_isExist = false;
 	}
+}
+
+void Enemy::erase()
+{
+	m_isExist = false;
+}
+
+bool Enemy::isBoss()
+{
+	switch (m_type)
+	{
+	case Type::kTypeBoss00:
+		return true;
+	}
+	return false;
 }
 
 void Enemy::updateCharge()

@@ -6,25 +6,25 @@ namespace Game
 // define ---------------------------------------------
 	// ウインドウモード設定
 #ifdef _DEBUG
-	static const bool cIsWindowMode = true;
+	static constexpr bool cIsWindowMode = true;
 #else
-	static const bool cIsWindowMode = false;
+	static constexpr bool cIsWindowMode = false;
 #endif
 
 	// ウインドウタイトル
-	static const char* const cWindowTitle = "TEMPLATE";
+	static const char* const cWindowTitle = "ニンジャでござーる";
 
 	// スクリーンサイズ
 #if false
 	// 4:3
-	static const int cScreenWidth = 640;
-	static const int cScreenHeight = 480;
+	static constexpr int cScreenWidth = 640;
+	static constexpr int cScreenHeight = 480;
 #endif
 #if true
 	// 16:9
-	static const int cScreenWidth = 960;
-	static const int cScreenHeight = 540;
+	static constexpr int cScreenWidth = 960;
+	static constexpr int cScreenHeight = 540;
 #endif
 	// フェードインアウト速度	フェード時間は	255/速度フレーム
-	static const int cFadeSpeedNormal = 16;
+	static constexpr int cFadeSpeedNormal = 16;
 };

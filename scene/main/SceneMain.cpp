@@ -36,11 +36,14 @@ SceneBase* SceneMain::update()
 {
 	if (m_endWait >= 0)
 	{
-		m_endWait++;
+		m_endWait--;
+
+		// フェード待ち
+		if(m_endWait >= 256)	return this;
 
 		// フェードアウトして終了
 		m_fadeBright -= Game::cFadeSpeedNormal;
-		if (m_fadeBright <= 0)
+		if (m_endWait <= 0)
 		{
 			m_fadeBright = 0;
 			return (new SceneTitle);
@@ -65,10 +68,8 @@ SceneBase* SceneMain::update()
 	{
 		m_shot[i].update();
 	}
-	int enemyExistNum = 0;
 	for (int i = 0; i < cEnemyMax; i++)
 	{
-		if (m_enemy[i].isExist())	enemyExistNum++;
 		m_enemy[i].update();
 	}
 	m_effect.update();
@@ -99,8 +100,8 @@ SceneBase* SceneMain::update()
 				if (m_enemy[i].isCol(&m_shot[j]))
 				{
 					//	m_effect.create(static_cast<int>(m_enemy[i].getPos().x), static_cast<int>(m_enemy[i].getPos().y));
-					m_shot[j].Hit();
-					m_enemy[i].Hit(m_shot[j].getPower());
+					m_shot[j].hit();
+					m_enemy[i].hit(m_shot[j].getPower());
 					// 倒した
 					if (!m_enemy[i].isExist())
 					{
@@ -113,13 +114,10 @@ SceneBase* SceneMain::update()
 		}
 		else
 		{
-			// ゲーム終了は敵の弾も消えてから
-			if (m_shot[j].isExist())	enemyExistNum++;
-
 			// プレイヤーに当たる弾
 			if (m_player.isCol(&m_shot[j]))
 			{
-				m_shot[j].Hit();
+				m_shot[j].hit();
 				m_player.damage(m_shot[j].getPower());
 			}
 		}
@@ -130,10 +128,41 @@ SceneBase* SceneMain::update()
 	{
 		m_endWait = 256;
 	}
-	// 敵をすべて倒した(敵の弾も消えている)
-	if (m_stage.isEnd() && enemyExistNum <= 0)
+	// ステージ終了処理
+	if (m_stage.isEnd())
 	{
-		m_endWait = 256;
+		// ボスが残っていればまだ終わらない
+		bool isEnd = true;
+		for (int i = 0; i < cEnemyMax; i++)
+		{
+			if (!m_enemy[i].isExist())	continue;
+			if (m_enemy[i].isBoss())
+			{
+				isEnd = false;
+			}
+		}
+
+		if (isEnd)
+		{
+			// 残ってるザコ敵、敵の弾を消す
+			for (int i = 0; i < cEnemyMax; i++)
+			{
+				if (!m_enemy[i].isExist())	continue;
+				
+				m_enemy[i].erase();
+				m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
+			}
+			for (int i = 0; i < cShotMax; i++)
+			{
+				if (!m_shot[i].isExist())	continue;
+
+				if (!m_shot[i].isHitEnemy())
+				{
+					m_shot[i].erase();
+				}
+			}
+			m_endWait = 256;
+		}
 	}
 	return this;
 }

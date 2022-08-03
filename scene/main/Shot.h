@@ -22,7 +22,9 @@ public:
 	void createEnemyShot( VECTOR pos, int graph );
 
 	// ショットをあてた
-	void Hit();
+	void hit();
+	// 強制終了
+	void erase();
 	// 移動情報設定
 	void setMoveSpeed(float speed) { m_moveSpeed = speed; }
 	void setMoveAngle(float angle) { m_moveAngle = angle; }
