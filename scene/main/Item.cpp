@@ -15,7 +15,15 @@ void Item::update()
 		m_isExist = false;
 	}
 }
+#if false
+void Item::draw()
+{
+	if (!m_isExist)	return;
 
+	DrawCircleAA(m_pos.x, m_pos.y, m_radius, 16, GetColor(0,0,255));
+	DrawString(m_pos.x - 8, m_pos.y - 8, "ÉA", GetColor(255, 255, 255));
+}
+#endif
 void Item::erase()
 {
 	m_isExist = false;

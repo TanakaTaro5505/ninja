@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Shot.h"
 #include "Enemy.h"
+#include "Item.h"
 #include "StageManager.h"
 
 #include "Effect/EffectManager.h"
@@ -15,10 +16,11 @@ class SceneMain : public SceneBase
 {
 	//define ----------------------------------
 private:
-	static constexpr int cShotMax = 128;
-	static constexpr int cEnemyMax = 64;
+	static constexpr int kShotMax = 128;
+	static constexpr int kEnemyMax = 64;
+	static constexpr int kItemMax = 64;
 
-	static constexpr int cStarNum = 64;
+	static constexpr int kStarNum = 64;
 
 	enum class Seq
 	{
@@ -65,6 +67,9 @@ public:
 	Shot* createPlayerShot(VECTOR pos);
 	Shot* createEnemyShot(VECTOR pos);
 
+	// アイテム生成
+	void createItem(VECTOR pos);
+
 private:
 	// シーケンスに応じた処理
 	SceneBase* updateMain();			// kSeqMain,
@@ -86,10 +91,11 @@ private:
 
 	// game
 	Player m_player;
-	Shot m_shot[cShotMax];
+	Shot m_shot[kShotMax];
 
 	StageManager	m_stage;
-	Enemy m_enemy[cEnemyMax];
+	Enemy m_enemy[kEnemyMax];
+	Item m_item[kItemMax];
 
 	// グラフィック
 	int m_playerGraphic;
@@ -101,7 +107,7 @@ private:
 	int m_gameoverGraphic;
 
 	// 背景
-	GameObject	m_bgStar[cStarNum];
+	GameObject	m_bgStar[kStarNum];
 	// 敵を倒した時のエフェクト生成
 	EffectManager m_effect;
 };

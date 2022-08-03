@@ -58,13 +58,17 @@ void SceneMain::draw()
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
 	drawBg();
-	for (int i = 0; i < cShotMax; i++)
+	for (int i = 0; i < kShotMax; i++)
 	{
 		m_shot[i].draw();
 	}
+	for (int i = 0; i < kItemMax; i++)
+	{
+		m_item[i].draw();
+	}
 
 	m_player.draw();
-	for (int i = 0; i < cEnemyMax; i++)
+	for (int i = 0; i < kEnemyMax; i++)
 	{
 		m_enemy[i].draw();
 	}
@@ -90,7 +94,7 @@ void SceneMain::draw()
 
 void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 {
-	for (int i = 0; i < cEnemyMax; i++)
+	for (int i = 0; i < kEnemyMax; i++)
 	{
 		if (m_enemy[i].isExist())	continue;
 		
@@ -107,7 +111,7 @@ void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 
 Shot* SceneMain::createPlayerShot(VECTOR pos)
 {
-	for (int i = 0; i < cShotMax; i++)
+	for (int i = 0; i < kShotMax; i++)
 	{
 		if (m_shot[i].isExist())	continue;
 
@@ -119,7 +123,7 @@ Shot* SceneMain::createPlayerShot(VECTOR pos)
 
 Shot* SceneMain::createEnemyShot(VECTOR pos)
 {
-	for (int j = 0; j < cShotMax; j++)
+	for (int j = 0; j < kShotMax; j++)
 	{
 		if (m_shot[j].isExist())	continue;
 		m_shot[j].createEnemyShot(pos, m_enemyShotGraphic);
@@ -128,10 +132,19 @@ Shot* SceneMain::createEnemyShot(VECTOR pos)
 	return nullptr;
 }
 
+void SceneMain::createItem(VECTOR pos)
+{
+	for (int i = 0; i < kItemMax; i++)
+	{
+		if (m_item[i].isExist())	continue;
+		m_item[i].create(pos.x, pos.y, 8, GetColor(0,0,255));
+		return;
+	}
+}
 
 void SceneMain::initBg()
 {
-	for (int i = 0; i < cStarNum; i++)
+	for (int i = 0; i < kStarNum; i++)
 	{
 		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
 		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
@@ -163,19 +176,23 @@ SceneBase* SceneMain::updateMain()
 	updateBg();
 
 	m_player.update();
-	for (int i = 0; i < cShotMax; i++)
+	for (int i = 0; i < kShotMax; i++)
 	{
 		m_shot[i].update();
 	}
-	for (int i = 0; i < cEnemyMax; i++)
+	for (int i = 0; i < kEnemyMax; i++)
 	{
 		m_enemy[i].update();
+	}
+	for (int i = 0; i < kItemMax; i++)
+	{
+		m_item[i].update();
 	}
 	m_effect.update();
 
 	// Õ“Ë”»’è
 	bool isCol = false;
-	for (int i = 0; i < cEnemyMax; i++)
+	for (int i = 0; i < kEnemyMax; i++)
 	{
 		// ƒvƒŒƒCƒ„[‚ª“G‚É‚Ô‚Â‚©‚Á‚½
 		if (m_player.isCol(&m_enemy[i]))
@@ -184,14 +201,26 @@ SceneBase* SceneMain::updateMain()
 		}
 	}
 
-	for (int j = 0; j < cShotMax; j++)
+	// ƒAƒCƒeƒ€Žæ“¾
+	for (int i = 0; i < kItemMax; i++)
+	{
+		if (!m_item[i].isExist())	continue;
+		// ƒvƒŒƒCƒ„[‚ª“G‚É‚Ô‚Â‚©‚Á‚½
+		if (m_player.isCol(&m_item[i]))
+		{
+			m_item[i].erase();
+			m_player.addExp(5);
+		}
+	}
+
+	for (int j = 0; j < kShotMax; j++)
 	{
 		if (!m_shot[j].isExist())	continue;
 
 		if (m_shot[j].isHitEnemy())
 		{
 			// “G‚É“–‚½‚é’e
-			for (int i = 0; i < cEnemyMax; i++)
+			for (int i = 0; i < kEnemyMax; i++)
 			{
 				if (!m_enemy[i].isExist())	continue;
 
@@ -204,8 +233,9 @@ SceneBase* SceneMain::updateMain()
 					// “|‚µ‚½
 					if (!m_enemy[i].isExist())
 					{
-						m_player.addExp(5);
+					//	m_player.addExp(5);
 						m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
+						createItem(m_enemy[i].getPos());
 					}
 					break;
 				}
@@ -234,7 +264,7 @@ SceneBase* SceneMain::updateMain()
 	{
 		// ƒ{ƒX‚ªŽc‚Á‚Ä‚¢‚ê‚Î‚Ü‚¾I‚í‚ç‚È‚¢
 		bool isEnd = true;
-		for (int i = 0; i < cEnemyMax; i++)
+		for (int i = 0; i < kEnemyMax; i++)
 		{
 			if (!m_enemy[i].isExist())	continue;
 			if (m_enemy[i].isBoss())
@@ -246,14 +276,14 @@ SceneBase* SceneMain::updateMain()
 		if (isEnd)
 		{
 			// Žc‚Á‚Ä‚éƒUƒR“GA“G‚Ì’e‚ðÁ‚·
-			for (int i = 0; i < cEnemyMax; i++)
+			for (int i = 0; i < kEnemyMax; i++)
 			{
 				if (!m_enemy[i].isExist())	continue;
 
 				m_enemy[i].erase();
 				m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
 			}
-			for (int i = 0; i < cShotMax; i++)
+			for (int i = 0; i < kShotMax; i++)
 			{
 				if (!m_shot[i].isExist())	continue;
 
@@ -286,7 +316,7 @@ SceneBase* SceneMain::updateStageClear()
 	// ”wŒi‰‰o
 	updateBg();
 	m_player.update();
-	for (int i = 0; i < cShotMax; i++)
+	for (int i = 0; i < kShotMax; i++)
 	{
 		m_shot[i].update();
 	}
@@ -321,11 +351,11 @@ SceneBase* SceneMain::updateGameover()
 
 	// ”wŒi‰‰o
 	updateBg();
-	for (int i = 0; i < cShotMax; i++)
+	for (int i = 0; i < kShotMax; i++)
 	{
 		m_shot[i].update();
 	}
-	for (int i = 0; i < cEnemyMax; i++)
+	for (int i = 0; i < kEnemyMax; i++)
 	{
 		m_enemy[i].update();
 	}
@@ -346,7 +376,7 @@ SceneBase* SceneMain::updateGameover()
 
 void SceneMain::updateBg()
 {
-	for (int i = 0; i < cStarNum; i++)
+	for (int i = 0; i < kStarNum; i++)
 	{
 		m_bgStar[i].update();
 		if (m_bgStar[i].getPos().x < 0.0f - 2.0f)
@@ -363,7 +393,7 @@ void SceneMain::updateBg()
 
 void SceneMain::drawBg()
 {
-	for (int i = 0; i < cStarNum; i++)
+	for (int i = 0; i < kStarNum; i++)
 	{
 		m_bgStar[i].draw();
 	}
