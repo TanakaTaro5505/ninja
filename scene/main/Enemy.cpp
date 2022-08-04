@@ -10,6 +10,10 @@
 static const int kHpBarLen		= 80;
 static const int kHpBarHeight	= 8;
 
+// ìGÇÃë¨ìx
+static constexpr int kSpeedNormal = 4.0f;
+static constexpr int kSpeedFast = 6.0f;
+
 // ===================================================================================
 void Enemy::init(int maxHp, Type type)
 {
@@ -31,7 +35,7 @@ void Enemy::init(int maxHp, Type type)
 	{
 	case Enemy::Type::kTypeChargePlayer:
 		toPlayer = VNorm(toPlayer);
-		m_vec = VScale(toPlayer, 6.0f);
+		m_vec = VScale(toPlayer, kSpeedFast);
 		m_angle = playerDir + 3.1459f;	// êiçsï˚å¸Ç…å¸ÇØÇÈ
 		break;
 	case Enemy::Type::kTypeBoss00:
@@ -109,7 +113,7 @@ bool Enemy::isBoss()
 
 void Enemy::updateCharge()
 {
-	m_vec.x = -4.0f;
+	m_vec.x = -kSpeedNormal;
 
 	m_pos.x += m_vec.x;
 	m_pos.y += m_vec.y;
@@ -138,7 +142,7 @@ void Enemy::updateChargeSin()
 {
 	m_sinRate += 0.05f;
 
-	m_basePos.x -= 4.0f;
+	m_basePos.x -= kSpeedNormal;
 
 	m_pos.x = m_basePos.x;
 	m_pos.y = m_basePos.y + sinf(m_sinRate) * 80.0f;
