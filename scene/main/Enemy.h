@@ -8,8 +8,10 @@ class Enemy : public GameObject
 public:
 	enum class Type
 	{
-		kTypeCharge,	// 前進するのみ
-		kTypeChargeSin,	// サインカーブ描く前進
+		kTypeCharge,		// 前進するのみ
+		kTypeChargeSin,		// サインカーブ描く前進
+		kTypeChargePlayer,	// プレイヤーへの突進
+			// 弾撃って逃げる
 
 		kTypeBoss00,	// ステージ1ボス
 
@@ -60,6 +62,7 @@ private:
 	// 敵のタイプ別更新処理
 	void updateCharge();
 	void updateChargeSin();
+	void updateChargePlayer();
 	void updateBoss00();
 
 	SceneMain* m_pMain;
