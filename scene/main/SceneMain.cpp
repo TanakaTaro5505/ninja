@@ -62,6 +62,28 @@ void SceneMain::deleteGraph()
 
 SceneBase* SceneMain::update()
 {
+	// List‚©‚ç•s—v‚É‚È‚Á‚½‚à‚Ì‚ğíœ‚·‚é
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
+	{
+		if (!(*itr)->isExist())
+		{
+			delete (*itr);
+			itr = m_enemyList.erase(itr);
+			continue;
+		}
+		itr++;
+	}
+	for (auto itr = m_itemList.begin(); itr != m_itemList.end();)
+	{
+		if (!(*itr)->isExist())
+		{
+			delete (*itr);
+			itr = m_itemList.erase(itr);
+			continue;
+		}
+		itr++;
+	}
+
 	switch (m_seq)
 	{
 	case Seq::kSeqMain:
@@ -198,33 +220,13 @@ SceneBase* SceneMain::updateMain()
 		m_shot[i].update();
 	}
 	// “G‚Ìˆ—
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
 	{
-		if ((*itr))
-		{
-			(*itr)->update();
-			if (!(*itr)->isExist())
-			{
-				delete (*itr);
-				itr = m_enemyList.erase(itr);
-				continue;
-			}
-		}
-		itr++;
+		(*itr)->update();
 	}
-	for (auto itr = m_itemList.begin(); itr != m_itemList.end();)
+	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); itr++)
 	{
-		if ((*itr))
-		{
-			(*itr)->update();
-			if (!(*itr)->isExist())
-			{
-				delete (*itr);
-				itr = m_itemList.erase(itr);
-				continue;
-			}
-		}
-		itr++;
+		(*itr)->update();
 	}
 	m_effect.update();
 
@@ -362,21 +364,9 @@ SceneBase* SceneMain::updateStageClear()
 		m_shot[i].update();
 	}
 	// “G‚Ìˆ—
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
 	{
-		if ((*itr))
-		{
-			(*itr)->update();
-
-			// ‰æ–ÊŠO‚Éo‚½“G‚ğíœ
-			if (!(*itr)->isExist())
-			{
-				delete (*itr);
-				itr = m_enemyList.erase(itr);
-				continue;
-			}
-		}
-		itr++;
+		(*itr)->update();
 	}
 	m_effect.update();
 
@@ -414,21 +404,9 @@ SceneBase* SceneMain::updateGameover()
 		m_shot[i].update();
 	}
 	// “G‚Ìˆ—
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
 	{
-		if ((*itr))
-		{
-			(*itr)->update();
-
-			// ‰æ–ÊŠO‚Éo‚½“G‚ğíœ
-			if (!(*itr)->isExist())
-			{
-				delete (*itr);
-				itr = m_enemyList.erase(itr);
-				continue;
-			}
-		}
-		itr++;
+		(*itr)->update();
 	}
 	m_effect.update();
 

@@ -18,8 +18,6 @@ class SceneMain : public SceneBase
 	//define ----------------------------------
 private:
 	static constexpr int kShotMax = 128;
-	static constexpr int kEnemyMax = 64;
-	static constexpr int kItemMax = 64;
 
 	static constexpr int kStarNum = 64;
 
@@ -96,10 +94,8 @@ private:
 	Shot m_shot[kShotMax];
 
 	StageManager	m_stage;
-	// enemy
 	std::list<Enemy*>	m_enemyList;
 	std::list<Item*>	m_itemList;
-//	Item m_item[kItemMax];
 
 	// グラフィック
 	int m_playerGraphic;
