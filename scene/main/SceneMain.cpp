@@ -31,6 +31,16 @@ void SceneMain::init()
 
 void SceneMain::deleteGraph()
 {
+	// “Gƒf[ƒ^‚Ìíœ
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
+	{
+		if ((*itr))
+		{
+			delete (*itr);
+			itr = m_enemyList.erase(itr);
+		}
+	}
+
 	DeleteGraph(m_playerGraphic);
 	DeleteGraph(m_shotGraphic);
 	DeleteGraph(m_enemyShotGraphic);
@@ -70,9 +80,8 @@ void SceneMain::draw()
 	}
 
 	m_player.draw();
-	for (int i = 0; i < kEnemyMax; i++)
-	{
-		m_enemy[i].draw();
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr) {
+		(*itr)->draw();
 	}
 	m_effect.draw();
 
@@ -92,23 +101,21 @@ void SceneMain::draw()
 		break;
 	}
 	
+	// ƒfƒoƒbƒO•\¦
+	DrawFormatString(0, 0,  GetColor(255,255,255), "“G‚Ì”:%d", m_enemyList.size());
 }
 
 void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 {
-	for (int i = 0; i < kEnemyMax; i++)
-	{
-		if (m_enemy[i].isExist())	continue;
-		
-		m_enemy[i].createGraphic(pos.x, pos.y, m_enemyGraphic);
-		m_enemy[i].setMain(this);
+	Enemy* pEnemy = new Enemy;
+	pEnemy->createGraphic(pos.x, pos.y, m_enemyGraphic);
+	pEnemy->setMain(this);
 
-		m_enemy[i].init(hp, type);
-		m_enemy[i].setHitDamage(cEnemyHitDamage);
-		m_enemy[i].setShotDamage(cEnemyShotDamage);
-		m_enemy[i].setShotWait(cEnemyShotWait);
-		break;
-	}
+	pEnemy->init(hp, type);
+	pEnemy->setHitDamage(cEnemyHitDamage);
+	pEnemy->setShotDamage(cEnemyShotDamage);
+	pEnemy->setShotWait(cEnemyShotWait);
+	m_enemyList.push_back(pEnemy);
 }
 
 Shot* SceneMain::createPlayerShot(VECTOR pos)
@@ -182,9 +189,22 @@ SceneBase* SceneMain::updateMain()
 	{
 		m_shot[i].update();
 	}
-	for (int i = 0; i < kEnemyMax; i++)
+	// “G‚Ìˆ—
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
 	{
-		m_enemy[i].update();
+		if ((*itr))
+		{
+			(*itr)->update();
+
+			// ‰æ–ÊŠO‚Éo‚½“G‚ğíœ
+			if (!(*itr)->isExist())
+			{
+				delete (*itr);
+				itr = m_enemyList.erase(itr);
+				continue;
+			}
+		}
+		itr++;
 	}
 	for (int i = 0; i < kItemMax; i++)
 	{
@@ -194,12 +214,11 @@ SceneBase* SceneMain::updateMain()
 
 	// Õ“Ë”»’è
 	bool isCol = false;
-	for (int i = 0; i < kEnemyMax; i++)
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
 	{
-		// ƒvƒŒƒCƒ„[‚ª“G‚É‚Ô‚Â‚©‚Á‚½
-		if (m_player.isCol(&m_enemy[i]))
+		if (m_player.isCol((*itr)))
 		{
-			m_player.damage(m_enemy[i].getHitDamage());
+			m_player.damage((*itr)->getHitDamage());
 		}
 	}
 
@@ -222,22 +241,22 @@ SceneBase* SceneMain::updateMain()
 		if (m_shot[j].isHitEnemy())
 		{
 			// “G‚É“–‚½‚é’e
-			for (int i = 0; i < kEnemyMax; i++)
+			for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
 			{
-				if (!m_enemy[i].isExist())	continue;
-
+				Enemy* pEnemy = (*itr);
+				if (!pEnemy->isExist())	continue;
 				// “G‚ÉƒVƒ‡ƒbƒg‚ğ‚ ‚Ä‚½
-				if (m_enemy[i].isCol(&m_shot[j]))
+				if (pEnemy->isCol(&m_shot[j]))
 				{
 					//	m_effect.create(static_cast<int>(m_enemy[i].getPos().x), static_cast<int>(m_enemy[i].getPos().y));
 					m_shot[j].hit();
-					m_enemy[i].hit(m_shot[j].getPower());
+					pEnemy->hit(m_shot[j].getPower());
 					// “|‚µ‚½
-					if (!m_enemy[i].isExist())
+					if (!pEnemy->isExist())
 					{
-					//	m_player.addExp(5);
-						m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
-						createItem(m_enemy[i].getPos());
+						//	m_player.addExp(5);
+						m_effect.create(pEnemy->getPos().x, pEnemy->getPos().y);
+						createItem(pEnemy->getPos());
 					}
 					break;
 				}
@@ -266,10 +285,10 @@ SceneBase* SceneMain::updateMain()
 	{
 		// ƒ{ƒX‚ªc‚Á‚Ä‚¢‚ê‚Î‚Ü‚¾I‚í‚ç‚È‚¢
 		bool isEnd = true;
-		for (int i = 0; i < kEnemyMax; i++)
+		for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
 		{
-			if (!m_enemy[i].isExist())	continue;
-			if (m_enemy[i].isBoss())
+			if (!(*itr)->isExist())	continue;
+			if ((*itr)->isBoss())
 			{
 				isEnd = false;
 			}
@@ -278,12 +297,12 @@ SceneBase* SceneMain::updateMain()
 		if (isEnd)
 		{
 			// c‚Á‚Ä‚éƒUƒR“GA“G‚Ì’e‚ğÁ‚·
-			for (int i = 0; i < kEnemyMax; i++)
+			for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
 			{
-				if (!m_enemy[i].isExist())	continue;
+				if (!(*itr)->isExist())	continue;
 
-				m_enemy[i].erase();
-				m_effect.create(m_enemy[i].getPos().x, m_enemy[i].getPos().y);
+				(*itr)->erase();
+				m_effect.create((*itr)->getPos().x, (*itr)->getPos().y);
 			}
 			for (int i = 0; i < kShotMax; i++)
 			{
@@ -326,6 +345,23 @@ SceneBase* SceneMain::updateStageClear()
 	{
 		m_shot[i].update();
 	}
+	// “G‚Ìˆ—
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
+	{
+		if ((*itr))
+		{
+			(*itr)->update();
+
+			// ‰æ–ÊŠO‚Éo‚½“G‚ğíœ
+			if (!(*itr)->isExist())
+			{
+				delete (*itr);
+				itr = m_enemyList.erase(itr);
+				continue;
+			}
+		}
+		itr++;
+	}
 	m_effect.update();
 
 
@@ -361,9 +397,22 @@ SceneBase* SceneMain::updateGameover()
 	{
 		m_shot[i].update();
 	}
-	for (int i = 0; i < kEnemyMax; i++)
+	// “G‚Ìˆ—
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ‚±‚±‚Å‚Íitr++‚µ‚È‚¢
 	{
-		m_enemy[i].update();
+		if ((*itr))
+		{
+			(*itr)->update();
+
+			// ‰æ–ÊŠO‚Éo‚½“G‚ğíœ
+			if (!(*itr)->isExist())
+			{
+				delete (*itr);
+				itr = m_enemyList.erase(itr);
+				continue;
+			}
+		}
+		itr++;
 	}
 	m_effect.update();
 

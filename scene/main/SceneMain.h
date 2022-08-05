@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include <list>
 #include "SceneManager.h"
 #include "PadUtil.h"
 
@@ -95,7 +96,8 @@ private:
 	Shot m_shot[kShotMax];
 
 	StageManager	m_stage;
-	Enemy m_enemy[kEnemyMax];
+	// enemy
+	std::list<Enemy*>	m_enemyList;
 	Item m_item[kItemMax];
 
 	// グラフィック
