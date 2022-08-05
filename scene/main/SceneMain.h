@@ -91,7 +91,7 @@ private:
 
 	// game
 	Player m_player;
-	Shot m_shot[kShotMax];
+	std::list<Shot*>	m_shotList;
 
 	StageManager	m_stage;
 	std::list<Enemy*>	m_enemyList;

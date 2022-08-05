@@ -31,6 +31,15 @@ void SceneMain::init()
 
 void SceneMain::deleteGraph()
 {
+	// 弾データの削除
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end();)		// ここではitr++しない
+	{
+		if ((*itr))
+		{
+			delete (*itr);
+			itr = m_shotList.erase(itr);
+		}
+	}
 	// 敵データの削除
 	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ここではitr++しない
 	{
@@ -63,6 +72,16 @@ void SceneMain::deleteGraph()
 SceneBase* SceneMain::update()
 {
 	// Listから不要になったものを削除する
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end();)		// ここではitr++しない
+	{
+		if (!(*itr)->isExist())
+		{
+			delete (*itr);
+			itr = m_shotList.erase(itr);
+			continue;
+		}
+		itr++;
+	}
 	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end();)		// ここではitr++しない
 	{
 		if (!(*itr)->isExist())
@@ -101,9 +120,9 @@ void SceneMain::draw()
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
 	drawBg();
-	for (int i = 0; i < kShotMax; i++)
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); ++itr)
 	{
-		m_shot[i].draw();
+		(*itr)->draw();
 	}
 	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
 	{
@@ -135,7 +154,8 @@ void SceneMain::draw()
 	
 	// デバッグ表示
 	DrawFormatString(0,  0, GetColor(255, 255, 255), "敵の数:%d", m_enemyList.size());
-	DrawFormatString(0, 32, GetColor(255, 255, 255), "アイテムの数:%d", m_itemList.size());
+	DrawFormatString(0, 32, GetColor(255, 255, 255), "ショットの数:%d", m_shotList.size());
+	DrawFormatString(0, 64, GetColor(255, 255, 255), "アイテムの数:%d", m_itemList.size());
 }
 
 void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
@@ -153,25 +173,18 @@ void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 
 Shot* SceneMain::createPlayerShot(VECTOR pos)
 {
-	for (int i = 0; i < kShotMax; i++)
-	{
-		if (m_shot[i].isExist())	continue;
-
-		m_shot[i].createPlayerShot(pos, m_shotGraphic);
-		return &(m_shot[i]);
-	}
-	return nullptr;
+	Shot* pShot = new Shot;
+	pShot->createPlayerShot(pos, m_shotGraphic);
+	m_shotList.push_back(pShot);
+	return pShot;
 }
 
 Shot* SceneMain::createEnemyShot(VECTOR pos)
 {
-	for (int j = 0; j < kShotMax; j++)
-	{
-		if (m_shot[j].isExist())	continue;
-		m_shot[j].createEnemyShot(pos, m_enemyShotGraphic);
-		return  &(m_shot[j]);
-	}
-	return nullptr;
+	Shot* pShot = new Shot;
+	pShot->createEnemyShot(pos, m_enemyShotGraphic);
+	m_shotList.push_back(pShot);
+	return pShot;
 }
 
 void SceneMain::createItem(VECTOR pos)
@@ -215,9 +228,9 @@ SceneBase* SceneMain::updateMain()
 	updateBg();
 
 	m_player.update();
-	for (int i = 0; i < kShotMax; i++)
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
 	{
-		m_shot[i].update();
+		(*itr)->update();
 	}
 	// 敵の処理
 	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
@@ -252,11 +265,13 @@ SceneBase* SceneMain::updateMain()
 		}
 	}
 
-	for (int j = 0; j < kShotMax; j++)
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
 	{
-		if (!m_shot[j].isExist())	continue;
+		Shot* pShot = (*itr);
 
-		if (m_shot[j].isHitEnemy())
+		if (!pShot->isExist())	continue;
+
+		if (pShot->isHitEnemy())
 		{
 			// 敵に当たる弾
 			for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
@@ -264,11 +279,11 @@ SceneBase* SceneMain::updateMain()
 				Enemy* pEnemy = (*itr);
 				if (!pEnemy->isExist())	continue;
 				// 敵にショットをあてた
-				if (pEnemy->isCol(&m_shot[j]))
+				if (pEnemy->isCol(pShot))
 				{
 					//	m_effect.create(static_cast<int>(m_enemy[i].getPos().x), static_cast<int>(m_enemy[i].getPos().y));
-					m_shot[j].hit();
-					pEnemy->hit(m_shot[j].getPower());
+					pShot->hit();
+					pEnemy->hit(pShot->getPower());
 					// 倒した
 					if (!pEnemy->isExist())
 					{
@@ -283,14 +298,13 @@ SceneBase* SceneMain::updateMain()
 		else
 		{
 			// プレイヤーに当たる弾
-			if (m_player.isCol(&m_shot[j]))
+			if (m_player.isCol(pShot))
 			{
-				m_shot[j].hit();
-				m_player.damage(m_shot[j].getPower());
+				pShot->hit();
+				m_player.damage(pShot->getPower());
 			}
 		}
 	}
-
 	// プレイヤー死亡
 	if (m_player.getHp() <= 0)
 	{
@@ -322,13 +336,13 @@ SceneBase* SceneMain::updateMain()
 				(*itr)->erase();
 				m_effect.create((*itr)->getPos().x, (*itr)->getPos().y);
 			}
-			for (int i = 0; i < kShotMax; i++)
+			for (auto itr = m_shotList.begin(); itr != m_shotList.end(); ++itr)
 			{
-				if (!m_shot[i].isExist())	continue;
+				if (!(*itr)->isExist())	continue;
 
-				if (!m_shot[i].isHitEnemy())
+				if (!(*itr)->isHitEnemy())
 				{
-					m_shot[i].erase();
+					(*itr)->erase();
 				}
 			}
 			m_endWait = 0;
@@ -359,9 +373,9 @@ SceneBase* SceneMain::updateStageClear()
 	VECTOR pos = m_player.getPos();
 	pos.x += 8.0f;
 	m_player.setPos(pos);
-	for (int i = 0; i < kShotMax; i++)
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
 	{
-		m_shot[i].update();
+		(*itr)->update();
 	}
 	// 敵の処理
 	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
@@ -399,9 +413,9 @@ SceneBase* SceneMain::updateGameover()
 
 	// 背景演出
 	updateBg();
-	for (int i = 0; i < kShotMax; i++)
+	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
 	{
-		m_shot[i].update();
+		(*itr)->update();
 	}
 	// 敵の処理
 	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
