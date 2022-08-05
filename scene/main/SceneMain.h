@@ -74,9 +74,9 @@ public:
 
 private:
 	// シーケンスに応じた処理
-	SceneBase* updateMain();			// kSeqMain,
+	SceneBase* updateMain();		// kSeqMain,
 	SceneBase* updateStageClear();	// kSeqStageClear,
-	SceneBase* updateGameover();		// kSeqGameover,
+	SceneBase* updateGameover();	// kSeqGameover,
 
 	// 背景処理
 	void initBg();
@@ -98,7 +98,8 @@ private:
 	StageManager	m_stage;
 	// enemy
 	std::list<Enemy*>	m_enemyList;
-	Item m_item[kItemMax];
+	std::list<Item*>	m_itemList;
+//	Item m_item[kItemMax];
 
 	// グラフィック
 	int m_playerGraphic;

@@ -40,6 +40,15 @@ void SceneMain::deleteGraph()
 			itr = m_enemyList.erase(itr);
 		}
 	}
+	// アイテムデータの削除
+	for (auto itr = m_itemList.begin(); itr != m_itemList.end();)		// ここではitr++しない
+	{
+		if ((*itr))
+		{
+			delete (*itr);
+			itr = m_itemList.erase(itr);
+		}
+	}
 
 	DeleteGraph(m_playerGraphic);
 	DeleteGraph(m_shotGraphic);
@@ -74,13 +83,14 @@ void SceneMain::draw()
 	{
 		m_shot[i].draw();
 	}
-	for (int i = 0; i < kItemMax; i++)
+	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
 	{
-		m_item[i].draw();
+		(*itr)->draw();
 	}
 
 	m_player.draw();
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr) {
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+	{
 		(*itr)->draw();
 	}
 	m_effect.draw();
@@ -102,7 +112,8 @@ void SceneMain::draw()
 	}
 	
 	// デバッグ表示
-	DrawFormatString(0, 0,  GetColor(255,255,255), "敵の数:%d", m_enemyList.size());
+	DrawFormatString(0,  0, GetColor(255, 255, 255), "敵の数:%d", m_enemyList.size());
+	DrawFormatString(0, 32, GetColor(255, 255, 255), "アイテムの数:%d", m_itemList.size());
 }
 
 void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
@@ -143,12 +154,9 @@ Shot* SceneMain::createEnemyShot(VECTOR pos)
 
 void SceneMain::createItem(VECTOR pos)
 {
-	for (int i = 0; i < kItemMax; i++)
-	{
-		if (m_item[i].isExist())	continue;
-		m_item[i].createGraphic(pos.x, pos.y, m_itemGraphic);
-		return;
-	}
+	Item* pItem = new Item;
+	pItem->createGraphic(pos.x, pos.y, m_itemGraphic);
+	m_itemList.push_back(pItem);
 }
 
 void SceneMain::initBg()
@@ -195,8 +203,6 @@ SceneBase* SceneMain::updateMain()
 		if ((*itr))
 		{
 			(*itr)->update();
-
-			// 画面外に出た敵を削除
 			if (!(*itr)->isExist())
 			{
 				delete (*itr);
@@ -206,9 +212,19 @@ SceneBase* SceneMain::updateMain()
 		}
 		itr++;
 	}
-	for (int i = 0; i < kItemMax; i++)
+	for (auto itr = m_itemList.begin(); itr != m_itemList.end();)
 	{
-		m_item[i].update();
+		if ((*itr))
+		{
+			(*itr)->update();
+			if (!(*itr)->isExist())
+			{
+				delete (*itr);
+				itr = m_itemList.erase(itr);
+				continue;
+			}
+		}
+		itr++;
 	}
 	m_effect.update();
 
@@ -223,13 +239,13 @@ SceneBase* SceneMain::updateMain()
 	}
 
 	// アイテム取得
-	for (int i = 0; i < kItemMax; i++)
+	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
 	{
-		if (!m_item[i].isExist())	continue;
+		if (!(*itr)->isExist())	continue;
 		// プレイヤーが敵にぶつかった
-		if (m_player.isCol(&m_item[i]))
+		if (m_player.isCol((*itr)))
 		{
-			m_item[i].erase();
+			(*itr)->erase();
 			m_player.addExp(5);
 		}
 	}
