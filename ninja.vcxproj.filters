@@ -37,6 +37,9 @@
     <Filter Include="ソース ファイル\sound">
       <UniqueIdentifier>{d7b060c1-b1d3-4ae2-bd8b-c9cff4763a2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\Main\Enemy">
+      <UniqueIdentifier>{40b9d32c-7053-4e33-b5de-a5d93ba95d7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -90,6 +93,9 @@
     <ClCompile Include="scene\main\Item.cpp">
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClCompile>
+    <ClCompile Include="scene\main\EnemyBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\SceneBase.h">
@@ -142,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="scene\main\Item.h">
       <Filter>ソース ファイル\Scene\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\main\EnemyBase.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

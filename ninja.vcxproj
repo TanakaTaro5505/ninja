@@ -154,6 +154,7 @@
     <ClCompile Include="effect\EffectManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="scene\main\Enemy.cpp" />
+    <ClCompile Include="scene\main\EnemyBase.cpp" />
     <ClCompile Include="scene\main\GameObject.cpp" />
     <ClCompile Include="scene\main\Item.cpp" />
     <ClCompile Include="scene\main\Player.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="effect\EffectManager.h" />
     <ClInclude Include="game\Game.h" />
     <ClInclude Include="scene\main\Enemy.h" />
+    <ClInclude Include="scene\main\EnemyBase.h" />
     <ClInclude Include="scene\main\GameObject.h" />
     <ClInclude Include="scene\main\Item.h" />
     <ClInclude Include="scene\main\Player.h" />
