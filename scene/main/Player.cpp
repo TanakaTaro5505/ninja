@@ -161,7 +161,7 @@ void Player::update()
 		((Pad::isPress(PAD_INPUT_1)) && (m_lastShot >= getShotInterval())))
 	{
 		Sound::PlaySound(Sound::kSoundID_Shot);
-
+#if false
 		for( int i= 0; i < m_shotNum; i++)
 		{
 			VECTOR pos = getPos();
@@ -174,12 +174,48 @@ void Player::update()
 			{
 				pShot->setMoveSpeed(m_shotData[i].speed);
 				pShot->setMoveAngle(m_shotData[i].angle);
-				pShot->setPower(m_shotData[i].power);
 
+				pShot->setPower(getShotDamage());
 				pShot->setScale(getShotScale());
 			}
 		}
-		
+#else
+		// 前方ショット
+		int frontNum = m_powerUp[kPowerupTypeShotDir]+1;
+		if (frontNum > 5)	frontNum = 5;
+		int startAngle = -(frontNum-1)*5;
+		for (int i = 0; i < frontNum; i++)
+		{
+			Shot* pShot = nullptr;
+			pShot = m_pMain->createPlayerShot(getPos());
+			// 弾の初期設定を行う
+			if (pShot)
+			{
+				pShot->setMoveSpeed(kShotSpeed);
+				pShot->setMoveAngle(startAngle + i*10);
+				pShot->setPower(getShotDamage());
+				pShot->setScale(getShotScale());
+			}
+		}
+
+		// 後方ショット
+		int backNum = m_powerUp[kPowerupTypeBackShot];
+		if (backNum > 3)	backNum = 3;
+		startAngle = -(backNum - 1) * 5;
+		for (int i = 0; i < backNum; i++)
+		{
+			Shot* pShot = nullptr;
+			pShot = m_pMain->createPlayerShot(getPos());
+			// 弾の初期設定を行う
+			if (pShot)
+			{
+				pShot->setMoveSpeed(kShotSpeed);
+				pShot->setMoveAngle(180 + startAngle + i * 10);
+				pShot->setPower(getShotDamage());
+				pShot->setScale(getShotScale());
+			}
+		}
+#endif
 		m_lastShot = 0;
 	}
 }
@@ -261,6 +297,15 @@ void Player::addExp(int add)
 
 		setShot(m_level);
 		Sound::PlaySound(Sound::kSoundID_Levelup);
+
+		// test
+		int levelUpType = GetRand(kPowerupTypeNum - 1);
+		m_powerUp[levelUpType]++;
+//		for (int i = 0; i < kPowerupTypeNum; i++)
+//		{
+//			m_powerUp[i]++;
+//		}
+
 	}
 }
 
