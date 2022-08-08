@@ -21,6 +21,7 @@ public:
 	{
 		m_pMain = nullptr;
 		m_stageNo = 0;
+		m_partsIndex = 0;
 		m_frameCount = 0;
 	}
 	virtual ~StageManager()
@@ -40,5 +41,6 @@ private:
 	SceneMain* m_pMain;
 
 	int		m_stageNo;
+	int		m_partsIndex;
 	int		m_frameCount;
 };
