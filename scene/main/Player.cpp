@@ -14,8 +14,10 @@ static const int kDamageFrame = 60;
 
 // äÓñ{ê´î\
 static constexpr int kMaxHp			= 100;
+
 static constexpr int kShotSpeed		= 6;
 static constexpr int kShotInterval	= 16;
+
 static constexpr int kMoveSpeed		= 4;
 static constexpr int kDamagePrevent = 0;
 

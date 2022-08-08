@@ -9,6 +9,7 @@ static const int cEnemyShotWait		= 120;		// ¶¬ŒãƒVƒ‡ƒbƒg‚ðŒ‚‚Â‚Ü‚Å‚ÌŽžŠÔ(ƒtƒŒ
 void SceneMain::init()
 {
 	m_seq = Seq::kSeqMain;
+	m_frameCount = 0;
 	m_endWait = -1;
 
 	m_playerGraphic = LoadGraph("data/main/player.bmp");
@@ -140,15 +141,21 @@ void SceneMain::draw()
 
 	int graphSizeX = 0;
 	int graphSizeY = 0;
+	int blend = m_frameCount*2;
+	if (blend > 255)	blend = 255;
 	switch (m_seq)
 	{
 	case Seq::kSeqStageClear:
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, blend);
 		GetGraphSize(m_clearGraphic, &graphSizeX, &graphSizeY);
 		DrawGraph((Game::cScreenWidth- graphSizeX)/2, (Game::cScreenHeight - graphSizeY) / 2, m_clearGraphic, 1);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	case Seq::kSeqGameover:
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, blend);
 		GetGraphSize(m_gameoverGraphic, &graphSizeX, &graphSizeY);
 		DrawGraph((Game::cScreenWidth - graphSizeX) / 2, (Game::cScreenHeight - graphSizeY) / 2, m_gameoverGraphic, 1);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	}
 	
@@ -307,6 +314,7 @@ SceneBase* SceneMain::updateMain()
 		m_endWait = 0;
 		m_effect.create(m_player.getPos().x, m_player.getPos().y);
 		m_seq = Seq::kSeqGameover;
+		m_frameCount = 0;
 	}
 	// ƒXƒe[ƒWI—¹ˆ—
 	if (m_stage.isEnd())
@@ -344,6 +352,7 @@ SceneBase* SceneMain::updateMain()
 			m_endWait = 0;
 			m_player.setSeq(Player::Seq::kSeqGameClear);
 			m_seq = Seq::kSeqStageClear;
+			m_frameCount = 0;
 		}
 	}
 	return this;
@@ -351,6 +360,8 @@ SceneBase* SceneMain::updateMain()
 
 SceneBase* SceneMain::updateStageClear()
 {
+	m_frameCount++;
+
 	if (m_endWait > 0)
 	{
 		// ƒtƒF[ƒhƒAƒEƒg‚µ‚ÄI—¹
@@ -394,6 +405,8 @@ SceneBase* SceneMain::updateStageClear()
 
 SceneBase* SceneMain::updateGameover()
 {
+	m_frameCount++;
+
 	if (m_endWait > 0)
 	{
 		// ƒtƒF[ƒhƒAƒEƒg‚µ‚ÄI—¹

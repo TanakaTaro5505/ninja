@@ -35,6 +35,7 @@ public:
 	SceneMain() : SceneBase()
 	{
 		m_seq = Seq::kSeqMain;
+		m_frameCount = 0;
 		m_endWait = -1;
 		m_fadeBright = 0;
 
@@ -91,6 +92,7 @@ private:
 	// variable ----------------------------------
 
 	Seq	m_seq;
+	int m_frameCount;
 
 	int m_endWait;
 	int m_fadeBright;
