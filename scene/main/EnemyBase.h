@@ -40,7 +40,7 @@ public:
 	int getShotDamage() { return m_shotDamage; }
 	void setShotDamage(int damage) { m_shotDamage = damage; }
 
-private:
+protected:
 
 	SceneMain* m_pMain;
 
