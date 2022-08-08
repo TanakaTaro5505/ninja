@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EnemyBase.h"
 class SceneMain;
 
 class StageManager
@@ -36,6 +37,8 @@ public:
 	// ‚·‚×‚Ä‚Ì“G‚ğ¶¬Ï‚İ
 	bool isEnd();
 
+private:
+	EnemyBase* createEnemy(EnemyType type);
 private:
 
 	SceneMain* m_pMain;
