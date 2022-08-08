@@ -236,14 +236,17 @@ SceneBase* SceneMain::updateMain()
 	m_effect.update();
 
 	// 衝突判定
-	bool isCol = false;
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+	if (m_player.isGetDamage())
 	{
-		if (m_player.isCol((*itr)))
+		for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
 		{
-			m_player.damage((*itr)->getHitDamage());
+			if (m_player.isCol((*itr)))
+			{
+				m_player.damage((*itr)->getHitDamage());
+			}
 		}
 	}
+	
 
 	// アイテム取得
 	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
@@ -290,7 +293,7 @@ SceneBase* SceneMain::updateMain()
 		else
 		{
 			// プレイヤーに当たる弾
-			if (m_player.isCol(pShot))
+			if (m_player.isGetDamage() && m_player.isCol(pShot))
 			{
 				pShot->hit();
 				m_player.damage(pShot->getPower());

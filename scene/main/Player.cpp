@@ -4,20 +4,20 @@
 
 #include "SceneMain.h"
 
-static const int kHpBarLen = 80;
-static const int kHpBarHeight = 8;
+static constexpr int kHpBarLen = 80;
+static constexpr int kHpBarHeight = 8;
 
-static const int kExpBarLen = 80;
-static const int kExpBarHeight = 8;
+static constexpr int kExpBarLen = 80;
+static constexpr int kExpBarHeight = 8;
 // ダメージ受けた後の無敵時間(フレーム)
 static const int kDamageFrame = 60;
 
 // 基本性能
-static const int kMaxHp			= 100;
-static const int kShotSpeed		= 6;
-static const int kShotInterval	= 16;
-static const int kMoveSpeed		= 4;
-static const int kDamagePrevent = 0;
+static constexpr int kMaxHp			= 100;
+static constexpr int kShotSpeed		= 6;
+static constexpr int kShotInterval	= 16;
+static constexpr int kMoveSpeed		= 4;
+static constexpr int kDamagePrevent = 0;
 
 // レベルに応じたショットデータ
 typedef struct LevelShotData
@@ -39,6 +39,11 @@ static constexpr LevelShotData	kLevelShotDataTbl[] =
 	{ 3, {  0.0f,  0.0f, kShotSpeed,  0.0f, 6 } },
 	{ 3, {  0.0f,  0.0f, kShotSpeed, 10.0f, 6 } },
 	{ 3, {  0.0f,  0.0f, kShotSpeed,-10.0f, 6 } },
+	// lv4
+	{ 4, {  0.0f,  0.0f, kShotSpeed,  0.0f, 6 } },
+	{ 4, {  0.0f,  0.0f, kShotSpeed, 10.0f, 6 } },
+	{ 4, {  0.0f,  0.0f, kShotSpeed,-10.0f, 6 } },
+	{ 4, {  0.0f,  0.0f, kShotSpeed,180.0f, 6 } },
 };
 
 static constexpr int kLevelShotDataTblSize = sizeof(kLevelShotDataTbl) / sizeof(kLevelShotDataTbl[0]);
@@ -48,6 +53,8 @@ static constexpr int kShotLevelMax = kLevelShotDataTbl[kLevelShotDataTblSize-1].
 // ===================================================================================
 void Player::init()
 {
+	m_seq = Seq::kSeqMain;
+
 	m_maxHp = kMaxHp;
 	m_hp = m_maxHp;
 	m_shotSpeed = kShotSpeed;
@@ -152,7 +159,7 @@ void Player::draw()
 	if (!m_isExist)	return;
 	if (getHp() <= 0)	return;
 
-	if( (m_damageFrame < 0) || (m_damageFrame % 2) )
+	if( (m_damageFrame < 0) || (m_damageFrame % 2) && m_seq == Seq::kSeqMain )
 	{
 		GameObject::draw();
 	}
@@ -179,6 +186,16 @@ void Player::draw()
 	DrawBox(x1, y1, x2, y2, GetColor(255, 255, 0), true);
 
 	DrawFormatString(x1 - 8, y1, GetColor(255, 255, 255), "%d", getLevel());
+}
+
+bool Player::isGetDamage()
+{
+	// 無敵期間中はダメージ受けない
+	if (m_damageFrame >= 0)	return false;
+	// ゲームクリア後などはダメージ受けない
+	if( m_seq != Seq::kSeqMain )	return false;
+
+	return true;
 }
 
 void Player::damage(int getDamage)

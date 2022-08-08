@@ -6,6 +6,14 @@ class SceneMain;
 class Player : public GameObject
 {
 public:
+	enum class Seq
+	{
+		kSeqMain,		// 普段のゲーム中
+		kSeqGameOver,	// ゲームオーバー演出
+		kSeqGameClear,	// ゲームクリア演出
+		
+		kSeqNum
+	};
 	typedef struct ShotData
 	{
 		// 発射開始位置	プレイヤー位置からの差分
@@ -19,9 +27,11 @@ public:
 		int power;
 	}ShotData;
 public:
-	Player() : GameObject() 
+	Player() : GameObject()
 	{
 		m_pMain = nullptr;
+
+		m_seq = Seq::kSeqMain;
 
 		m_hp = 0;
 		m_maxHp = 0;
@@ -46,6 +56,7 @@ public:
 
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
+	bool isGetDamage();
 	void damage( int getDamage );
 
 	int getHp() { return m_hp; }
@@ -66,6 +77,7 @@ private:
 private:
 	// variable----------------------------
 	SceneMain* m_pMain;
+	Seq m_seq;
 
 	// キャラクター性能
 	int m_hp;
