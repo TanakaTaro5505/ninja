@@ -183,7 +183,7 @@ void Player::update()
 		// 前方ショット
 		int frontNum = m_powerUp[kPowerupTypeShotDir]+1;
 		if (frontNum > 5)	frontNum = 5;
-		int startAngle = -(frontNum-1)*5;
+		int startAngle = -(frontNum-1) * 5;
 		for (int i = 0; i < frontNum; i++)
 		{
 			Shot* pShot = nullptr;
