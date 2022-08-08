@@ -78,9 +78,6 @@
     <ClCompile Include="scene\main\Player.cpp">
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClCompile>
-    <ClCompile Include="scene\main\Enemy.cpp">
-      <Filter>ソース ファイル\Scene\Main</Filter>
-    </ClCompile>
     <ClCompile Include="effect\EffectManager.cpp">
       <Filter>ソース ファイル\effect</Filter>
     </ClCompile>
@@ -144,9 +141,6 @@
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClInclude>
     <ClInclude Include="scene\main\Player.h">
-      <Filter>ソース ファイル\Scene\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\main\Enemy.h">
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClInclude>
     <ClInclude Include="effect\EffectManager.h">

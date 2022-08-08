@@ -100,7 +100,6 @@ private:
 	std::list<Shot*>	m_shotList;
 
 	StageManager	m_stage;
-//	std::list<Enemy*>	m_enemyList;
 	std::list<EnemyBase*>	m_enemyList;
 	std::list<Item*>	m_itemList;
 
