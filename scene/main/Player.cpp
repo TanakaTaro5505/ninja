@@ -239,6 +239,7 @@ void Player::addExp(int add)
 		m_level++;
 
 		setShot(m_level);
+		Sound::PlaySound(Sound::kSoundID_Levelup);
 	}
 }
 

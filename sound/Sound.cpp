@@ -9,6 +9,7 @@ namespace Sound
 		"data/sound/shot.mp3",	// kSoundID_Shot,
 		"data/sound/hit.mp3",	// kSoundID_Hit,
 		"data/sound/dead.mp3",	// kSoundID_Dead,
+		"data/sound/levelup.mp3",	// kSoundID_Levelup,
 	};
 
 	static int soundHandle[kSoundID_Num];

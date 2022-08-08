@@ -12,6 +12,7 @@ namespace Sound
 		kSoundID_Shot,
 		kSoundID_Hit,
 		kSoundID_Dead,
+		kSoundID_Levelup,
 
 		kSoundID_Num
 	}SoundID;
