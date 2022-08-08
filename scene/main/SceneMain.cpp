@@ -158,6 +158,7 @@ void SceneMain::draw()
 	DrawFormatString(0, 64, GetColor(255, 255, 255), "ƒAƒCƒeƒ€‚Ì”:%d", m_itemList.size());
 }
 
+#if false
 void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 {
 	Enemy* pEnemy = new Enemy;
@@ -170,6 +171,12 @@ void SceneMain::createEnemy(VECTOR pos, int hp, Enemy::Type type)
 	pEnemy->setShotWait(cEnemyShotWait);
 	m_enemyList.push_back(pEnemy);
 }
+#else
+void SceneMain::addEnemy(EnemyBase* pEnemy)
+{
+	m_enemyList.push_back(pEnemy);
+}
+#endif
 
 Shot* SceneMain::createPlayerShot(VECTOR pos)
 {
@@ -276,7 +283,7 @@ SceneBase* SceneMain::updateMain()
 			// “G‚É“–‚½‚é’e
 			for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
 			{
-				Enemy* pEnemy = (*itr);
+				EnemyBase* pEnemy = (*itr);
 				if (!pEnemy->isExist())	continue;
 				// “G‚ÉƒVƒ‡ƒbƒg‚ð‚ ‚Ä‚½
 				if (pEnemy->isCol(pShot))

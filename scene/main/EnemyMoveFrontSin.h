@@ -2,14 +2,16 @@
 #include "GameObject.h"
 #include "EnemyBase.h"
 
-class EnemyMoveFront : public EnemyBase
+class EnemyMoveFrontSin : public EnemyBase
 {
 public:
-	EnemyMoveFront() : EnemyBase()
+	EnemyMoveFrontSin() : EnemyBase()
 	{
+		m_basePos = { 0.0f, 0.0f,0.0f };
+		m_sinRate = 0.0f;
 		m_shotWait = 0;
 	}
-	virtual ~EnemyMoveFront() {}
+	virtual ~EnemyMoveFrontSin() {}
 
 	// ê∂ê¨éûÇ…èâä˙âª	createGraphicÇÃÇ†Ç∆
 	void init(int maxHp) override;
@@ -18,5 +20,7 @@ public:
 
 private:
 
+	VECTOR m_basePos;
+	float m_sinRate;
 	int m_shotWait;
 };

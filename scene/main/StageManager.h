@@ -5,6 +5,18 @@ class SceneMain;
 class StageManager
 {
 public:
+	enum class EnemyType
+	{
+		kEnemyTypeCharge,		// 前進するのみ
+		kEnemyTypeChargeSin,	// サインカーブ描く前進
+		kEnemyTypeChargePlayer,	// プレイヤーへの突進
+			// 弾撃って逃げる
+
+		kEnemyTypeBoss00,		// ステージ1ボス
+
+		kEnemyTypeNum
+	};
+public:
 	StageManager()
 	{
 		m_pMain = nullptr;

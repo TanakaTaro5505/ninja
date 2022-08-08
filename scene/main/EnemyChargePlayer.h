@@ -2,14 +2,13 @@
 #include "GameObject.h"
 #include "EnemyBase.h"
 
-class EnemyMoveFront : public EnemyBase
+class EnemyChargePlayer : public EnemyBase
 {
 public:
-	EnemyMoveFront() : EnemyBase()
+	EnemyChargePlayer() : EnemyBase()
 	{
-		m_shotWait = 0;
 	}
-	virtual ~EnemyMoveFront() {}
+	virtual ~EnemyChargePlayer() {}
 
 	// ¶¬‚É‰Šú‰»	createGraphic‚Ì‚ ‚Æ
 	void init(int maxHp) override;
@@ -18,5 +17,4 @@ public:
 
 private:
 
-	int m_shotWait;
 };

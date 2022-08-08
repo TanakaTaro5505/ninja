@@ -7,7 +7,7 @@
 #include "Command.h"
 #include "Player.h"
 #include "Shot.h"
-#include "Enemy.h"
+#include "EnemyBase.h"
 #include "Item.h"
 #include "StageManager.h"
 
@@ -58,7 +58,11 @@ public:
 	void draw();
 
 	// 敵生成
+#if false
 	void createEnemy(VECTOR pos, int hp, Enemy::Type type);
+#else
+	void addEnemy(EnemyBase* pEnemy);
+#endif
 
 	// プレイヤー取得
 	Player* getPlayer() { return &m_player; }
@@ -69,6 +73,8 @@ public:
 
 	// アイテム生成
 	void createItem(VECTOR pos);
+
+	int getEnemyGraphic() { return m_enemyGraphic; }
 
 private:
 	// シーケンスに応じた処理
@@ -94,7 +100,8 @@ private:
 	std::list<Shot*>	m_shotList;
 
 	StageManager	m_stage;
-	std::list<Enemy*>	m_enemyList;
+//	std::list<Enemy*>	m_enemyList;
+	std::list<EnemyBase*>	m_enemyList;
 	std::list<Item*>	m_itemList;
 
 	// グラフィック

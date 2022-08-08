@@ -1,4 +1,4 @@
-#include "EnemyMoveFront.h"
+#include "EnemyMoveFrontSin.h"
 #include "Game.h"
 #include "Sound.h"
 #include <math.h>
@@ -9,7 +9,7 @@
 static constexpr float kSpeed = -4.0f;
 
 // ===================================================================================
-void EnemyMoveFront::init(int maxHp)
+void EnemyMoveFrontSin::init(int maxHp)
 {
 	EnemyBase::init(maxHp);
 
@@ -17,22 +17,29 @@ void EnemyMoveFront::init(int maxHp)
 	m_vec.y = 0.0f;
 	m_vec.z = 0.0f;
 	m_shotWait = 120;
+
+	m_basePos = m_pos;
+	m_sinRate = 0.0f;
 }
 
-void EnemyMoveFront::update()
+void EnemyMoveFrontSin::update()
 {
 	if (!m_isExist)	return;
 
-	m_pos.x += m_vec.x;
-	m_pos.y += m_vec.y;
+	m_sinRate += 0.05f;
+
+	m_basePos.x += kSpeed;
+
+	m_pos.x = m_basePos.x;
+	m_pos.y = m_basePos.y + sinf(m_sinRate) * 80.0f;
 
 	if (m_pos.x < 0.0f - m_radius)
 	{
 		m_isExist = false;
 	}
 
-	m_shotWait--;
 
+	m_shotWait--;
 	if (m_shotWait == 0)
 	{
 		Shot* pShot = nullptr;
@@ -41,8 +48,12 @@ void EnemyMoveFront::update()
 		if (pShot)
 		{
 			pShot->setMoveSpeed(8);
-			pShot->setMoveAngle(180);
 			pShot->setPower(getShotDamage());
+			// ƒvƒŒƒCƒ„[‚Ì•û‚É’e‚ðŒ‚‚Â
+			Player* pPlayer = m_pMain->getPlayer();
+			float dir = atan2f(pPlayer->getPos().y - getPos().y, pPlayer->getPos().x - getPos().x);
+			float dirRad = dir / 3.1459f * 180.0f;
+			pShot->setMoveAngle(dirRad);
 		}
 	}
 }

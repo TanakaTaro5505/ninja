@@ -16,7 +16,7 @@ void EnemyBase::init(int maxHp)
 	m_maxHp = maxHp;
 	m_hp = m_maxHp;
 }
-
+#if false
 void EnemyBase::update()
 {
 	if (!m_isExist)	return;
@@ -29,7 +29,7 @@ void EnemyBase::update()
 		m_isExist = false;
 	}
 }
-
+#endif
 void EnemyBase::draw()
 {
 	if (!m_isExist)	return;

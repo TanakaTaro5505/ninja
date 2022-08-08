@@ -155,7 +155,10 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="scene\main\Enemy.cpp" />
     <ClCompile Include="scene\main\EnemyBase.cpp" />
+    <ClCompile Include="scene\main\EnemyBoss00.cpp" />
+    <ClCompile Include="scene\main\EnemyChargePlayer.cpp" />
     <ClCompile Include="scene\main\EnemyMoveFront.cpp" />
+    <ClCompile Include="scene\main\EnemyMoveFrontSin.cpp" />
     <ClCompile Include="scene\main\GameObject.cpp" />
     <ClCompile Include="scene\main\Item.cpp" />
     <ClCompile Include="scene\main\Player.cpp" />
@@ -176,7 +179,10 @@
     <ClInclude Include="game\Game.h" />
     <ClInclude Include="scene\main\Enemy.h" />
     <ClInclude Include="scene\main\EnemyBase.h" />
+    <ClInclude Include="scene\main\EnemyBoss00.h" />
+    <ClInclude Include="scene\main\EnemyChargePlayer.h" />
     <ClInclude Include="scene\main\EnemyMoveFront.h" />
+    <ClInclude Include="scene\main\EnemyMoveFrontSin.h" />
     <ClInclude Include="scene\main\GameObject.h" />
     <ClInclude Include="scene\main\Item.h" />
     <ClInclude Include="scene\main\Player.h" />

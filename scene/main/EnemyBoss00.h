@@ -2,21 +2,27 @@
 #include "GameObject.h"
 #include "EnemyBase.h"
 
-class EnemyMoveFront : public EnemyBase
+class EnemyBoss00 : public EnemyBase
 {
 public:
-	EnemyMoveFront() : EnemyBase()
+	EnemyBoss00() : EnemyBase()
 	{
+		m_basePos = { 0.0f, 0.0f,0.0f };
+		m_sinRate = 0.0f;
 		m_shotWait = 0;
 	}
-	virtual ~EnemyMoveFront() {}
+	virtual ~EnemyBoss00() {}
 
 	// ¶¬‚É‰Šú‰»	createGraphic‚Ì‚ ‚Æ
 	void init(int maxHp) override;
 	void update() override;
 //	void draw() override;
 
+	bool isBoss() override { return true; }
+
 private:
 
+	VECTOR m_basePos;
+	float m_sinRate;
 	int m_shotWait;
 };
