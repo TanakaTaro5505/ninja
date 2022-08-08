@@ -13,6 +13,8 @@ void EnemyBoss00::init(int maxHp)
 {
 	EnemyBase::init(maxHp);
 
+	m_hpBarLen = 120;
+
 	m_basePos = m_pos;
 
 	m_vec.x = kSpeed;

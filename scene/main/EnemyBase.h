@@ -14,6 +14,7 @@ public:
 
 		m_hp = 0;
 		m_maxHp = 0;
+		m_hpBarLen = 0;
 
 		m_hitDamage = 0;
 		m_shotDamage = 0;
@@ -46,6 +47,7 @@ protected:
 
 	int m_hp;
 	int m_maxHp;
+	int m_hpBarLen;
 
 	int m_hitDamage;
 	int m_shotDamage;

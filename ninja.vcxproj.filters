@@ -91,19 +91,19 @@
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClCompile>
     <ClCompile Include="scene\main\EnemyBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="scene\main\EnemyMoveFront.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="scene\main\EnemyBoss00.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="scene\main\EnemyMoveFrontSin.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="scene\main\EnemyChargePlayer.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\main\EnemyMoveFront.cpp">
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\main\EnemyMoveFrontSin.cpp">
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,19 +156,19 @@
       <Filter>ソース ファイル\Scene\Main</Filter>
     </ClInclude>
     <ClInclude Include="scene\main\EnemyBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\main\EnemyMoveFront.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="scene\main\EnemyBoss00.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\main\EnemyMoveFrontSin.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="scene\main\EnemyChargePlayer.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\main\EnemyMoveFront.h">
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\main\EnemyMoveFrontSin.h">
+      <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
