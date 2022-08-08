@@ -14,12 +14,28 @@ static const int kDamageFrame = 60;
 
 // 基本性能
 static constexpr int kMaxHp			= 100;
-
 static constexpr int kShotSpeed		= 6;
-static constexpr int kShotInterval	= 16;
-
-static constexpr int kMoveSpeed		= 4;
 static constexpr int kDamagePrevent = 0;
+
+// 攻撃力
+static constexpr int kShotDamage = 6;
+static constexpr int kShotDamagePowerup = 2;
+static constexpr int kShotDamageMax = 14;
+
+// ショットサイズ
+static constexpr float kShotSize = 1.0f;
+static constexpr float kShotSizePowerup = 0.25f;
+static constexpr float kShotSizeMax = 2.0f;
+
+// 移動速度
+static constexpr int kMoveSpeed = 4;
+static constexpr int kMoveSpeedPowerup = 1;
+static constexpr int kMoveSpeedMax = 6;
+
+// 発射間隔
+static constexpr int kShotInterval = 16;
+static constexpr int kShotIntervalPowerup = -2;
+static constexpr int kShotIntervalMin = 8;
 
 // レベルに応じたショットデータ
 typedef struct LevelShotData
@@ -60,9 +76,12 @@ void Player::init()
 	m_maxHp = kMaxHp;
 	m_hp = m_maxHp;
 	m_shotSpeed = kShotSpeed;
-	m_shotInterval = kShotInterval;
-	m_moveSpeed = kMoveSpeed;
 	m_damagePrevent = kDamagePrevent;
+
+	for (int i = 0; i < kPowerupTypeNum; i++)
+	{
+		m_powerUp[i] = 0;
+	}
 
 	m_lastShot = 0;
 	m_damageFrame = -1;
@@ -80,7 +99,7 @@ void Player::update()
 	// ゲームクリア後の演出
 	if (m_seq == Seq::kSeqGameClear)
 	{
-		m_pos.x += m_moveSpeed * 2;
+		m_pos.x += getPlayerSpeed() * 2;
 		return;
 	}
 
@@ -126,7 +145,7 @@ void Player::update()
 		VectorNormalize(&m_vec, &m_vec);
 	}
 
-	VectorScale(&m_vec, &m_vec, static_cast<float>(m_moveSpeed));
+	VectorScale(&m_vec, &m_vec, static_cast<float>(getPlayerSpeed()));
 
 	m_pos.x += m_vec.x;
 	m_pos.y += m_vec.y;
@@ -139,7 +158,7 @@ void Player::update()
 	// ショット
 	m_lastShot++;
 	if ((Pad::isTrigger(PAD_INPUT_1)) ||
-		((Pad::isPress(PAD_INPUT_1)) && (m_lastShot >= m_shotInterval)))
+		((Pad::isPress(PAD_INPUT_1)) && (m_lastShot >= getShotInterval())))
 	{
 		Sound::PlaySound(Sound::kSoundID_Shot);
 
@@ -156,6 +175,8 @@ void Player::update()
 				pShot->setMoveSpeed(m_shotData[i].speed);
 				pShot->setMoveAngle(m_shotData[i].angle);
 				pShot->setPower(m_shotData[i].power);
+
+				pShot->setScale(getShotScale());
 			}
 		}
 		
@@ -268,4 +289,40 @@ void Player::setShot(int level)
 
 		m_shotNum++;
 	}
+}
+
+int Player::getShotDamage()
+{
+	int result = kShotDamage;
+	result += kShotDamagePowerup * m_powerUp[kPowerupTypeShotPower];
+	if (result > kShotDamageMax)	result = kShotDamageMax;
+
+	return result;
+}
+
+float Player::getShotScale()
+{
+	float result = kShotSize;
+	result += kShotSizePowerup * m_powerUp[kPowerupTypeShotPower];	// 攻撃力でサイズも変わる
+	if (result > kShotSizeMax)	result = kShotSizeMax;
+
+	return result;
+}
+
+int Player::getPlayerSpeed()
+{
+	int result = kMoveSpeed;
+	result += kMoveSpeedPowerup * m_powerUp[kPowerupTypeMoveSpeed];
+	if (result > kMoveSpeedMax)	result = kMoveSpeedMax;
+
+	return result;
+}
+
+int Player::getShotInterval()
+{
+	int result = kShotInterval;
+	result += kShotIntervalPowerup * m_powerUp[kPowerupTypeShotInterval];
+	if (result < kShotIntervalMin)	result = kShotIntervalMin;
+
+	return result;
 }

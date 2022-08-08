@@ -14,6 +14,18 @@ public:
 		
 		kSeqNum
 	};
+	// パワーアップの種類
+	typedef enum PowerupType
+	{
+		kPowerupTypeShotPower,		// ショットの攻撃力、サイズ
+		kPowerupTypeShotDir,		// 攻撃方向
+		kPowerupTypeBackShot,		// 後方攻撃
+		kPowerupTypeMoveSpeed,		// 移動速度
+		kPowerupTypeShotInterval,	// 発射間隔
+
+		kPowerupTypeNum
+	}PowerupType;
+
 	typedef struct ShotData
 	{
 		// 発射開始位置	プレイヤー位置からの差分
@@ -36,9 +48,12 @@ public:
 		m_hp = 0;
 		m_maxHp = 0;
 		m_shotSpeed = 0;
-		m_shotInterval = 0;
-		m_moveSpeed = 0;
 		m_damagePrevent = 0;
+
+		for (int i = 0; i < kPowerupTypeNum; i++)
+		{
+			m_powerUp[i] = 0;
+		}
 
 		m_lastShot = 0;
 		m_damageFrame = -1;
@@ -66,7 +81,6 @@ public:
 
 	int getHp() { return m_hp; }
 	int getShotSpeed() { return m_shotSpeed; }
-	int getShotInterval() { return m_shotInterval; }
 
 	// パワーアップ関連
 	void addExp(int add);	// 経験値加算
@@ -79,6 +93,13 @@ private:
 	// function----------------------------
 	// ショットデータ設定
 	void setShot( int level );
+	
+	// パワーアップを反映した情報を取得する
+	int getShotDamage();
+	float getShotScale();
+	int getPlayerSpeed();
+	int getShotInterval();
+
 private:
 	// variable----------------------------
 	SceneMain* m_pMain;
@@ -88,9 +109,11 @@ private:
 	int m_hp;
 	int m_maxHp;
 	int m_shotSpeed;	// ショットの速度
-	int m_shotInterval;	// 連射速度(待ち時間)
-	int m_moveSpeed;	// 移動速度
 	int m_damagePrevent;// 防御力
+
+	// パワーアップ情報
+	int m_powerUp[kPowerupTypeNum];
+
 
 	// プレイ情報
 	// ショットを撃ってからの経過フレーム数
