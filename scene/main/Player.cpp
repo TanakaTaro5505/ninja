@@ -168,7 +168,7 @@ void Player::draw()
 	if (!m_isExist)	return;
 	if (getHp() <= 0)	return;
 
-	if( (m_damageFrame < 0) || (m_damageFrame % 2) && m_seq == Seq::kSeqMain )
+	if( (m_damageFrame < 0) || (m_damageFrame % 2) || m_seq != Seq::kSeqMain )
 	{
 		GameObject::draw();
 	}
