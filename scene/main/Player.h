@@ -56,7 +56,12 @@ public:
 
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
+	// ゲームクリア時にシーケンス変更
+	void setSeq(Seq seq) { m_seq = seq; }
+
+	// ダメージを受けるか
 	bool isGetDamage();
+	// ダメージを受ける処理
 	void damage( int getDamage );
 
 	int getHp() { return m_hp; }

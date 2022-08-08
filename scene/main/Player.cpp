@@ -74,6 +74,13 @@ void Player::init()
 void Player::update()
 {
 	if (!m_isExist)	return;
+	
+	// ゲームクリア後の演出
+	if (m_seq == Seq::kSeqGameClear)
+	{
+		m_pos.x += m_moveSpeed * 2;
+		return;
+	}
 
 	// 無敵時間
 	m_damageFrame--;

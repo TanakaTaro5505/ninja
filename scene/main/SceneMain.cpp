@@ -303,6 +303,7 @@ SceneBase* SceneMain::updateMain()
 	// プレイヤー死亡
 	if (m_player.getHp() <= 0)
 	{
+		m_player.setSeq(Player::Seq::kSeqGameOver);
 		m_endWait = 0;
 		m_effect.create(m_player.getPos().x, m_player.getPos().y);
 		m_seq = Seq::kSeqGameover;
@@ -341,6 +342,7 @@ SceneBase* SceneMain::updateMain()
 				}
 			}
 			m_endWait = 0;
+			m_player.setSeq(Player::Seq::kSeqGameClear);
 			m_seq = Seq::kSeqStageClear;
 		}
 	}
@@ -363,11 +365,9 @@ SceneBase* SceneMain::updateStageClear()
 
 	// 背景演出
 	updateBg();
-	// プレイヤーは操作不可　前方に駆け抜ける
-//	m_player.update();
-	VECTOR pos = m_player.getPos();
-	pos.x += 8.0f;
-	m_player.setPos(pos);
+	
+	m_player.update();
+
 	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
 	{
 		(*itr)->update();
