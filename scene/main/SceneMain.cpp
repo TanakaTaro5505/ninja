@@ -138,7 +138,7 @@ void SceneMain::draw()
 	}
 	m_effect.draw();
 
-//	DrawFormatString(0,0,GetColor(255,255,255), "テスト:%6d", 100);
+	DrawGraphF(m_levelUpPos.x, m_levelUpPos.y, m_graphicHandle[kGraphicData_LevelUp], 1);
 
 	int graphSizeX = 0;
 	int graphSizeY = 0;
@@ -255,7 +255,6 @@ SceneBase* SceneMain::updateMain()
 			}
 		}
 	}
-	
 
 	// アイテム取得
 	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
@@ -264,8 +263,14 @@ SceneBase* SceneMain::updateMain()
 		// プレイヤーが敵にぶつかった
 		if (m_player.isCol((*itr)))
 		{
+			int lastLevel = m_player.getLevel();
 			(*itr)->erase();
 			m_player.addExp(5);
+			if (lastLevel < m_player.getLevel())
+			{
+				m_levelUpPos.x = m_player.getPos().x;
+				m_levelUpPos.y = m_player.getPos().y;
+			}
 		}
 	}
 
@@ -357,6 +362,8 @@ SceneBase* SceneMain::updateMain()
 			m_frameCount = 0;
 		}
 	}
+
+	m_levelUpPos.y -= 8.0f;
 	return this;
 }
 

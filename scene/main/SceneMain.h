@@ -56,6 +56,8 @@ public:
 		m_endWait = -1;
 		m_fadeBright = 0;
 
+		m_levelUpPos = {-999.0f, -999.0f, -999.0f};
+
 		for (int i = 0; i < kGraphicData_Kind; i++)
 		{
 			m_graphicHandle[i] = -1;
@@ -113,6 +115,9 @@ private:
 	StageManager	m_stage;
 	std::list<EnemyBase*>	m_enemyList;
 	std::list<Item*>	m_itemList;
+
+	// レベルアップ演出
+	VECTOR m_levelUpPos;
 
 	// グラフィック
 	int m_graphicHandle[kGraphicData_Kind];

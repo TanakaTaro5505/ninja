@@ -110,8 +110,13 @@ static constexpr StagePartsData StageData_000[] =
 {
 	{ nullptr					,  60 },
 	{ Parts_Charge5_U			, Parts_Charge5_U_Size },
-	{ nullptr					, 120 },
+	{ nullptr					,  60 },
 	{ Parts_Charge5_L			, Parts_Charge5_L_Size },
+	{ nullptr					,  60 },
+	{ Parts_Charge5_U			, Parts_Charge5_U_Size },
+	{ nullptr					,  60 },
+	{ Parts_Charge5_L			, Parts_Charge5_L_Size },
+
 	{ nullptr					, 120 },
 	{ Parts_SinCharge3_U		, Parts_SinCharge3_U_Size },
 	{ nullptr					, 120 },
