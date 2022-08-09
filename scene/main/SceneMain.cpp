@@ -10,6 +10,7 @@ static const char* const kGraphicFilePath[SceneMain::kGraphicData_Kind] =
 	"data/main/item.bmp",		// kGraphicData_Item,
 
 	// •¶ŽšŒn
+	"data/font/levelup.png",	// kGraphicData_LevelUp,
 	"data/font/end.png",		// kGraphicData_Clear,
 	"data/font/gameover.png",	// kGraphicData_Gameover,
 };

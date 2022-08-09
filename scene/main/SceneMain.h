@@ -27,6 +27,7 @@ public:
 		kGraphicData_Item,
 
 		// •¶ŽšŒn
+		kGraphicData_LevelUp,
 		kGraphicData_Clear,
 		kGraphicData_Gameover,
 
