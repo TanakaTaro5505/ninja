@@ -7,6 +7,7 @@ class EnemyChargePlayer : public EnemyBase
 public:
 	EnemyChargePlayer() : EnemyBase()
 	{
+		m_dir = 0.0f;
 	}
 	virtual ~EnemyChargePlayer() {}
 
@@ -17,4 +18,9 @@ public:
 
 private:
 
+	// 現在位置からプレイヤー位置へのベクトルを取得
+	VECTOR getToPlayer();
+
+	// 進む角度
+	float m_dir;
 };
