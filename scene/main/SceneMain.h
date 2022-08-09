@@ -16,6 +16,22 @@
 class SceneMain : public SceneBase
 {
 	//define ----------------------------------
+public:
+	// グラフィックデータ
+	typedef enum GraphicData
+	{
+		kGraphicData_Player,
+		kGraphicData_Shot,
+		kGraphicData_Enemy,
+		kGraphicData_EnemyShot,
+		kGraphicData_Item,
+
+		// 文字系
+		kGraphicData_Clear,
+		kGraphicData_Gameover,
+
+		kGraphicData_Kind
+	}GraphicData;
 private:
 	static constexpr int kShotMax = 128;
 
@@ -39,14 +55,10 @@ public:
 		m_endWait = -1;
 		m_fadeBright = 0;
 
-		m_playerGraphic = 0;
-		m_shotGraphic = 0;
-		m_enemyShotGraphic = 0;
-		m_enemyGraphic = 0;
-		m_itemGraphic = 0;
-
-		m_clearGraphic = 0;
-		m_gameoverGraphic = 0;
+		for (int i = 0; i < kGraphicData_Kind; i++)
+		{
+			m_graphicHandle[i] = -1;
+		}
 	}
 	virtual ~SceneMain()
 	{
@@ -71,7 +83,7 @@ public:
 	// アイテム生成
 	void createItem(VECTOR pos);
 
-	int getEnemyGraphic() { return m_enemyGraphic; }
+	int getEnemyGraphic() { return m_graphicHandle[kGraphicData_Enemy]; }
 
 private:
 	// シーケンスに応じた処理
@@ -102,15 +114,7 @@ private:
 	std::list<Item*>	m_itemList;
 
 	// グラフィック
-	int m_playerGraphic;
-	int m_shotGraphic;
-	int m_enemyShotGraphic;
-	int m_enemyGraphic;
-	int m_itemGraphic;
-
-	int m_clearGraphic;
-	int m_gameoverGraphic;
-
+	int m_graphicHandle[kGraphicData_Kind];
 	// 背景
 	GameObject	m_bgStar[kStarNum];
 	// 敵を倒した時のエフェクト生成

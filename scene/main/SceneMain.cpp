@@ -1,10 +1,18 @@
 #include "Game.h"
 #include "SceneMain.h"
 
-// 敵情報
-static const int cEnemyHitDamage	= 10;		// 当たった時のダメージ
-static const int cEnemyShotDamage	= 10;		// ショットに当たった時のダメージ
-static const int cEnemyShotWait		= 120;		// 生成後ショットを撃つまでの時間(フレーム)
+static const char* const kGraphicFilePath[SceneMain::kGraphicData_Kind] =
+{
+	"data/main/player.bmp",		// kGraphicData_Player,
+	"data/main/shot.bmp",		// kGraphicData_Shot,
+	"data/main/enemy.bmp",		// kGraphicData_Enemy,
+	"data/main/enemyShot.bmp",	// kGraphicData_EnemyShot,
+	"data/main/item.bmp",		// kGraphicData_Item,
+
+	// 文字系
+	"data/font/end.png",		// kGraphicData_Clear,
+	"data/font/gameover.png",	// kGraphicData_Gameover,
+};
 
 void SceneMain::init()
 {
@@ -12,16 +20,12 @@ void SceneMain::init()
 	m_frameCount = 0;
 	m_endWait = -1;
 
-	m_playerGraphic = LoadGraph("data/main/player.bmp");
-	m_shotGraphic = LoadGraph("data/main/shot.bmp");
-	m_enemyShotGraphic = LoadGraph("data/main/enemyShot.bmp");
-	m_enemyGraphic = LoadGraph("data/main/enemy.bmp");
-	m_itemGraphic = LoadGraph("data/main/item.bmp");
+	for (int i = 0; i < kGraphicData_Kind; i++)
+	{
+		m_graphicHandle[i] = LoadGraph(kGraphicFilePath[i]);
+	}
 
-	m_clearGraphic = LoadGraph("data/font/end.png");
-	m_gameoverGraphic = LoadGraph("data/font/gameover.png");
-
-	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_playerGraphic);
+	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_graphicHandle[kGraphicData_Player]);
 	m_player.init();
 	m_player.setMain( this );
 
@@ -60,14 +64,10 @@ void SceneMain::deleteGraph()
 		}
 	}
 
-	DeleteGraph(m_playerGraphic);
-	DeleteGraph(m_shotGraphic);
-	DeleteGraph(m_enemyShotGraphic);
-	DeleteGraph(m_enemyGraphic);
-	DeleteGraph(m_itemGraphic);
-
-	DeleteGraph(m_clearGraphic);
-	DeleteGraph(m_gameoverGraphic);
+	for (int i = 0; i < kGraphicData_Kind; i++)
+	{
+		DeleteGraph(m_graphicHandle[i]);
+	}
 }
 
 SceneBase* SceneMain::update()
@@ -147,14 +147,14 @@ void SceneMain::draw()
 	{
 	case Seq::kSeqStageClear:
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, blend);
-		GetGraphSize(m_clearGraphic, &graphSizeX, &graphSizeY);
-		DrawGraph((Game::cScreenWidth- graphSizeX)/2, (Game::cScreenHeight - graphSizeY) / 2, m_clearGraphic, 1);
+		GetGraphSize(m_graphicHandle[kGraphicData_Clear], &graphSizeX, &graphSizeY);
+		DrawGraph((Game::cScreenWidth- graphSizeX)/2, (Game::cScreenHeight - graphSizeY) / 2, m_graphicHandle[kGraphicData_Clear], 1);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	case Seq::kSeqGameover:
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, blend);
-		GetGraphSize(m_gameoverGraphic, &graphSizeX, &graphSizeY);
-		DrawGraph((Game::cScreenWidth - graphSizeX) / 2, (Game::cScreenHeight - graphSizeY) / 2, m_gameoverGraphic, 1);
+		GetGraphSize(m_graphicHandle[kGraphicData_Gameover], &graphSizeX, &graphSizeY);
+		DrawGraph((Game::cScreenWidth - graphSizeX) / 2, (Game::cScreenHeight - graphSizeY) / 2, m_graphicHandle[kGraphicData_Gameover], 1);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	}
@@ -174,7 +174,7 @@ void SceneMain::addEnemy(EnemyBase* pEnemy)
 Shot* SceneMain::createPlayerShot(VECTOR pos)
 {
 	Shot* pShot = new Shot;
-	pShot->createPlayerShot(pos, m_shotGraphic);
+	pShot->createPlayerShot(pos, m_graphicHandle[kGraphicData_Shot]);
 	m_shotList.push_back(pShot);
 	return pShot;
 }
@@ -182,7 +182,7 @@ Shot* SceneMain::createPlayerShot(VECTOR pos)
 Shot* SceneMain::createEnemyShot(VECTOR pos)
 {
 	Shot* pShot = new Shot;
-	pShot->createEnemyShot(pos, m_enemyShotGraphic);
+	pShot->createEnemyShot(pos, m_graphicHandle[kGraphicData_EnemyShot]);
 	m_shotList.push_back(pShot);
 	return pShot;
 }
@@ -190,7 +190,7 @@ Shot* SceneMain::createEnemyShot(VECTOR pos)
 void SceneMain::createItem(VECTOR pos)
 {
 	Item* pItem = new Item;
-	pItem->createGraphic(pos.x, pos.y, m_itemGraphic);
+	pItem->createGraphic(pos.x, pos.y, m_graphicHandle[kGraphicData_Item]);
 	m_itemList.push_back(pItem);
 }
 
