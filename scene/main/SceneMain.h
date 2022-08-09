@@ -59,11 +59,7 @@ public:
 	void draw();
 
 	// “G¶¬
-#if false
-	void createEnemy(VECTOR pos, int hp, Enemy::Type type);
-#else
 	void addEnemy(EnemyBase* pEnemy);
-#endif
 
 	// ƒvƒŒƒCƒ„[æ“¾
 	Player* getPlayer() { return &m_player; }

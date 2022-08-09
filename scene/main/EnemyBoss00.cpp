@@ -63,7 +63,7 @@ void EnemyBoss00::update()
 			if (pShot)
 			{
 				pShot->setMoveSpeed(8);
-				pShot->setMoveAngle(180 - 40 + i * 20);
+				pShot->setMoveAngle(static_cast<float>(180 - 40 + i * 20));
 				pShot->setPower(getShotDamage());
 				// ƒ{ƒX‚Í‚Å‚©‚¢’e‚ðŒ‚‚Â
 				pShot->setScale(4.0f);

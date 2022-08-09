@@ -192,7 +192,7 @@ void Player::update()
 			if (pShot)
 			{
 				pShot->setMoveSpeed(kShotSpeed);
-				pShot->setMoveAngle(startAngle + i*10);
+				pShot->setMoveAngle(static_cast<float>(startAngle + i*10));
 				pShot->setPower(getShotDamage());
 				pShot->setScale(getShotScale());
 			}
@@ -210,7 +210,7 @@ void Player::update()
 			if (pShot)
 			{
 				pShot->setMoveSpeed(kShotSpeed);
-				pShot->setMoveAngle(180 + startAngle + i * 10);
+				pShot->setMoveAngle(static_cast<float>(180 + startAngle + i * 10));
 				pShot->setPower(getShotDamage());
 				pShot->setScale(getShotScale());
 			}
