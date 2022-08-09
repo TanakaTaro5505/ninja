@@ -10,6 +10,7 @@ public:
 	virtual ~Item() {}
 
 	void update();
+	void draw();
 	// ‹­§I—¹
 	void erase();
 private:

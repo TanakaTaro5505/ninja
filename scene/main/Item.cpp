@@ -15,15 +15,25 @@ void Item::update()
 		m_isExist = false;
 	}
 }
-#if false
+
 void Item::draw()
 {
 	if (!m_isExist)	return;
 
-	DrawCircleAA(m_pos.x, m_pos.y, m_radius, 16, GetColor(0,0,255));
-	DrawString(m_pos.x - 8, m_pos.y - 8, "ア", GetColor(255, 255, 255));
-}
+	GameObject::draw();
+
+	// アイテム演出
+#if false
+	for (int i = 0; i <64; i++)
+	{
+		int posX = m_pos.x + GetRand(32) - 16;
+		int posY = m_pos.y + GetRand(32) - 16;
+	//	DrawPixel(posX, posY, GetColor(255, 0, 0));
+		DrawCircleAA(posX, posY, 1.0f, 8, GetColor(255, 0, 0));
+	}
 #endif
+}
+
 void Item::erase()
 {
 	m_isExist = false;
