@@ -296,7 +296,6 @@ SceneBase* SceneMain::updateMain()
 					// “|‚µ‚½
 					if (!pEnemy->isExist())
 					{
-						//	m_player.addExp(5);
 						m_effect.create(pEnemy->getPos().x, pEnemy->getPos().y);
 						createItem(pEnemy->getPos());
 					}

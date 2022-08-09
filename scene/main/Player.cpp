@@ -12,6 +12,16 @@ static constexpr int kExpBarHeight = 8;
 // ダメージ受けた後の無敵時間(フレーム)
 static const int kDamageFrame = 60;
 
+// 最大パワーアップ
+static constexpr int kMaxPowerup[Player::kPowerupTypeNum] =
+{
+	4,	// kPowerupTypeShotPower,	// ショットの攻撃力、サイズ
+	4,	// kPowerupTypeShotDir,		// 攻撃方向
+	3,	// kPowerupTypeBackShot,	// 後方攻撃
+	2,	// kPowerupTypeMoveSpeed,	// 移動速度
+	4,	// kPowerupTypeShotInterval,// 発射間隔
+};
+
 // 基本性能
 static constexpr int kMaxHp			= 100;
 static constexpr int kShotSpeed		= 6;
@@ -298,14 +308,19 @@ void Player::addExp(int add)
 		setShot(m_level);
 		Sound::PlaySound(Sound::kSoundID_Levelup);
 
-		// test
-		int levelUpType = GetRand(kPowerupTypeNum - 1);
-		m_powerUp[levelUpType]++;
-//		for (int i = 0; i < kPowerupTypeNum; i++)
-//		{
-//			m_powerUp[i]++;
-//		}
-
+		// パワーアップ
+		int count = 0;
+		while (1)
+		{
+			int levelUpType = GetRand(kPowerupTypeNum - 1);
+			if ((m_powerUp[levelUpType] < kMaxPowerup[levelUpType]) ||
+				(count >= 256))
+			{
+				m_powerUp[levelUpType]++;
+				break;
+			}
+			count++;
+		}
 	}
 }
 
