@@ -158,11 +158,12 @@ void SceneMain::draw()
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	}
-	
+#if false
 	// デバッグ表示
 	DrawFormatString(0,  0, GetColor(255, 255, 255), "敵の数:%d", m_enemyList.size());
 	DrawFormatString(0, 32, GetColor(255, 255, 255), "ショットの数:%d", m_shotList.size());
 	DrawFormatString(0, 64, GetColor(255, 255, 255), "アイテムの数:%d", m_itemList.size());
+#endif
 }
 
 void SceneMain::addEnemy(EnemyBase* pEnemy)
