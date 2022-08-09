@@ -6,7 +6,10 @@
 #include "Shot.h"
 #include "SceneMain.h"
 
+// 進行速度
 static constexpr float kSpeed = 8.0f;
+// 旋回性能
+static constexpr float kRotSpeed = 0.005f;
 
 // ===================================================================================
 void EnemyChargePlayer::init(int maxHp)
@@ -35,7 +38,16 @@ void EnemyChargePlayer::update()
 	m_pos.y += m_vec.y;
 
 #if 0	// 外積を使用してなす角を求める
-//	VECTOR VCross(VECTOR In1, VECTOR In2);
+	VECTOR toPlayer = getToPlayer();
+	VECTOR tempVec = VCross(m_vec, toPlayer);
+	if (tempVec.z > 0.0f)
+	{
+		m_dir += kRotSpeed;
+	}
+	else if (tempVec.z < 0.0f)
+	{
+		m_dir -= kRotSpeed;
+	}
 
 #endif
 
@@ -55,20 +67,21 @@ void EnemyChargePlayer::update()
 	{
 		if (diffDir > 0.0f)
 		{
-			m_dir += 0.01f;
+			m_dir += kRotSpeed;
 		}
 		else if (diffDir < 0.0f)
 		{
-			m_dir -= 0.01f;
+			m_dir -= kRotSpeed;
 		}
 	}
+#endif
 
+	// m_dirから進行方向と画像の回転情報を作成
 	m_vec.x = cosf(m_dir) * kSpeed;
 	m_vec.y = sinf(m_dir) * kSpeed;
 	m_vec.z = 0.0f;
 
 	m_angle = m_dir + 3.1459f;	// 進行方向に向ける
-#endif
 
 	if (m_pos.x < 0.0f - m_radius)
 	{
