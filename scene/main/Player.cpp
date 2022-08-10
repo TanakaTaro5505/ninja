@@ -258,9 +258,15 @@ void Player::draw()
 
 	if( (m_damageFrame < 0) || (m_damageFrame % 2) || m_seq != Seq::kSeqMain )
 	{
+	//	const int kAlphaIntervel = 256 / kPosLogNum;
+		const int kAlphaIntervel = 128 / kPosLogNum;
 		for (int i = kPosLogNum - 1; i >= 1; i--)
 		{
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 16*((kPosLogNum - 1)-i));
+			int alpha = kAlphaIntervel * ((kPosLogNum - 1) - i);
+			if (alpha >= 255)	alpha = 255;
+			if (alpha < 0)		alpha = 0;
+
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 			DrawRotaGraph2(static_cast<int>(m_posLog[i].x), static_cast<int>(m_posLog[i].y),
 				m_graphicSizeX / 2, m_graphicSizeY / 2,
 				m_scale, m_angle,
