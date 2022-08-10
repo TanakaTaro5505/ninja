@@ -5,6 +5,12 @@
 void SceneTitle::init()
 {
 	m_endWait = -1;
+	m_titleGraphic = LoadGraph("data/logo/title.png");
+}
+
+void SceneTitle::deleteGraph()
+{
+	DeleteGraph(m_titleGraphic);
 }
 
 SceneBase* SceneTitle::update()
@@ -41,7 +47,10 @@ void SceneTitle::draw()
 {
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
-	DrawStringCenter(Game::cScreenHeight / 2 - 80, "ニンジャでござーる");
+//	DrawStringCenter(Game::cScreenHeight / 2 - 80, "ニンジャでござーる");
+	int sizeX, sizeY;
+	GetGraphSize(m_titleGraphic, &sizeX, &sizeY);
+	DrawGraph((Game::cScreenWidth - sizeX) / 2, (Game::cScreenHeight - sizeY) / 2-80, m_titleGraphic, 1);
 
 	DrawStringCenter(Game::cScreenHeight / 2 + 80, "Zキーを押してください");
 

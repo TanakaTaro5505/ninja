@@ -14,15 +14,18 @@ private:
 public:
 	SceneTitle() : SceneBase()
 	{
-		m_padNum = 0;
+		m_titleGraphic = -1;
+
 		m_endWait = -1;
 		m_fadeBright = 0;
 	}
 	virtual ~SceneTitle()
 	{
+		deleteGraph();
 	}
 
 	void init();
+	void deleteGraph();
 	SceneBase* update();
 	void draw();
 
@@ -32,7 +35,7 @@ private:
 
 	// variable ----------------------------------
 private:
-	int m_padNum;
+	int m_titleGraphic;
 
 	int m_endWait;
 	int m_fadeBright;

@@ -27,6 +27,7 @@ public:
 	virtual void draw();
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
+	// 死亡時処理	アイテム生成、エフェクト生成など
 	virtual void dead();
 	virtual bool isBoss() { return false; }
 

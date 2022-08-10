@@ -5,7 +5,7 @@
 EffectManager::Particle::Particle()
 {
 	m_existFrame = -1;
-	m_color = GetColor(255, 255, 255);
+	m_color = GetColor(255, 0, 0);
 	m_pos = {0.0f, 0.0f};
 	m_vec = {0.0f, 0.0f};
 }
@@ -45,7 +45,7 @@ void EffectManager::Particle::draw()
 	int x2 = x1 + 2;
 	int y1 = static_cast<int>(m_pos.y) - 1;
 	int y2 = y1 + 2;
-	DrawBox(x1, y1, x2, y2, GetColor(255, 255, 255), true);
+	DrawBox(x1, y1, x2, y2, m_color, true);
 }
 
 // ===================================================================
