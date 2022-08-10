@@ -49,6 +49,7 @@ void EnemyBase::draw()
 
 void EnemyBase::dead()
 {
+	Sound::PlaySound(Sound::kSoundID_EnemyDead);
 	m_pMain->createDeadEffect(getPos());
 	m_pMain->createItem(getPos());
 }

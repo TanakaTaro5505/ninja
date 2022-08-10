@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "SceneMain.h"
+#include "Sound.h"
 
 // レベルアップしたときに何が上がったかを表示するフレーム数
 static constexpr int kLevelupTextDispFrame = 60 * 3;
@@ -36,6 +37,7 @@ void SceneMain::init()
 	m_stage.init(this, 0);
 
 	initBg();
+	Sound::PlayBgm(Sound::kSoundID_BgmPlay);
 }
 
 void SceneMain::deleteGraph()
@@ -337,6 +339,7 @@ SceneBase* SceneMain::updateMain()
 		m_endWait = 0;
 		m_effect.create(m_player.getPos().x, m_player.getPos().y);
 		m_seq = Seq::kSeqGameover;
+		Sound::StopBgm(Sound::kSoundID_BgmPlay);
 		m_frameCount = 0;
 	}
 	// ステージ終了処理
@@ -375,6 +378,7 @@ SceneBase* SceneMain::updateMain()
 			m_endWait = 0;
 			m_player.setSeq(Player::Seq::kSeqGameClear);
 			m_seq = Seq::kSeqStageClear;
+			Sound::StopBgm(Sound::kSoundID_BgmPlay);
 			m_frameCount = 0;
 		}
 	}

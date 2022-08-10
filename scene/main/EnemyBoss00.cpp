@@ -55,6 +55,8 @@ void EnemyBoss00::update()
 	m_shotWait--;
 	if (m_shotWait == 0)
 	{
+		Sound::PlaySound(Sound::kSoundID_BossAttack);
+
 		for (int i = 0; i < 5; i++)
 		{
 			Shot* pShot = nullptr;
@@ -76,7 +78,8 @@ void EnemyBoss00::update()
 
 void EnemyBoss00::dead()
 {
-	
+	Sound::PlaySound(Sound::kSoundID_BossDead);
+
 	for (int i = 0; i < 8; i++)
 	{
 		VECTOR pos = getPos();
