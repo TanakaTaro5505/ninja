@@ -73,3 +73,17 @@ void EnemyBoss00::update()
 		m_shotWait = 30;
 	}
 }
+
+void EnemyBoss00::dead()
+{
+	
+	for (int i = 0; i < 8; i++)
+	{
+		VECTOR pos = getPos();
+		pos.x += static_cast<float>(GetRand(64) - 32);
+		pos.y += static_cast<float>(GetRand(64) - 32);
+		m_pMain->createDeadEffect(pos);
+	}
+
+	// ƒAƒCƒeƒ€‚Í¶Y‚µ‚È‚¢
+}

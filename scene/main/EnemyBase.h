@@ -27,6 +27,7 @@ public:
 	virtual void draw();
 	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 
+	virtual void dead();
 	virtual bool isBoss() { return false; }
 
 	// 敵にショットをあてた	与えるダメージを指定する

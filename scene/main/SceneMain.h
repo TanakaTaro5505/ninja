@@ -85,6 +85,9 @@ public:
 	Shot* createPlayerShot(VECTOR pos);
 	Shot* createEnemyShot(VECTOR pos);
 
+	// はじけ演出作成
+	void createDeadEffect(VECTOR pos);
+
 	// アイテム生成
 	void createItem(VECTOR pos);
 

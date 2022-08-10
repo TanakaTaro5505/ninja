@@ -200,6 +200,11 @@ Shot* SceneMain::createEnemyShot(VECTOR pos)
 	return pShot;
 }
 
+void SceneMain::createDeadEffect(VECTOR pos)
+{
+	m_effect.create(pos.x, pos.y);
+}
+
 void SceneMain::createItem(VECTOR pos)
 {
 	Item* pItem = new Item;
@@ -310,15 +315,7 @@ SceneBase* SceneMain::updateMain()
 					//	m_effect.create(static_cast<int>(m_enemy[i].getPos().x), static_cast<int>(m_enemy[i].getPos().y));
 					pShot->hit();
 					pEnemy->hit(pShot->getPower());
-					// “|‚µ‚½
-					if (!pEnemy->isExist())
-					{
-						m_effect.create(pEnemy->getPos().x, pEnemy->getPos().y);
-						if(!pEnemy->isBoss())
-						{
-							createItem(pEnemy->getPos());
-						}
-					}
+
 					break;
 				}
 			}

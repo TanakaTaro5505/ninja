@@ -47,6 +47,12 @@ void EnemyBase::draw()
 	DrawBox(x1, y1, x2, y2, GetColor(255, 0, 0), true);
 }
 
+void EnemyBase::dead()
+{
+	m_pMain->createDeadEffect(getPos());
+	m_pMain->createItem(getPos());
+}
+
 void EnemyBase::hit(int damage)
 {
 	Sound::PlaySound(Sound::kSoundID_Hit);
@@ -54,6 +60,7 @@ void EnemyBase::hit(int damage)
 	m_hp -= damage;
 	if(m_hp <= 0)
 	{
+		dead();
 		m_isExist = false;
 	}
 }

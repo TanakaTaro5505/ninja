@@ -17,6 +17,7 @@ public:
 	void init(int maxHp) override;
 	void update() override;
 //	void draw() override;
+	void dead() override;
 
 	bool isBoss() override { return true; }
 
