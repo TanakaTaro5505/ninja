@@ -9,6 +9,16 @@
 #include "EnemyMoveFront.h"
 
 static constexpr float kSpeed = -4.0f;
+static constexpr float kBasePosX = 880.0f;
+
+// 1‰ñ‚ÌƒVƒ‡ƒbƒg‚Å‚Ì’e¶¬”
+static constexpr int kShotNum = 5;
+// ’e‚Ì‘¬“x
+static constexpr int kShotSpeed = 8;
+// ƒVƒ‡ƒbƒg‚Ì”­ËŠÔŠu
+static constexpr int kShotInterval = 30;
+// G‹›“G‚Ì¶¬ŠÔŠu
+static constexpr int kSummonInterval = 120;
 
 // ===================================================================================
 void EnemyBoss00::init(int maxHp)
@@ -34,12 +44,12 @@ void EnemyBoss00::update()
 	if (!m_isExist)	return;
 
 	bool isStartLoop = true;
-	if (m_basePos.x > 900.0f)
+	if (m_basePos.x > kBasePosX)
 	{
 		m_basePos.x -= 4.0f;
-		if (m_basePos.x <= 900.0f)
+		if (m_basePos.x <= kBasePosX)
 		{
-			m_basePos.x = 900.0f;
+			m_basePos.x = kBasePosX;
 		}
 		else
 		{
@@ -60,14 +70,14 @@ void EnemyBoss00::update()
 	{
 		Sound::PlaySound(Sound::kSoundID_BossAttack);
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < kShotNum; i++)
 		{
 			Shot* pShot = nullptr;
 			pShot = m_pMain->createEnemyShot(getPos());
 			// ’e‚Ì‰Šúİ’è‚ğs‚¤
 			if (pShot)
 			{
-				pShot->setMoveSpeed(8);
+				pShot->setMoveSpeed(kShotSpeed);
 				pShot->setMoveAngle(static_cast<float>(180 - 40 + i * 20));
 				pShot->setPower(getShotDamage());
 				// ƒ{ƒX‚Í‚Å‚©‚¢’e‚ğŒ‚‚Â
@@ -75,7 +85,7 @@ void EnemyBoss00::update()
 			}
 		}
 
-		m_shotWait = 30;
+		m_shotWait = kShotInterval;
 	}
 	m_summonWait--;
 	if(m_summonWait == 0)
@@ -95,7 +105,7 @@ void EnemyBoss00::update()
 		pEnemy->setShotDamage(10);
 		m_pMain->addEnemy(pEnemy);
 
-		m_summonWait = 120;
+		m_summonWait = kSummonInterval;
 	}
 }
 
@@ -103,6 +113,7 @@ void EnemyBoss00::dead()
 {
 	Sound::PlaySound(Sound::kSoundID_BossDead);
 
+	// ”š”­‰‰o
 	for (int i = 0; i < 8; i++)
 	{
 		VECTOR pos = getPos();
