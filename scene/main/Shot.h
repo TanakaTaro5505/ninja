@@ -8,6 +8,8 @@ class Shot : public GameObject
 public:
 	Shot() : GameObject() 
 	{
+		m_pMain = nullptr;
+
 		m_rotVec = 0.0f;
 		m_moveSpeed = 0.0f;
 		m_moveAngle = 0.0f;
