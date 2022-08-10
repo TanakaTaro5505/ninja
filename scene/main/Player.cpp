@@ -110,12 +110,23 @@ void Player::init()
 	m_exp = 0;
 
 	setShot(m_level);
+
+	for (int i = 0; i < kPosLogNum; i++)
+	{
+		m_posLog[i] = m_pos;
+	}
 }
 
 void Player::update()
 {
 	if (!m_isExist)	return;
 	
+	for (int i = kPosLogNum - 1; i >= 1; i--)
+	{
+		m_posLog[i] = m_posLog[i - 1];
+	}
+	m_posLog[0] = m_pos;
+
 	// ゲームクリア後の演出
 	if (m_seq == Seq::kSeqGameClear)
 	{
@@ -247,6 +258,15 @@ void Player::draw()
 
 	if( (m_damageFrame < 0) || (m_damageFrame % 2) || m_seq != Seq::kSeqMain )
 	{
+		for (int i = kPosLogNum - 1; i >= 1; i--)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 16*((kPosLogNum - 1)-i));
+			DrawRotaGraph2(static_cast<int>(m_posLog[i].x), static_cast<int>(m_posLog[i].y),
+				m_graphicSizeX / 2, m_graphicSizeY / 2,
+				m_scale, m_angle,
+				m_graphicHandle, true, false);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
 		GameObject::draw();
 	}
 	

@@ -38,6 +38,9 @@ public:
 		// 攻撃力
 		int power;
 	}ShotData;
+private:
+	// 演出用にプレイヤー位置の過去ログを残す
+	static constexpr int kPosLogNum = 8;
 public:
 	Player() : GameObject()
 	{
@@ -62,6 +65,11 @@ public:
 		m_exp = 0;
 
 		m_shotNum = 0;
+
+		for (int i = 0; i < kPosLogNum; i++)
+		{
+			m_posLog[i] = m_pos;
+		}
 	}
 	virtual ~Player() {}
 
@@ -128,4 +136,7 @@ private:
 	// ショット情報
 	int m_shotNum;
 	ShotData m_shotData[kShotMax];
+
+	// 演出
+	VECTOR m_posLog[kPosLogNum];
 };
