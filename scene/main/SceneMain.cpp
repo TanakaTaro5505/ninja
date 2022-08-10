@@ -190,6 +190,7 @@ Shot* SceneMain::createPlayerShot(VECTOR pos)
 {
 	Shot* pShot = new Shot;
 	pShot->createPlayerShot(pos, m_graphicHandle[kGraphicData_Shot]);
+	pShot->setMain(this);
 	m_shotList.push_back(pShot);
 	return pShot;
 }
@@ -198,6 +199,7 @@ Shot* SceneMain::createEnemyShot(VECTOR pos)
 {
 	Shot* pShot = new Shot;
 	pShot->createEnemyShot(pos, m_graphicHandle[kGraphicData_EnemyShot]);
+	pShot->setMain(this);
 	m_shotList.push_back(pShot);
 	return pShot;
 }
@@ -212,6 +214,33 @@ void SceneMain::createItem(VECTOR pos)
 	Item* pItem = new Item;
 	pItem->createGraphic(pos.x, pos.y, m_graphicHandle[kGraphicData_Item]);
 	m_itemList.push_back(pItem);
+}
+
+bool SceneMain::getNearEnemyPos(VECTOR* pOut, VECTOR pos)
+{
+	if (m_enemyList.size() <= 0)	return false;
+
+	bool result = false;
+	float minSqDiat = 99999.9f;
+	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+	{
+		EnemyBase* pEnemy = (*itr);
+		if (!pEnemy->isExist())	continue;
+
+		VECTOR enemyPos = pEnemy->getPos();
+		float sqDist = (enemyPos.x - pos.x) * (enemyPos.x - pos.x) + (enemyPos.y - pos.y) * (enemyPos.y - pos.y);
+		
+		if ((!result) ||
+			(sqDist < minSqDiat))
+		{
+			minSqDiat = sqDist;
+			pOut->x = enemyPos.x;
+			pOut->y = enemyPos.y;
+			pOut->z = enemyPos.z;
+			result = true;
+		}
+	}
+	return result;
 }
 
 void SceneMain::setLevelup(VECTOR pos, const char* text)

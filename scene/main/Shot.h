@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class SceneMain;
+
 class Shot : public GameObject
 {
 public:
@@ -14,6 +16,7 @@ public:
 	}
 	virtual ~Shot() {}
 
+	void setMain(SceneMain* pMain) { m_pMain = pMain; }
 	void update();
 
 	// プレイヤーのショット作成
@@ -38,6 +41,7 @@ public:
 	// 敵に当たる弾
 	bool isHitEnemy(void) { return m_isPlayerShot; }
 private:
+	SceneMain* m_pMain;
 	float m_rotVec;
 
 	float m_moveSpeed;

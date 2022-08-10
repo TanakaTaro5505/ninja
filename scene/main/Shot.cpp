@@ -2,6 +2,8 @@
 #include "Game.h"
 #include <math.h>
 
+#include "SceneMain.h"
+
 static constexpr float cShotSpeed = 8.0f;
 static constexpr float cRotSpeed = 0.2f;
 
@@ -16,7 +18,43 @@ void Shot::update()
 
 	m_pos.x += m_vec.x;
 	m_pos.y += m_vec.y;
-	
+#if false	// test
+	if (m_isPlayerShot)
+	{
+		VECTOR targetEnemyPos;
+		if (m_pMain->getNearEnemyPos(&targetEnemyPos, m_pos))
+		{
+#if false	
+			// test	完全追尾
+			m_moveAngle = atan2f(targetEnemyPos.y - m_pos.y, targetEnemyPos.x - m_pos.x);
+			m_moveAngle = m_moveAngle * 180.0f / 3.141592f;
+#else
+			// 0度の方向を向くベクトル
+			constexpr VECTOR kBase = { 1,0,0 };
+			//現在の進行方向を0度の方向に変換する行列を取得
+			MATRIX mtx = MGetRotVec2(m_vec, kBase);
+
+			VECTOR toEnemy;
+			toEnemy.x = targetEnemyPos.x - m_pos.x;
+			toEnemy.y = targetEnemyPos.y - m_pos.y;
+			toEnemy.z = 0.0f;
+
+			// プレイヤー方向へのベクトルを変換する
+			VECTOR tempVec = VTransform(toEnemy, mtx);
+
+			float diffDir = atan2f(tempVec.y, tempVec.x);
+			if (diffDir > 0.0f)
+			{
+				m_moveAngle += 1.0f;
+			}
+			else if (diffDir < 0.0f)
+			{
+				m_moveAngle -= 1.0f;
+			}
+#endif
+		}
+	}
+#endif
 	addAngle(m_rotVec);
 
 	if (m_pos.x < 0.0f - m_radius)					m_isExist = false;

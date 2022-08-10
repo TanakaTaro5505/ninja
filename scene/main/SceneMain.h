@@ -80,16 +80,15 @@ public:
 
 	// プレイヤー取得
 	Player* getPlayer() { return &m_player; }
-
 	// ショット生成
 	Shot* createPlayerShot(VECTOR pos);
 	Shot* createEnemyShot(VECTOR pos);
-
 	// はじけ演出作成
 	void createDeadEffect(VECTOR pos);
-
 	// アイテム生成
 	void createItem(VECTOR pos);
+	// posから一番近くにいる敵の位置取得	敵がいない場合false
+	bool getNearEnemyPos(VECTOR* pOut, VECTOR pos);
 
 	int getEnemyGraphic() { return m_graphicHandle[kGraphicData_Enemy]; }
 
