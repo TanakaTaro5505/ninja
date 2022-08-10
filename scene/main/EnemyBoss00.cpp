@@ -6,6 +6,8 @@
 #include "Shot.h"
 #include "SceneMain.h"
 
+#include "EnemyMoveFront.h"
+
 static constexpr float kSpeed = -4.0f;
 
 // ===================================================================================
@@ -21,6 +23,7 @@ void EnemyBoss00::init(int maxHp)
 	m_vec.y = 0.0f;
 	m_vec.z = 0.0f;
 	m_shotWait = 120;
+	m_summonWait = 180;
 
 	m_sinRate = 0.0f;
 	m_scale = 2.0f;
@@ -73,6 +76,26 @@ void EnemyBoss00::update()
 		}
 
 		m_shotWait = 30;
+	}
+	m_summonWait--;
+	if(m_summonWait == 0)
+	{
+		EnemyBase* pEnemy = new EnemyMoveFront;
+
+		VECTOR pos;
+		pos.x = Game::cScreenWidth + 64.0f;
+		pos.y = GetRand(Game::cScreenHeight - 160) + 80;
+		pos.z = 0.0f;
+
+		pEnemy->createGraphic(pos.x, pos.y, m_pMain->getEnemyGraphic());
+		pEnemy->setMain(m_pMain);
+
+		pEnemy->init(20);
+		pEnemy->setHitDamage(10);
+		pEnemy->setShotDamage(10);
+		m_pMain->addEnemy(pEnemy);
+
+		m_summonWait = 120;
 	}
 }
 

@@ -10,6 +10,7 @@ public:
 		m_basePos = { 0.0f, 0.0f,0.0f };
 		m_sinRate = 0.0f;
 		m_shotWait = 0;
+		m_summonWait = 0;
 	}
 	virtual ~EnemyBoss00() {}
 
@@ -25,5 +26,7 @@ private:
 
 	VECTOR m_basePos;
 	float m_sinRate;
-	int m_shotWait;
+	int m_shotWait;		// ’e‚Ì”­ËŠÔŠu
+
+	int m_summonWait;	// G‹›“G¶¬ŠÔŠu
 };
