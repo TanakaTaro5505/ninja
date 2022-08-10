@@ -57,6 +57,8 @@ public:
 		m_fadeBright = 0;
 
 		m_levelUpPos = {-999.0f, -999.0f, -999.0f};
+		m_pLevelupText = nullptr;
+		m_levelupDispFrame = -1;
 
 		for (int i = 0; i < kGraphicData_Kind; i++)
 		{
@@ -88,6 +90,9 @@ public:
 
 	int getEnemyGraphic() { return m_graphicHandle[kGraphicData_Enemy]; }
 
+	// レベルアップ演出開始
+	void setLevelup( VECTOR pos, const char* text );
+
 private:
 	// シーケンスに応じた処理
 	SceneBase* updateMain();		// kSeqMain,
@@ -118,6 +123,9 @@ private:
 
 	// レベルアップ演出
 	VECTOR m_levelUpPos;
+
+	const char* m_pLevelupText;
+	int m_levelupDispFrame;
 
 	// グラフィック
 	int m_graphicHandle[kGraphicData_Kind];

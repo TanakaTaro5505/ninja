@@ -1,6 +1,9 @@
 #include "Game.h"
 #include "SceneMain.h"
 
+// レベルアップしたときに何が上がったかを表示するフレーム数
+static constexpr int kLevelupTextDispFrame = 60 * 3;
+
 static const char* const kGraphicFilePath[SceneMain::kGraphicData_Kind] =
 {
 	"data/main/player.bmp",		// kGraphicData_Player,
@@ -105,6 +108,10 @@ SceneBase* SceneMain::update()
 		itr++;
 	}
 
+	// 共通演出
+	m_levelupDispFrame--;
+	m_levelUpPos.y -= 8.0f;
+
 	switch (m_seq)
 	{
 	case Seq::kSeqMain:
@@ -138,7 +145,11 @@ void SceneMain::draw()
 	}
 	m_effect.draw();
 
-	DrawGraphF(m_levelUpPos.x, m_levelUpPos.y, m_graphicHandle[kGraphicData_LevelUp], 1);
+	if (m_levelupDispFrame >= 0)
+	{
+		DrawGraphF(m_levelUpPos.x, m_levelUpPos.y, m_graphicHandle[kGraphicData_LevelUp], 1);
+		DrawString(32, 480, m_pLevelupText, GetColor(255, 255, 255));
+	}
 
 	int graphSizeX = 0;
 	int graphSizeY = 0;
@@ -159,6 +170,7 @@ void SceneMain::draw()
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	}
+	
 #if false
 	// デバッグ表示
 	DrawFormatString(0,  0, GetColor(255, 255, 255), "敵の数:%d", m_enemyList.size());
@@ -193,6 +205,17 @@ void SceneMain::createItem(VECTOR pos)
 	Item* pItem = new Item;
 	pItem->createGraphic(pos.x, pos.y, m_graphicHandle[kGraphicData_Item]);
 	m_itemList.push_back(pItem);
+}
+
+void SceneMain::setLevelup(VECTOR pos, const char* text)
+{
+	// プレイヤー位置に演出表示
+	m_levelUpPos.x = pos.x;
+	m_levelUpPos.y = pos.y;
+
+	// レベルが上がった時のパワーアップ内容
+	m_pLevelupText = text;
+	m_levelupDispFrame = kLevelupTextDispFrame;
 }
 
 void SceneMain::initBg()
@@ -263,14 +286,8 @@ SceneBase* SceneMain::updateMain()
 		// プレイヤーが敵にぶつかった
 		if (m_player.isCol((*itr)))
 		{
-			int lastLevel = m_player.getLevel();
 			(*itr)->erase();
 			m_player.addExp(5);
-			if (lastLevel < m_player.getLevel())
-			{
-				m_levelUpPos.x = m_player.getPos().x;
-				m_levelUpPos.y = m_player.getPos().y;
-			}
 		}
 	}
 
@@ -297,7 +314,10 @@ SceneBase* SceneMain::updateMain()
 					if (!pEnemy->isExist())
 					{
 						m_effect.create(pEnemy->getPos().x, pEnemy->getPos().y);
-						createItem(pEnemy->getPos());
+						if(!pEnemy->isBoss())
+						{
+							createItem(pEnemy->getPos());
+						}
 					}
 					break;
 				}
@@ -362,7 +382,6 @@ SceneBase* SceneMain::updateMain()
 		}
 	}
 
-	m_levelUpPos.y -= 8.0f;
 	return this;
 }
 

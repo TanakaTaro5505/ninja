@@ -9,93 +9,109 @@
 #include "EnemyChargePlayer.h"
 #include "EnemyBoss00.h"
 
+// 敵のタイプ別デフォルト設定
+typedef struct EnemyDefaultStatus
+{
+	int hp;			// hp
+	int hitDamage;	// 敵にぶつかったときのダメージ
+	int shotDamage;	// 敵のショットに当たった時のダメージ
+}EnemyDefaultStatus;
+
+static constexpr EnemyDefaultStatus kEnemyStatus[static_cast<int>(StageManager::EnemyType::kEnemyTypeNum)] =
+{
+	{ 20, 10, 10 },		// kEnemyTypeCharge,		// 前進するのみ
+	{ 20, 10, 10 },		// 	kEnemyTypeChargeSin,	// サインカーブ描く前進
+	{ 20, 10, 10 },		// 	kEnemyTypeChargePlayer,	// プレイヤーへの突進
+
+	{300,999, 20 },		// kEnemyTypeBoss00,		// ステージ1ボス
+};
+
 // 敵生成情報
 typedef struct EnemyCreateData
 {
 	int			frame;
 	VECTOR		pos;
-	int			hp;
 	StageManager::EnemyType type;
 }EnemyCreateData;
 
 // 上の方から並んで5体
 static const EnemyCreateData Parts_Charge5_U[] =
 {
-	{    0, { Game::cScreenWidth + 64.0f, 120.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{   60, { Game::cScreenWidth + 64.0f, 120.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{  120, { Game::cScreenWidth + 64.0f, 120.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{  180, { Game::cScreenWidth + 64.0f, 120.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{  240, { Game::cScreenWidth + 64.0f, 120.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
+	{    0, { Game::cScreenWidth + 64.0f, 120.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{   60, { Game::cScreenWidth + 64.0f, 120.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{  120, { Game::cScreenWidth + 64.0f, 120.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{  180, { Game::cScreenWidth + 64.0f, 120.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{  240, { Game::cScreenWidth + 64.0f, 120.0f }, StageManager::EnemyType::kEnemyTypeCharge },
 };
 static constexpr int Parts_Charge5_U_Size = sizeof(Parts_Charge5_U) / sizeof(Parts_Charge5_U[0]);
 
 // 下の方から並んで5体
 static const EnemyCreateData Parts_Charge5_L[] =
 {
-	{    0, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{   60, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{  120, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{  180, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
-	{  240, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeCharge },
+	{    0, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{   60, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{  120, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{  180, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeCharge },
+	{  240, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeCharge },
 };
 static constexpr int Parts_Charge5_L_Size = sizeof(Parts_Charge5_L) / sizeof(Parts_Charge5_L[0]);
 
 // 上よりサインカーブで向かってくる３体+プレイヤーに突撃
 static const EnemyCreateData Parts_SinCharge3_U[] =
 {
-	{    0, { Game::cScreenWidth + 64.0f, 160.0f }, 20, StageManager::EnemyType::kEnemyTypeChargeSin },
-	{    0, { Game::cScreenWidth + 64.0f, 260.0f }, 20, StageManager::EnemyType::kEnemyTypeChargeSin },
-	{    0, { Game::cScreenWidth + 64.0f, 360.0f }, 20, StageManager::EnemyType::kEnemyTypeChargeSin },
-	{   50, { Game::cScreenWidth + 64.0f, 100.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{    0, { Game::cScreenWidth + 64.0f, 160.0f }, StageManager::EnemyType::kEnemyTypeChargeSin },
+	{    0, { Game::cScreenWidth + 64.0f, 260.0f }, StageManager::EnemyType::kEnemyTypeChargeSin },
+	{    0, { Game::cScreenWidth + 64.0f, 360.0f }, StageManager::EnemyType::kEnemyTypeChargeSin },
+	{   50, { Game::cScreenWidth + 64.0f, 100.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
 };
 static constexpr int Parts_SinCharge3_U_Size = sizeof(Parts_SinCharge3_U) / sizeof(Parts_SinCharge3_U[0]);
 
 // 下よりサインカーブで向かってくる３体+プレイヤーに突撃
 static const EnemyCreateData Parts_SinCharge3_L[] =
 {
-	{    0, { Game::cScreenWidth + 64.0f, 180.0f }, 20, StageManager::EnemyType::kEnemyTypeChargeSin },
-	{    0, { Game::cScreenWidth + 64.0f, 280.0f }, 20, StageManager::EnemyType::kEnemyTypeChargeSin },
-	{    0, { Game::cScreenWidth + 64.0f, 380.0f }, 20, StageManager::EnemyType::kEnemyTypeChargeSin },
-	{   50, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{    0, { Game::cScreenWidth + 64.0f, 180.0f }, StageManager::EnemyType::kEnemyTypeChargeSin },
+	{    0, { Game::cScreenWidth + 64.0f, 280.0f }, StageManager::EnemyType::kEnemyTypeChargeSin },
+	{    0, { Game::cScreenWidth + 64.0f, 380.0f }, StageManager::EnemyType::kEnemyTypeChargeSin },
+	{   50, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
 };
 static constexpr int Parts_SinCharge3_L_Size = sizeof(Parts_SinCharge3_L) / sizeof(Parts_SinCharge3_L[0]);
 
 // プレイヤーに突撃　たくさん
 static const EnemyCreateData Parts_PlayerChargeRush_00[] =
 {
-	{   0, { Game::cScreenWidth + 64.0f, 100.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  10, { Game::cScreenWidth + 64.0f, 132.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  20, { Game::cScreenWidth + 64.0f, 164.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  30, { Game::cScreenWidth + 64.0f, 196.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  40, { Game::cScreenWidth + 64.0f, 228.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  50, { Game::cScreenWidth + 64.0f, 260.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  60, { Game::cScreenWidth + 64.0f, 292.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  70, { Game::cScreenWidth + 64.0f, 324.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  80, { Game::cScreenWidth + 64.0f, 356.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  90, { Game::cScreenWidth + 64.0f, 388.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{ 100, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{   0, { Game::cScreenWidth + 64.0f, 100.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  10, { Game::cScreenWidth + 64.0f, 132.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  20, { Game::cScreenWidth + 64.0f, 164.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  30, { Game::cScreenWidth + 64.0f, 196.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  40, { Game::cScreenWidth + 64.0f, 228.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  50, { Game::cScreenWidth + 64.0f, 260.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  60, { Game::cScreenWidth + 64.0f, 292.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  70, { Game::cScreenWidth + 64.0f, 324.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  80, { Game::cScreenWidth + 64.0f, 356.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  90, { Game::cScreenWidth + 64.0f, 388.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{ 100, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
 };
 static constexpr int Parts_PlayerChargeRush_00_Size = sizeof(Parts_PlayerChargeRush_00) / sizeof(Parts_PlayerChargeRush_00[0]);
 
 static const EnemyCreateData Parts_PlayerChargeRush_01[] =
 {
-	{  10, { Game::cScreenWidth + 64.0f, 420.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  20, { Game::cScreenWidth + 64.0f, 388.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  30, { Game::cScreenWidth + 64.0f, 356.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  40, { Game::cScreenWidth + 64.0f, 324.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  50, { Game::cScreenWidth + 64.0f, 292.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  60, { Game::cScreenWidth + 64.0f, 260.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  70, { Game::cScreenWidth + 64.0f, 228.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  80, { Game::cScreenWidth + 64.0f, 196.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{  90, { Game::cScreenWidth + 64.0f, 164.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{ 100, { Game::cScreenWidth + 64.0f, 132.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
-	{ 110, { Game::cScreenWidth + 64.0f, 100.0f }, 20, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  10, { Game::cScreenWidth + 64.0f, 420.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  20, { Game::cScreenWidth + 64.0f, 388.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  30, { Game::cScreenWidth + 64.0f, 356.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  40, { Game::cScreenWidth + 64.0f, 324.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  50, { Game::cScreenWidth + 64.0f, 292.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  60, { Game::cScreenWidth + 64.0f, 260.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  70, { Game::cScreenWidth + 64.0f, 228.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  80, { Game::cScreenWidth + 64.0f, 196.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{  90, { Game::cScreenWidth + 64.0f, 164.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{ 100, { Game::cScreenWidth + 64.0f, 132.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
+	{ 110, { Game::cScreenWidth + 64.0f, 100.0f }, StageManager::EnemyType::kEnemyTypeChargePlayer },
 };
 static constexpr int Parts_PlayerChargeRush_01_Size = sizeof(Parts_PlayerChargeRush_01) / sizeof(Parts_PlayerChargeRush_01[0]);
 
 static const EnemyCreateData Parts_Boss000[] =
 {
-	{    0, { Game::cScreenWidth + 64.0f, 270.0f }, 300, StageManager::EnemyType::kEnemyTypeBoss00 },
+	{    0, { Game::cScreenWidth + 64.0f, 270.0f }, StageManager::EnemyType::kEnemyTypeBoss00 },
 };
 static constexpr int Parts_Boss000_Size = sizeof(Parts_Boss000) / sizeof(Parts_Boss000[0]);
 
@@ -169,9 +185,10 @@ void StageManager::update()
 				pEnemy->createGraphic(pPartsTbl[i].pos.x, pPartsTbl[i].pos.y, m_pMain->getEnemyGraphic());
 				pEnemy->setMain(m_pMain);
 
-				pEnemy->init(pPartsTbl[i].hp);
-				pEnemy->setHitDamage(8);
-				pEnemy->setShotDamage(8);
+				EnemyDefaultStatus status = kEnemyStatus[static_cast<int>(pPartsTbl[i].type)];
+				pEnemy->init(status.hp);
+				pEnemy->setHitDamage(status.hitDamage);
+				pEnemy->setShotDamage(status.shotDamage);
 
 				m_pMain->addEnemy(pEnemy);
 

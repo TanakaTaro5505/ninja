@@ -22,6 +22,16 @@ static constexpr int kMaxPowerup[Player::kPowerupTypeNum] =
 	4,	// kPowerupTypeShotInterval,// 発射間隔
 };
 
+// パワーアップ内容に応じたテキスト表示
+static const char* const kPowerupText[Player::kPowerupTypeNum] =
+{
+	"手裏剣の攻撃力があがった！",		// kPowerupTypeShotPower,	// ショットの攻撃力、サイズ
+	"たくさん投げられるようになった！",	// kPowerupTypeShotDir,		// 攻撃方向
+	"うしろに投げられるようになった！",	// kPowerupTypeBackShot,	// 後方攻撃
+	"移動速度が上がった！",				// kPowerupTypeMoveSpeed,	// 移動速度
+	"手裏剣の連射速度が上がった！",		// kPowerupTypeShotInterval,// 発射間隔
+};
+
 // 基本性能
 static constexpr int kMaxHp			= 100;
 static constexpr int kShotSpeed		= 6;
@@ -310,9 +320,10 @@ void Player::addExp(int add)
 
 		// パワーアップ
 		int count = 0;
+		int levelUpType = 0;
 		while (1)
 		{
-			int levelUpType = GetRand(kPowerupTypeNum - 1);
+			levelUpType = GetRand(kPowerupTypeNum - 1);
 			if ((m_powerUp[levelUpType] < kMaxPowerup[levelUpType]) ||
 				(count >= 256))
 			{
@@ -321,6 +332,8 @@ void Player::addExp(int add)
 			}
 			count++;
 		}
+		// レベルアップ演出開始
+		m_pMain->setLevelup(getPos(), kPowerupText[levelUpType]);
 	}
 }
 
