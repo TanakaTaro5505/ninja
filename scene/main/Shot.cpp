@@ -6,11 +6,15 @@
 
 static constexpr float cShotSpeed = 8.0f;
 static constexpr float cRotSpeed = 0.2f;
+// ホーミング弾旋回性能
+static constexpr float cHomingRotSpeed = 4.0f;
 
 // ===================================================================================
 void Shot::update()
 {
 	if (!m_isExist)	return;
+
+	m_frameCount++;
 
 	float rad = 3.141592f * m_moveAngle / 180.0f;
 	m_vec.x = cosf(rad) * m_moveSpeed;
@@ -28,49 +32,51 @@ void Shot::update()
 	m_pos.y += m_vec.y;
 	addAngle(m_rotVec);
 
-#if false	// test
-	if (m_isPlayerShot)
+	if ((m_homingFrame >= 0) && (m_homingFrame > m_frameCount))
 	{
 		VECTOR targetEnemyPos;
-		if (m_pMain->getNearEnemyPos(&targetEnemyPos, m_pos))
+
+		if (m_isPlayerShot)
 		{
-#if false	
-			// test	完全追尾
-			m_moveAngle = atan2f(targetEnemyPos.y - m_pos.y, targetEnemyPos.x - m_pos.x);
-			m_moveAngle = m_moveAngle * 180.0f / 3.141592f;
-#else
-			// 0度の方向を向くベクトル
-			constexpr VECTOR kBase = { 1,0,0 };
-			//現在の進行方向を0度の方向に変換する行列を取得
-			MATRIX mtx = MGetRotVec2(m_vec, kBase);
-
-			VECTOR toEnemy;
-			toEnemy.x = targetEnemyPos.x - m_pos.x;
-			toEnemy.y = targetEnemyPos.y - m_pos.y;
-			toEnemy.z = 0.0f;
-
-			// プレイヤー方向へのベクトルを変換する
-			VECTOR tempVec = VTransform(toEnemy, mtx);
-
-			float diffDir = atan2f(tempVec.y, tempVec.x);
-			if (diffDir > 0.0f)
+			if (m_pMain->getNearEnemyPos(&targetEnemyPos, m_pos))
 			{
-				m_moveAngle += 1.0f;
+				// 0度の方向を向くベクトル
+				constexpr VECTOR kBase = { 1,0,0 };
+				//現在の進行方向を0度の方向に変換する行列を取得
+				MATRIX mtx = MGetRotVec2(m_vec, kBase);
+
+				VECTOR toEnemy;
+				toEnemy.x = targetEnemyPos.x - m_pos.x;
+				toEnemy.y = targetEnemyPos.y - m_pos.y;
+				toEnemy.z = 0.0f;
+
+				// プレイヤー方向へのベクトルを変換する
+				VECTOR tempVec = VTransform(toEnemy, mtx);
+
+				float diffDir = atan2f(tempVec.y, tempVec.x);
+				if (diffDir > 0.0f)
+				{
+					m_moveAngle += cHomingRotSpeed;
+				}
+				else if (diffDir < 0.0f)
+				{
+					m_moveAngle -= cHomingRotSpeed;
+				}
 			}
-			else if (diffDir < 0.0f)
+			else
 			{
-				m_moveAngle -= 1.0f;
+				// 敵を見失ったらホーミングやめる
+				m_homingFrame = -1;
 			}
-#endif
 		}
 	}
-#endif
-	
-
-	if (m_pos.x < 0.0f - m_radius)					m_isExist = false;
-	if (m_pos.x > Game::cScreenWidth + m_radius)	m_isExist = false;
-	if (m_pos.y < 0.0f - m_radius)					m_isExist = false;
-	if (m_pos.y > Game::cScreenHeight + m_radius)	m_isExist = false;
+	else
+	{
+		if (m_pos.x < 0.0f - m_radius)					m_isExist = false;
+		if (m_pos.x > Game::cScreenWidth + m_radius)	m_isExist = false;
+		if (m_pos.y < 0.0f - m_radius)					m_isExist = false;
+		if (m_pos.y > Game::cScreenHeight + m_radius)	m_isExist = false;
+	}
 }
 
 void Shot::draw()
@@ -98,12 +104,15 @@ void Shot::draw()
 void Shot::createPlayerShot(VECTOR pos, int graph)
 {
 	createGraphic(pos.x, pos.y, graph);
+	m_frameCount = 0;
+
 	for (int i = 0; i < kPosLogNum; i++)
 	{
 		m_posLog[i] = m_pos;
 	}
 	m_moveSpeed = cShotSpeed;
 	m_moveAngle = 0.0f;
+	m_homingFrame = -1;
 
 	m_rotVec = cRotSpeed;
 
@@ -113,12 +122,15 @@ void Shot::createPlayerShot(VECTOR pos, int graph)
 void Shot::createEnemyShot(VECTOR pos, int graph)
 {
 	createGraphic(pos.x, pos.y, graph);
+	m_frameCount = 0;
+
 	for (int i = 0; i < kPosLogNum; i++)
 	{
 		m_posLog[i] = m_pos;
 	}
 	m_moveSpeed = cShotSpeed;
 	m_moveAngle = 180.0f;
+	m_homingFrame = -1;
 
 	m_rotVec = -cRotSpeed;
 

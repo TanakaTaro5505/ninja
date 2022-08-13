@@ -25,11 +25,11 @@ static constexpr int kMaxPowerup[Player::kPowerupTypeNum] =
 // パワーアップ内容に応じたテキスト表示
 static const char* const kPowerupText[Player::kPowerupTypeNum] =
 {
-	"手裏剣の攻撃力があがった！",		// kPowerupTypeShotPower,	// ショットの攻撃力、サイズ
-	"たくさん投げられるようになった！",	// kPowerupTypeShotDir,		// 攻撃方向
-	"うしろに投げられるようになった！",	// kPowerupTypeBackShot,	// 後方攻撃
-	"移動速度が上がった！",				// kPowerupTypeMoveSpeed,	// 移動速度
-	"手裏剣の連射速度が上がった！",		// kPowerupTypeShotInterval,// 発射間隔
+	"手裏剣の攻撃力があがった！",			// kPowerupTypeShotPower,	// ショットの攻撃力、サイズ
+	"たくさん投げられるようになった！",		// kPowerupTypeShotDir,		// 攻撃方向
+	"ホーミング手裏剣を投げられるようになった！",	// kPowerupTypeBackShot,	// 後方攻撃
+	"移動速度が上がった！",					// kPowerupTypeMoveSpeed,	// 移動速度
+	"手裏剣の連射速度が上がった！",			// kPowerupTypeShotInterval,// 発射間隔
 };
 
 // 基本性能
@@ -244,6 +244,8 @@ void Player::update()
 				pShot->setMoveAngle(static_cast<float>(180 + startAngle + i * 10));
 				pShot->setPower(getShotDamage());
 				pShot->setScale(getShotScale());
+
+				pShot->setHoming();
 			}
 		}
 #endif
