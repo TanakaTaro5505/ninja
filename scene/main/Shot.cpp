@@ -85,8 +85,7 @@ void Shot::draw()
 		if (alpha >= 255)	alpha = 255;
 		if (alpha < 0)		alpha = 0;
 
-	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawRotaGraph2(static_cast<int>(m_posLog[i].x), static_cast<int>(m_posLog[i].y),
 			m_graphicSizeX / 2, m_graphicSizeY / 2,
 			m_scale, 0.0,		// m_angle, m_aangleLog[i]	Ç»Ç«Ç†ÇÈÇ™âÒÇ≥Ç»Ç¢ÇÃÇ™ÇÊÇ≥Ç∞ÅH
