@@ -24,6 +24,7 @@ namespace Sound
 		for (int i = 0; i < kSoundID_Num; i++)
 		{
 			soundHandle[i] = LoadSoundMem(kSoundFileName[i]);
+			ChangeVolumeSoundMem(128, soundHandle[i]);
 		}
 	}
 

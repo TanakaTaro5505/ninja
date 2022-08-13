@@ -16,8 +16,18 @@ void Shot::update()
 	m_vec.x = cosf(rad) * m_moveSpeed;
 	m_vec.y = sinf(rad) * m_moveSpeed;
 
+	for (int i = kPosLogNum - 1; i >= 1; i--)
+	{
+		m_posLog[i] = m_posLog[i - 1];
+		m_angleLog[i] = m_angleLog[i - 1];
+	}
+	m_posLog[0] = m_pos;
+	m_angleLog[0] = m_angle;
+
 	m_pos.x += m_vec.x;
 	m_pos.y += m_vec.y;
+	addAngle(m_rotVec);
+
 #if false	// test
 	if (m_isPlayerShot)
 	{
@@ -55,17 +65,44 @@ void Shot::update()
 		}
 	}
 #endif
-	addAngle(m_rotVec);
+	
 
 	if (m_pos.x < 0.0f - m_radius)					m_isExist = false;
 	if (m_pos.x > Game::cScreenWidth + m_radius)	m_isExist = false;
 	if (m_pos.y < 0.0f - m_radius)					m_isExist = false;
 	if (m_pos.y > Game::cScreenHeight + m_radius)	m_isExist = false;
 }
+
+void Shot::draw()
+{
+	if (!m_isExist)	return;
+
+	//	const int kAlphaIntervel = 256 / kPosLogNum;
+	const int kAlphaIntervel = 128 / kPosLogNum;
+	for (int i = kPosLogNum - 1; i >= 0; i--)
+	{
+		int alpha = kAlphaIntervel * ((kPosLogNum - 1) - i);
+		if (alpha >= 255)	alpha = 255;
+		if (alpha < 0)		alpha = 0;
+
+	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+		DrawRotaGraph2(static_cast<int>(m_posLog[i].x), static_cast<int>(m_posLog[i].y),
+			m_graphicSizeX / 2, m_graphicSizeY / 2,
+			m_scale, 0.0,		// m_angle, m_aangleLog[i]	Ç»Ç«Ç†ÇÈÇ™âÒÇ≥Ç»Ç¢ÇÃÇ™ÇÊÇ≥Ç∞ÅH
+			m_graphicHandle, true, false);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+	GameObject::draw();
+}
+
 void Shot::createPlayerShot(VECTOR pos, int graph)
 {
 	createGraphic(pos.x, pos.y, graph);
-
+	for (int i = 0; i < kPosLogNum; i++)
+	{
+		m_posLog[i] = m_pos;
+	}
 	m_moveSpeed = cShotSpeed;
 	m_moveAngle = 0.0f;
 
@@ -77,7 +114,10 @@ void Shot::createPlayerShot(VECTOR pos, int graph)
 void Shot::createEnemyShot(VECTOR pos, int graph)
 {
 	createGraphic(pos.x, pos.y, graph);
-
+	for (int i = 0; i < kPosLogNum; i++)
+	{
+		m_posLog[i] = m_pos;
+	}
 	m_moveSpeed = cShotSpeed;
 	m_moveAngle = 180.0f;
 

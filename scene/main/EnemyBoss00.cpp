@@ -94,7 +94,7 @@ void EnemyBoss00::update()
 
 		VECTOR pos;
 		pos.x = Game::cScreenWidth + 64.0f;
-		pos.y = GetRand(Game::cScreenHeight - 160) + 80;
+		pos.y = static_cast<float>(GetRand(Game::cScreenHeight - 160) + 80);
 		pos.z = 0.0f;
 
 		pEnemy->createGraphic(pos.x, pos.y, m_pMain->getEnemyGraphic());

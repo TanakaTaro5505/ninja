@@ -260,7 +260,7 @@ void Player::draw()
 	{
 	//	const int kAlphaIntervel = 256 / kPosLogNum;
 		const int kAlphaIntervel = 128 / kPosLogNum;
-		for (int i = kPosLogNum - 1; i >= 1; i--)
+		for (int i = kPosLogNum - 1; i >= 0; i--)
 		{
 			int alpha = kAlphaIntervel * ((kPosLogNum - 1) - i);
 			if (alpha >= 255)	alpha = 255;
