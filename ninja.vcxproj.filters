@@ -105,6 +105,9 @@
     <ClCompile Include="scene\main\EnemyMoveFrontSin.cpp">
       <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="util\Vec2.cpp">
+      <Filter>ソース ファイル\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\SceneBase.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="scene\main\EnemyMoveFrontSin.h">
       <Filter>ソース ファイル\Scene\Main\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Vec2.h">
+      <Filter>ソース ファイル\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

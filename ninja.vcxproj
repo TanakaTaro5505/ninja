@@ -172,6 +172,7 @@
     <ClCompile Include="ui\Ui.cpp" />
     <ClCompile Include="util\assert.cpp" />
     <ClCompile Include="util\PadUtil.cpp" />
+    <ClCompile Include="util\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="effect\EffectManager.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="ui\Ui.h" />
     <ClInclude Include="util\assert.h" />
     <ClInclude Include="util\PadUtil.h" />
+    <ClInclude Include="util\Vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
