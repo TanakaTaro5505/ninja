@@ -7,7 +7,7 @@ class EnemyBoss00 : public EnemyBase
 public:
 	EnemyBoss00() : EnemyBase()
 	{
-		m_basePos = { 0.0f, 0.0f,0.0f };
+		m_basePos = { 0.0f, 0.0f };
 		m_sinRate = 0.0f;
 		m_shotWait = 0;
 		m_summonWait = 0;
@@ -24,7 +24,7 @@ public:
 
 private:
 
-	VECTOR m_basePos;
+	Vec2 m_basePos;
 	float m_sinRate;
 	int m_shotWait;		// ’e‚Ì”­ŽËŠÔŠu
 

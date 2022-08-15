@@ -186,7 +186,7 @@ void SceneMain::addEnemy(EnemyBase* pEnemy)
 	m_enemyList.push_back(pEnemy);
 }
 
-Shot* SceneMain::createPlayerShot(VECTOR pos)
+Shot* SceneMain::createPlayerShot(Vec2 pos)
 {
 	Shot* pShot = new Shot;
 	pShot->createPlayerShot(pos, m_graphicHandle[kGraphicData_Shot]);
@@ -195,7 +195,7 @@ Shot* SceneMain::createPlayerShot(VECTOR pos)
 	return pShot;
 }
 
-Shot* SceneMain::createEnemyShot(VECTOR pos)
+Shot* SceneMain::createEnemyShot(Vec2 pos)
 {
 	Shot* pShot = new Shot;
 	pShot->createEnemyShot(pos, m_graphicHandle[kGraphicData_EnemyShot]);
@@ -204,19 +204,19 @@ Shot* SceneMain::createEnemyShot(VECTOR pos)
 	return pShot;
 }
 
-void SceneMain::createDeadEffect(VECTOR pos)
+void SceneMain::createDeadEffect(Vec2 pos)
 {
 	m_effect.create(pos.x, pos.y);
 }
 
-void SceneMain::createItem(VECTOR pos)
+void SceneMain::createItem(Vec2 pos)
 {
 	Item* pItem = new Item;
 	pItem->createGraphic(pos.x, pos.y, m_graphicHandle[kGraphicData_Item]);
 	m_itemList.push_back(pItem);
 }
 
-bool SceneMain::getNearEnemyPos(VECTOR* pOut, VECTOR pos)
+bool SceneMain::getNearEnemyPos(Vec2* pOut, Vec2 pos)
 {
 	if (m_enemyList.size() <= 0)	return false;
 
@@ -227,7 +227,7 @@ bool SceneMain::getNearEnemyPos(VECTOR* pOut, VECTOR pos)
 		EnemyBase* pEnemy = (*itr);
 		if (!pEnemy->isExist())	continue;
 
-		VECTOR enemyPos = pEnemy->getPos();
+		Vec2 enemyPos = pEnemy->getPos();
 		float sqDist = (enemyPos.x - pos.x) * (enemyPos.x - pos.x) + (enemyPos.y - pos.y) * (enemyPos.y - pos.y);
 		
 		if ((!result) ||
@@ -236,14 +236,13 @@ bool SceneMain::getNearEnemyPos(VECTOR* pOut, VECTOR pos)
 			minSqDiat = sqDist;
 			pOut->x = enemyPos.x;
 			pOut->y = enemyPos.y;
-			pOut->z = enemyPos.z;
 			result = true;
 		}
 	}
 	return result;
 }
 
-void SceneMain::setLevelup(VECTOR pos, const char* text)
+void SceneMain::setLevelup(Vec2 pos, const char* text)
 {
 	// プレイヤー位置に演出表示
 	m_levelUpPos.x = pos.x;
@@ -266,7 +265,7 @@ void SceneMain::initBg()
 		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem));
 
 		float speed = static_cast<float>(GetRand(64)) / 10.0f;
-		VECTOR vec;
+		Vec2 vec;
 		vec.x = -speed;
 		vec.y = 0.0f;
 		m_bgStar[i].setVec(vec);
@@ -511,7 +510,7 @@ void SceneMain::updateBg()
 		{
 			float posX = static_cast<float>(Game::cScreenWidth + 2);
 			float posY = static_cast<float>(GetRand(Game::cScreenHeight));
-			VECTOR pos;
+			Vec2 pos;
 			pos.x = posX;
 			pos.y = posY;
 			m_bgStar[i].setPos(pos);

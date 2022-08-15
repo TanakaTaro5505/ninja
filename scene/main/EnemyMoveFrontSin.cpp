@@ -15,7 +15,6 @@ void EnemyMoveFrontSin::init(int maxHp)
 
 	m_vec.x = kSpeed;
 	m_vec.y = 0.0f;
-	m_vec.z = 0.0f;
 	m_shotWait = 120;
 
 	m_basePos = m_pos;

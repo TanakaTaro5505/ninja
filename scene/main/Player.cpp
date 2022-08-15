@@ -170,16 +170,14 @@ void Player::update()
 		m_vec.y = 0.0f;
 	}
 
-	m_vec.z = 0.0f;
 	if(isInput)
 	{
-		VectorNormalize(&m_vec, &m_vec);
+		m_vec.normalize();
 	}
 
-	VectorScale(&m_vec, &m_vec, static_cast<float>(getPlayerSpeed()));
+	m_vec *= static_cast<float>(getPlayerSpeed());
 
-	m_pos.x += m_vec.x;
-	m_pos.y += m_vec.y;
+	m_pos += m_vec;
 
 	if (m_pos.x < 0.0f + m_radius)		m_pos.x = (0.0f + m_radius);
 	if (m_pos.x > Game::cScreenWidth - m_radius)	m_pos.x = (Game::cScreenWidth - m_radius);

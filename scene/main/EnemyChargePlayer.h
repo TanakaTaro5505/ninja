@@ -19,7 +19,7 @@ public:
 private:
 
 	// 現在位置からプレイヤー位置へのベクトルを取得
-	VECTOR getToPlayer();
+	Vec2 getToPlayer();
 
 	// 進む角度
 	float m_dir;

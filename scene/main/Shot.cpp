@@ -34,7 +34,7 @@ void Shot::update()
 
 	if ((m_homingFrame >= 0) && (m_homingFrame > m_frameCount))
 	{
-		VECTOR targetEnemyPos;
+		Vec2 targetEnemyPos;
 
 		if (m_isPlayerShot)
 		{
@@ -42,8 +42,12 @@ void Shot::update()
 			{
 				// 0度の方向を向くベクトル
 				constexpr VECTOR kBase = { 1,0,0 };
+				VECTOR tempVec;
+				tempVec.x = m_vec.x;
+				tempVec.y = m_vec.y;
+				tempVec.z = 0.0f;
 				//現在の進行方向を0度の方向に変換する行列を取得
-				MATRIX mtx = MGetRotVec2(m_vec, kBase);
+				MATRIX mtx = MGetRotVec2(tempVec, kBase);
 
 				VECTOR toEnemy;
 				toEnemy.x = targetEnemyPos.x - m_pos.x;
@@ -51,9 +55,9 @@ void Shot::update()
 				toEnemy.z = 0.0f;
 
 				// プレイヤー方向へのベクトルを変換する
-				VECTOR tempVec = VTransform(toEnemy, mtx);
+				VECTOR calcVec = VTransform(toEnemy, mtx);
 
-				float diffDir = atan2f(tempVec.y, tempVec.x);
+				float diffDir = atan2f(calcVec.y, calcVec.x);
 				if (diffDir > 0.0f)
 				{
 					m_moveAngle += cHomingRotSpeed;
@@ -101,7 +105,7 @@ void Shot::draw()
 	GameObject::draw();
 }
 
-void Shot::createPlayerShot(VECTOR pos, int graph)
+void Shot::createPlayerShot(Vec2 pos, int graph)
 {
 	createGraphic(pos.x, pos.y, graph);
 	m_frameCount = 0;
@@ -119,7 +123,7 @@ void Shot::createPlayerShot(VECTOR pos, int graph)
 	m_isPlayerShot = true;
 }
 
-void Shot::createEnemyShot(VECTOR pos, int graph)
+void Shot::createEnemyShot(Vec2 pos, int graph)
 {
 	createGraphic(pos.x, pos.y, graph);
 	m_frameCount = 0;

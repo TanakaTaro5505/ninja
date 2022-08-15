@@ -30,9 +30,9 @@ public:
 	void draw();
 
 	// プレイヤーのショット作成
-	void createPlayerShot( VECTOR pos, int graph );
+	void createPlayerShot(Vec2 pos, int graph );
 	// 敵のショット作成
-	void createEnemyShot( VECTOR pos, int graph );
+	void createEnemyShot(Vec2 pos, int graph );
 
 	// ショットをあてた
 	void hit();
@@ -71,6 +71,6 @@ private:
 
 	int m_isPlayerShot;	// プレイヤーの撃った弾か	そうでないならプレイヤーに当たる
 
-	VECTOR m_posLog[kPosLogNum];
+	Vec2 m_posLog[kPosLogNum];
 	float m_angleLog[kPosLogNum];
 };

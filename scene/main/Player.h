@@ -138,5 +138,5 @@ private:
 	ShotData m_shotData[kShotMax];
 
 	// ââèo
-	VECTOR m_posLog[kPosLogNum];
+	Vec2 m_posLog[kPosLogNum];
 };

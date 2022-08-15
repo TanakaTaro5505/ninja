@@ -31,7 +31,6 @@ void EnemyBoss00::init(int maxHp)
 
 	m_vec.x = kSpeed;
 	m_vec.y = 0.0f;
-	m_vec.z = 0.0f;
 	m_shotWait = 120;
 	m_summonWait = 180;
 
@@ -116,7 +115,7 @@ void EnemyBoss00::dead()
 	// ”š”­‰‰o
 	for (int i = 0; i < 8; i++)
 	{
-		VECTOR pos = getPos();
+		Vec2 pos = getPos();
 		pos.x += static_cast<float>(GetRand(64) - 32);
 		pos.y += static_cast<float>(GetRand(64) - 32);
 		m_pMain->createDeadEffect(pos);

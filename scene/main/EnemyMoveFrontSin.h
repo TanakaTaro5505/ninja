@@ -7,7 +7,7 @@ class EnemyMoveFrontSin : public EnemyBase
 public:
 	EnemyMoveFrontSin() : EnemyBase()
 	{
-		m_basePos = { 0.0f, 0.0f,0.0f };
+		m_basePos = { 0.0f, 0.0f };
 		m_sinRate = 0.0f;
 		m_shotWait = 0;
 	}
@@ -20,7 +20,7 @@ public:
 
 private:
 
-	VECTOR m_basePos;
+	Vec2 m_basePos;
 	float m_sinRate;
 	int m_shotWait;
 };

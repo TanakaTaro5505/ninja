@@ -17,7 +17,7 @@ void EnemyChargePlayer::init(int maxHp)
 	EnemyBase::init(maxHp);
 
 	// 初期位置からプレイヤーに向かって移動するようにする
-	VECTOR playerPos = m_pMain->getPlayer()->getPos();
+	Vec2 playerPos = m_pMain->getPlayer()->getPos();
 	m_dir = atan2f(playerPos.y - getPos().y, playerPos.x - getPos().x);
 
 //	toPlayer = VNorm(toPlayer);
@@ -25,7 +25,6 @@ void EnemyChargePlayer::init(int maxHp)
 
 	m_vec.x = cosf(m_dir) * kSpeed;
 	m_vec.y = sinf(m_dir) * kSpeed;
-	m_vec.z = 0.0f;
 
 	m_angle = m_dir + 3.1459f;	// 進行方向に向ける
 }
@@ -54,15 +53,22 @@ void EnemyChargePlayer::update()
 #if 1	// 行列変換を使用してなす角を求める
 	// 0度の方向を向くベクトル
 	constexpr VECTOR kBase = {1,0,0};
+	VECTOR tempVec;
+	tempVec.x = m_vec.x;
+	tempVec.y = m_vec.y;
+	tempVec.z = 0.0f;
 	//現在の進行方向を0度の方向に変換する行列を取得
-	MATRIX mtx = MGetRotVec2(m_vec, kBase);
+	MATRIX mtx = MGetRotVec2(tempVec, kBase);
 
-	VECTOR toPlayer = getToPlayer();
+	VECTOR toPlayer;
+	toPlayer.x = getToPlayer().x;
+	toPlayer.y = getToPlayer().y;
+	toPlayer.z = 0.0f;
 
 	// プレイヤー方向へのベクトルを変換する
-	VECTOR tempVec = VTransform(toPlayer, mtx);
+	VECTOR calcVec = VTransform(toPlayer, mtx);
 
-	float diffDir = atan2f(tempVec.y, tempVec.x);
+	float diffDir = atan2f(calcVec.y, calcVec.x);
 	if( abs(diffDir) < 3.141592f/2 )	// 90度以上で追いかけるのをあきらめる
 	{
 		if (diffDir > 0.0f)
@@ -79,7 +85,6 @@ void EnemyChargePlayer::update()
 	// m_dirから進行方向と画像の回転情報を作成
 	m_vec.x = cosf(m_dir) * kSpeed;
 	m_vec.y = sinf(m_dir) * kSpeed;
-	m_vec.z = 0.0f;
 
 	m_angle = m_dir + 3.1459f;	// 進行方向に向ける
 
@@ -89,13 +94,12 @@ void EnemyChargePlayer::update()
 	}
 }
 
-VECTOR EnemyChargePlayer::getToPlayer()
+Vec2 EnemyChargePlayer::getToPlayer()
 {
-	VECTOR playerPos = m_pMain->getPlayer()->getPos();
-	VECTOR toPlayer;
+	Vec2 playerPos = m_pMain->getPlayer()->getPos();
+	Vec2 toPlayer;
 	toPlayer.x = playerPos.x - m_pos.x;
 	toPlayer.y = playerPos.y - m_pos.y;
-	toPlayer.z = 0.0f;
 
 	return toPlayer;
 }

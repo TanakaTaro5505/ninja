@@ -81,19 +81,19 @@ public:
 	// プレイヤー取得
 	Player* getPlayer() { return &m_player; }
 	// ショット生成
-	Shot* createPlayerShot(VECTOR pos);
-	Shot* createEnemyShot(VECTOR pos);
+	Shot* createPlayerShot(Vec2 pos);
+	Shot* createEnemyShot(Vec2 pos);
 	// はじけ演出作成
-	void createDeadEffect(VECTOR pos);
+	void createDeadEffect(Vec2 pos);
 	// アイテム生成
-	void createItem(VECTOR pos);
+	void createItem(Vec2 pos);
 	// posから一番近くにいる敵の位置取得	敵がいない場合false
-	bool getNearEnemyPos(VECTOR* pOut, VECTOR pos);
+	bool getNearEnemyPos(Vec2* pOut, Vec2 pos);
 
 	int getEnemyGraphic() { return m_graphicHandle[kGraphicData_Enemy]; }
 
 	// レベルアップ演出開始
-	void setLevelup( VECTOR pos, const char* text );
+	void setLevelup(Vec2 pos, const char* text );
 
 private:
 	// シーケンスに応じた処理

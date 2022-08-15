@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include "PadUtil.h"
+#include "Vec2.h"
 
 class GameObject
 {
@@ -26,11 +27,11 @@ public:
 	void setRadius(float radius) { m_radius = radius; }
 	float getRadius() { return m_radius; }
 	// 位置設定
-	void setPos(VECTOR pos) { m_pos = pos; }
-	VECTOR getPos() { return m_pos; }
+	void setPos(Vec2 pos) { m_pos = pos; }
+	Vec2 getPos() { return m_pos; }
 	// 速度設定
-	void setVec(VECTOR vec) { m_vec = vec; }
-	VECTOR getVec() { return m_vec; }
+	void setVec(Vec2 vec) { m_vec = vec; }
+	Vec2 getVec() { return m_vec; }
 	// スケール
 	void setScale(float scale) { m_scale = scale; }
 	float getScale() { return m_scale; }
@@ -43,8 +44,8 @@ protected:
 	unsigned int m_color;
 	float m_radius;
 
-	VECTOR m_pos;
-	VECTOR m_vec;
+	Vec2 m_pos;
+	Vec2 m_vec;
 
 	float m_scale;
 	float m_angle;

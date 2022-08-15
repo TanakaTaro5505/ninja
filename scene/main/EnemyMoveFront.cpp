@@ -15,7 +15,6 @@ void EnemyMoveFront::init(int maxHp)
 
 	m_vec.x = kSpeed;
 	m_vec.y = 0.0f;
-	m_vec.z = 0.0f;
 	m_shotWait = 120;
 }
 
@@ -23,8 +22,7 @@ void EnemyMoveFront::update()
 {
 	if (!m_isExist)	return;
 
-	m_pos.x += m_vec.x;
-	m_pos.y += m_vec.y;
+	m_pos += m_vec;
 
 	if (m_pos.x < 0.0f - m_radius)
 	{
