@@ -36,6 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneManager scene;
 	scene.change(new SceneTitle);
 
+	bool isFrameFeed = false;
 	int time = 0;
 	while (ProcessMessage() == 0)
 	{
@@ -53,9 +54,30 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//裏画面を表画面を入れ替える
 		ScreenFlip();
 		// フレームレート固定
-	//	while (GetNowCount() - time < 17)
-		while (GetNowHiPerformanceCount() - time < 16667)
+
+		if (isFrameFeed)
 		{
+			// コマ送りモード
+			while (!Pad::isTrigger(PAD_INPUT_7))
+			{
+				Pad::update();
+				if (Pad::isTrigger(PAD_INPUT_8))
+				{
+					isFrameFeed = false;
+					break;
+				}
+			}
+		}
+		else
+		{
+		//	while (GetNowCount() - time < 17)
+			while (GetNowHiPerformanceCount() - time < 16667)
+			{
+			}
+			if (Pad::isTrigger(PAD_INPUT_7))
+			{
+				isFrameFeed = true;
+			}
 		}
 	}
 
