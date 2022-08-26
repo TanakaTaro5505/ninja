@@ -132,7 +132,6 @@ private:
 	int m_levelupDispFrame;
 
 	// グラフィック
-//	int m_graphicHandle[kGraphicData_Kind];
 	std::vector<int>	m_graphicHandle;
 	// 背景
 	GameObject	m_bgStar[kStarNum];
