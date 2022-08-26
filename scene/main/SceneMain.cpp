@@ -251,25 +251,6 @@ void SceneMain::setLevelup(Vec2 pos, const char* text)
 	m_levelupDispFrame = kLevelupTextDispFrame;
 }
 
-void SceneMain::initBg()
-{
-	for (int i = 0; i < kStarNum; i++)
-	{
-		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
-		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
-
-		int colorElem = GetRand(128);
-
-		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem));
-
-		float speed = static_cast<float>(GetRand(64)) / 10.0f;
-		Vec2 vec;
-		vec.x = -speed;
-		vec.y = 0.0f;
-		m_bgStar[i].setVec(vec);
-	}
-}
-
 SceneBase* SceneMain::updateMain()
 {
 	m_fadeBright += Game::cFadeSpeedNormal;
@@ -495,6 +476,25 @@ SceneBase* SceneMain::updateGameover()
 	}
 
 	return this;
+}
+
+void SceneMain::initBg()
+{
+	for (int i = 0; i < kStarNum; i++)
+	{
+		float posX = static_cast<float>(GetRand(Game::cScreenWidth));
+		float posY = static_cast<float>(GetRand(Game::cScreenHeight));
+
+		int colorElem = GetRand(128);
+
+		m_bgStar[i].create(posX, posY, 1.5f, GetColor(colorElem, colorElem, colorElem));
+
+		float speed = static_cast<float>(GetRand(64)) / 10.0f;
+		Vec2 vec;
+		vec.x = -speed;
+		vec.y = 0.0f;
+		m_bgStar[i].setVec(vec);
+	}
 }
 
 void SceneMain::updateBg()

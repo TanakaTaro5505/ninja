@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include <vector>
 #include <list>
 #include "SceneManager.h"
 #include "PadUtil.h"
