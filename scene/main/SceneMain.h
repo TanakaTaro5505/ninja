@@ -60,11 +60,12 @@ public:
 		m_levelUpPos = {-999.0f, -999.0f, -999.0f};
 		m_pLevelupText = nullptr;
 		m_levelupDispFrame = -1;
-
+#if false
 		for (int i = 0; i < kGraphicData_Kind; i++)
 		{
 			m_graphicHandle[i] = -1;
 		}
+#endif
 	}
 	virtual ~SceneMain()
 	{
@@ -131,7 +132,8 @@ private:
 	int m_levelupDispFrame;
 
 	// グラフィック
-	int m_graphicHandle[kGraphicData_Kind];
+//	int m_graphicHandle[kGraphicData_Kind];
+	std::vector<int>	m_graphicHandle;
 	// 背景
 	GameObject	m_bgStar[kStarNum];
 	// 敵を倒した時のエフェクト生成

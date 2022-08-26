@@ -27,7 +27,7 @@ void SceneMain::init()
 
 	for (int i = 0; i < kGraphicData_Kind; i++)
 	{
-		m_graphicHandle[i] = LoadGraph(kGraphicFilePath[i]);
+		m_graphicHandle.push_back(LoadGraph(kGraphicFilePath[i]));
 	}
 
 	m_player.createGraphic(Game::cScreenWidth / 2, Game::cScreenHeight / 2, m_graphicHandle[kGraphicData_Player]);
@@ -70,9 +70,10 @@ void SceneMain::deleteGraph()
 		}
 	}
 
-	for (int i = 0; i < kGraphicData_Kind; i++)
+//	for (int i = 0; i < kGraphicData_Kind; i++)
+	for(const auto handle : m_graphicHandle)
 	{
-		DeleteGraph(m_graphicHandle[i]);
+		DeleteGraph(handle);
 	}
 }
 
