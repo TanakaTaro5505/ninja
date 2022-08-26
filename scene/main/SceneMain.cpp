@@ -131,19 +131,18 @@ void SceneMain::draw()
 	SetDrawBright(m_fadeBright, m_fadeBright, m_fadeBright);
 
 	drawBg();
-	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); ++itr)
+	for (const auto shot : m_shotList)
 	{
-		(*itr)->draw();
+		shot->draw();
 	}
-	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
+	for (const auto item : m_itemList)
 	{
-		(*itr)->draw();
+		item->draw();
 	}
-
 	m_player.draw();
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+	for (const auto enemy : m_enemyList)
 	{
-		(*itr)->draw();
+		enemy->draw();
 	}
 	m_effect.draw();
 
@@ -222,12 +221,11 @@ bool SceneMain::getNearEnemyPos(Vec2* pOut, Vec2 pos)
 
 	bool result = false;
 	float minSqDiat = 99999.9f;
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+	for(const auto enemy : m_enemyList)
 	{
-		EnemyBase* pEnemy = (*itr);
-		if (!pEnemy->isExist())	continue;
+		if (!enemy->isExist())	continue;
 
-		Vec2 enemyPos = pEnemy->getPos();
+		Vec2 enemyPos = enemy->getPos();
 		float sqDist = (enemyPos.x - pos.x) * (enemyPos.x - pos.x) + (enemyPos.y - pos.y) * (enemyPos.y - pos.y);
 		
 		if ((!result) ||
@@ -287,64 +285,62 @@ SceneBase* SceneMain::updateMain()
 	updateBg();
 
 	m_player.update();
-	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
+	for(const auto shot : m_shotList)
 	{
-		(*itr)->update();
+		shot->update();
 	}
 	// “G‚Ìˆ—
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
+	for(const auto enemy : m_enemyList)
 	{
-		(*itr)->update();
+		enemy->update();
 	}
-	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); itr++)
+	for(const auto item : m_itemList)
 	{
-		(*itr)->update();
+		item->update();
 	}
 	m_effect.update();
 
 	// Õ“Ë”»’è
 	if (m_player.isGetDamage())
 	{
-		for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+		for(const auto enemy : m_enemyList)
 		{
-			if (m_player.isCol((*itr)))
+			if (m_player.isCol(enemy))
 			{
-				m_player.damage((*itr)->getHitDamage());
+				m_player.damage(enemy->getHitDamage());
 			}
 		}
 	}
 
 	// ƒAƒCƒeƒ€Žæ“¾
-	for (auto itr = m_itemList.begin(); itr != m_itemList.end(); ++itr)
+	for(const auto item : m_itemList)
 	{
-		if (!(*itr)->isExist())	continue;
+		if (!item->isExist())	continue;
 		// ƒvƒŒƒCƒ„[‚ª“G‚É‚Ô‚Â‚©‚Á‚½
-		if (m_player.isCol((*itr)))
+		if (m_player.isCol(item))
 		{
-			(*itr)->erase();
+			item->erase();
 			m_player.addExp(5);
 		}
 	}
 
-	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
+//	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
+	for( const auto shot : m_shotList )
 	{
-		Shot* pShot = (*itr);
+		if (!shot->isExist())	continue;
 
-		if (!pShot->isExist())	continue;
-
-		if (pShot->isHitEnemy())
+		if (shot->isHitEnemy())
 		{
 			// “G‚É“–‚½‚é’e
-			for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+			for( const auto enemy : m_enemyList )
 			{
-				EnemyBase* pEnemy = (*itr);
-				if (!pEnemy->isExist())	continue;
+				if (!enemy->isExist())	continue;
 				// “G‚ÉƒVƒ‡ƒbƒg‚ð‚ ‚Ä‚½
-				if (pEnemy->isCol(pShot))
+				if (enemy->isCol(shot))
 				{
 					//	m_effect.create(static_cast<int>(m_enemy[i].getPos().x), static_cast<int>(m_enemy[i].getPos().y));
-					pShot->hit();
-					pEnemy->hit(pShot->getPower());
+					shot->hit();
+					enemy->hit(shot->getPower());
 
 					break;
 				}
@@ -353,10 +349,10 @@ SceneBase* SceneMain::updateMain()
 		else
 		{
 			// ƒvƒŒƒCƒ„[‚É“–‚½‚é’e
-			if (m_player.isGetDamage() && m_player.isCol(pShot))
+			if (m_player.isGetDamage() && m_player.isCol(shot))
 			{
-				pShot->hit();
-				m_player.damage(pShot->getPower());
+				shot->hit();
+				m_player.damage(shot->getPower());
 			}
 		}
 	}
@@ -375,10 +371,10 @@ SceneBase* SceneMain::updateMain()
 	{
 		// ƒ{ƒX‚ªŽc‚Á‚Ä‚¢‚ê‚Î‚Ü‚¾I‚í‚ç‚È‚¢
 		bool isEnd = true;
-		for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+		for( const auto enemy : m_enemyList )
 		{
-			if (!(*itr)->isExist())	continue;
-			if ((*itr)->isBoss())
+			if (!enemy->isExist())	continue;
+			if (enemy->isBoss())
 			{
 				isEnd = false;
 			}
@@ -387,20 +383,20 @@ SceneBase* SceneMain::updateMain()
 		if (isEnd)
 		{
 			// Žc‚Á‚Ä‚éƒUƒR“GA“G‚Ì’e‚ðÁ‚·
-			for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); ++itr)
+			for(const auto enemy : m_enemyList)
 			{
-				if (!(*itr)->isExist())	continue;
+				if (!enemy->isExist())	continue;
 
-				(*itr)->erase();
-				m_effect.create((*itr)->getPos().x, (*itr)->getPos().y);
+				enemy->erase();
+				m_effect.create(enemy->getPos().x, enemy->getPos().y);
 			}
-			for (auto itr = m_shotList.begin(); itr != m_shotList.end(); ++itr)
+			for(const auto shot : m_shotList)
 			{
-				if (!(*itr)->isExist())	continue;
+				if (!shot->isExist())	continue;
 
-				if (!(*itr)->isHitEnemy())
+				if (!shot->isHitEnemy())
 				{
-					(*itr)->erase();
+					shot->erase();
 				}
 			}
 			m_endWait = 0;
@@ -435,14 +431,14 @@ SceneBase* SceneMain::updateStageClear()
 	
 	m_player.update();
 
-	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
+	for(const auto shot : m_shotList)
 	{
-		(*itr)->update();
+		shot->update();
 	}
 	// “G‚Ìˆ—
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
+	for(const auto enemy : m_enemyList)
 	{
-		(*itr)->update();
+		enemy->update();
 	}
 	m_effect.update();
 
@@ -477,14 +473,14 @@ SceneBase* SceneMain::updateGameover()
 
 	// ”wŒi‰‰o
 	updateBg();
-	for (auto itr = m_shotList.begin(); itr != m_shotList.end(); itr++)
+	for(const auto shot : m_shotList)
 	{
-		(*itr)->update();
+		shot->update();
 	}
 	// “G‚Ìˆ—
-	for (auto itr = m_enemyList.begin(); itr != m_enemyList.end(); itr++)
+	for( const auto enemy : m_enemyList )
 	{
-		(*itr)->update();
+		enemy->update();
 	}
 	m_effect.update();
 
