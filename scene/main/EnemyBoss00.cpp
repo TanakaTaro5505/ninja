@@ -7,18 +7,21 @@
 #include "SceneMain.h"
 
 #include "EnemyMoveFront.h"
+namespace
+{
+	static constexpr float kSpeed = -4.0f;
+	static constexpr float kBasePosX = 880.0f;
 
-static constexpr float kSpeed = -4.0f;
-static constexpr float kBasePosX = 880.0f;
+	// 1回のショットでの弾生成数
+	static constexpr int kShotNum = 5;
+	// 弾の速度
+	static constexpr int kShotSpeed = 8;
+	// ショットの発射間隔
+	static constexpr int kShotInterval = 30;
+	// 雑魚敵の生成間隔
+	static constexpr int kSummonInterval = 120;
 
-// 1回のショットでの弾生成数
-static constexpr int kShotNum = 5;
-// 弾の速度
-static constexpr int kShotSpeed = 8;
-// ショットの発射間隔
-static constexpr int kShotInterval = 30;
-// 雑魚敵の生成間隔
-static constexpr int kSummonInterval = 120;
+}
 
 // ===================================================================================
 void EnemyBoss00::init(int maxHp)
@@ -36,31 +39,49 @@ void EnemyBoss00::init(int maxHp)
 
 	m_sinRate = 0.0f;
 	m_scale = 2.0f;
+
+	m_pUpdateFunc = &EnemyBoss00::updateAppear;
 }
 
 void EnemyBoss00::update()
 {
 	if (!m_isExist)	return;
 
-	bool isStartLoop = true;
-	if (m_basePos.x > kBasePosX)
+	(this->*m_pUpdateFunc)();
+}
+
+void EnemyBoss00::dead()
+{
+	Sound::PlaySound(Sound::kSoundID_BossDead);
+
+	// 爆発演出
+	for (int i = 0; i < 8; i++)
 	{
-		m_basePos.x -= 4.0f;
-		if (m_basePos.x <= kBasePosX)
-		{
-			m_basePos.x = kBasePosX;
-		}
-		else
-		{
-			isStartLoop = false;
-		}
-	}
-	// 定位置についた後
-	if (isStartLoop)
-	{
-		m_sinRate += 0.02f;
+		Vec2 pos = getPos();
+		pos.x += static_cast<float>(GetRand(64) - 32);
+		pos.y += static_cast<float>(GetRand(64) - 32);
+		m_pMain->createDeadEffect(pos);
 	}
 
+	// アイテムは生産しない
+}
+
+void EnemyBoss00::updateAppear()
+{
+	m_basePos.x -= 4.0f;
+	m_pos.x = m_basePos.x;
+	m_pos.y = m_basePos.y;
+
+	if (m_basePos.x < kBasePosX)
+	{
+		m_basePos.x = kBasePosX;
+		m_pUpdateFunc = &EnemyBoss00::updateMain;
+	}
+}
+
+void EnemyBoss00::updateMain()
+{
+	m_sinRate += 0.02f;
 	m_pos.x = m_basePos.x;
 	m_pos.y = m_basePos.y + sinf(m_sinRate) * 240.0f;
 
@@ -87,7 +108,7 @@ void EnemyBoss00::update()
 		m_shotWait = kShotInterval;
 	}
 	m_summonWait--;
-	if(m_summonWait == 0)
+	if (m_summonWait == 0)
 	{
 		EnemyBase* pEnemy = new EnemyMoveFront;
 
@@ -106,20 +127,4 @@ void EnemyBoss00::update()
 
 		m_summonWait = kSummonInterval;
 	}
-}
-
-void EnemyBoss00::dead()
-{
-	Sound::PlaySound(Sound::kSoundID_BossDead);
-
-	// 爆発演出
-	for (int i = 0; i < 8; i++)
-	{
-		Vec2 pos = getPos();
-		pos.x += static_cast<float>(GetRand(64) - 32);
-		pos.y += static_cast<float>(GetRand(64) - 32);
-		m_pMain->createDeadEffect(pos);
-	}
-
-	// アイテムは生産しない
 }

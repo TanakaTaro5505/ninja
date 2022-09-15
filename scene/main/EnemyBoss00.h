@@ -11,6 +11,8 @@ public:
 		m_sinRate = 0.0f;
 		m_shotWait = 0;
 		m_summonWait = 0;
+
+		m_pUpdateFunc = nullptr;
 	}
 	virtual ~EnemyBoss00() {}
 
@@ -23,10 +25,16 @@ public:
 	bool isBoss() override { return true; }
 
 private:
+	// ƒV[ƒPƒ“ƒX‚²‚Æ‚Ìˆ—
+	void updateAppear();
+	void updateMain();
+private:
 
 	Vec2 m_basePos;
 	float m_sinRate;
 	int m_shotWait;		// ’e‚Ì”­ËŠÔŠu
 
 	int m_summonWait;	// G‹›“G¶¬ŠÔŠu
+
+	void (EnemyBoss00::* m_pUpdateFunc)();
 };
